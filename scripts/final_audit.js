@@ -114,7 +114,26 @@ const ROW_SEL = '#balloon-menu [role=menuitem], #balloon-menu [role=menuitemchec
     check('a balloon row has no label', rows.every(t => t.length > 0));
     await p.keyboard.press('Escape'); await sleep(250);
     check('Escape did not close the menu (top)', await p.$eval('#balloon-menu', e => e.hidden) === true);
-    await p.evaluate(() => window.scrollTo(0, document.body.scrollHeight/2)); await sleep(300); await p.$eval('#balloon-button', e => e.click()); await sleep(300); await p.screenshot({ path: 'f-balloon-mid.png' });
+    await p.evaluate(() => window.scrollTo(0, document.body.scrollHeight/2));
+    /* Scrolling mid-page starts the lazy images that were below the fold. While they
+       decode, sections move, and which one is "current" legitimately changes under the
+       menu. Wait for the page to stop moving so the next assertions measure a settled
+       layout rather than a race. */
+    await p.evaluate(async () => {
+      const pending = Array.from(document.images).filter(i => !i.complete);
+      await Promise.race([
+        Promise.all(pending.map(i => new Promise(r => { i.addEventListener('load', r, { once: true }); i.addEventListener('error', r, { once: true }); }))),
+        new Promise(r => setTimeout(r, 4000)),
+      ]);
+      let last = -1, stable = 0;
+      while (stable < 3) {
+        await new Promise(r => requestAnimationFrame(() => setTimeout(r, 100)));
+        const h = document.body.scrollHeight;
+        stable = h === last ? stable + 1 : 0;
+        last = h;
+      }
+    });
+    await sleep(300); await p.$eval('#balloon-button', e => e.click()); await sleep(300); await p.screenshot({ path: 'f-balloon-mid.png' });
     const midActive = await p.evaluate(() => document.activeElement.textContent.trim());
     out.push('mid active=' + midActive);
     check('reopening mid-page did not focus a menu row', (await p.$$eval(ROW_SEL, l => l.map(e => e.textContent.trim().replace(/\s+/g,' ')))).includes(midActive), midActive);

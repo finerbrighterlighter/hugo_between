@@ -40,7 +40,11 @@
   </div>
   <div class="colophon-tech">
     <p>{{ i18n "privacy_note" }} <button type="button" class="linklike" data-cache-flush>{{ i18n "clear_cache" }}</button> <span data-cache-status role="status"></span></p>
-    <p>{{ i18n "licence" }} <a rel="license noreferrer noopener" href="https://creativecommons.org/licenses/by/4.0/" target="_blank">CC BY 4.0</a>. {{ i18n "built_with" }}</p>
+    <p>{{ i18n "licence" }} <a rel="license noreferrer noopener" href="https://creativecommons.org/licenses/by/4.0/" target="_blank">CC BY 4.0</a>. {{ i18n "licence_marks" }}
+      {{- /* The credits page exists in English only; on Burmese pages this falls back to
+             the English URL and says so, rather than going missing. The label falls back
+             too, so adding `credits:` to i18n/mm.yaml is all a translation needs. */ -}}
+      {{- $c := partial "lang-link.html" "/general/credits/" }} <a href="{{ $c.href }}"{{ with $c.hreflang }} hreflang="{{ . }}"{{ end }}>{{ with i18n "credits" }}{{ . }}{{ else }}Credits{{ end }}</a>. {{ i18n "built_with" }}</p>
     <p class="colophon-tools">
       <button type="button" class="linklike" data-theme-toggle aria-label="{{ i18n "theme_toggle_dark" }}" data-label-dark="{{ i18n "theme_toggle_dark" }}" data-label-light="{{ i18n "theme_toggle_light" }}"><span class="theme-dot" aria-hidden="true"></span><span class="sr-only">{{ i18n "theme_toggle_dark" }}</span></button>
       <button type="button" class="linklike palette-toggle" data-palette-toggle aria-pressed="false" aria-label="{{ i18n "colorblind_label" }}"><img class="ishihara ishihara-off" src="/images/icons/ishihara-off.webp" alt="" width="18" height="18"><img class="ishihara ishihara-on" src="/images/icons/ishihara-on.webp" alt="" width="18" height="18"><span>{{ i18n "colorblind_label" }}</span></button>

@@ -16,6 +16,12 @@
  * viewport matters because navigation changes below 960px: the masthead links
  * give way to the balloon menu, which is a different set of elements.
  *
+ * Third-party requests are blocked. The live panels call five external APIs on the home
+ * page, and waiting for those to settle on every one of ~84 loads made this the
+ * slowest step by far and tied an accessibility gate to other people's uptime.
+ * axe reads the DOM, so what matters is that the page renders; the panels then
+ * show their empty state, which is itself a state worth checking.
+ *
  * Usage:
  *   node scripts/a11y.js [baseUrl] [--schemes light,dark] [--viewports desktop,phone] [--json]
  *   BASE defaults to http://127.0.0.1:1313
@@ -60,6 +66,33 @@ const PATHS = [
 const STANDARD = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'];
 
 /**
+ * axe's "incomplete" bucket: checks it could not decide, printed as notes rather than
+ * failures. They are not a human sign-off, so the recurring ones were sampled by hand
+ * once and the result recorded here. Re-check when a new message appears in the run,
+ * or when the design changes underneath one of these.
+ *
+ *   colour-contrast / "contains an image node"
+ *     The SVG year labels in the output timeline. axe cannot read a background inside
+ *     SVG. Measured by hand: the mute ink on paper is 5.77:1 in light and 6.70:1 in
+ *     dark, against a 4.5:1 requirement. Passes.
+ *
+ *   colour-contrast / "due to a pseudo element"
+ *     The OpenAlex metrics line, where a pseudo element sits behind the text. The text
+ *     is full ink on paper, the site's highest-contrast pairing. Passes.
+ *
+ *   colour-contrast / "partially obscured by another element"
+ *     Text behind the open balloon panel on phone. The panel is opaque, so the text
+ *     underneath is not being read; the rows on top of it are checked separately and
+ *     pass. Not a real pairing.
+ *
+ *   colour-contrast / "content contains only non-text characters"
+ *     Bullet and arrow glyphs in the balloon rows, which are decorative and duplicated
+ *     by the row's own label. Nothing to read.
+ *
+ * Sampled 2026-09-16 against the 84-load run. None of these were defects.
+ */
+
+/**
  * Documented exceptions. Each entry must say what it is and why it is allowed,
  * so that a reviewer can re-judge it instead of finding a silent suppression.
  * A violation is downgraded to a note only when page, rule id and target all match.
@@ -99,9 +132,19 @@ async function run() {
       const page = await browser.newPage();
       await page.setViewport(VIEWPORTS[viewport]);
       await page.emulateMediaFeatures([{ name: 'prefers-color-scheme', value: scheme }]);
+      await page.setRequestInterception(true);
+      page.on('request', (req) => {
+        const url = req.url();
+        const sameOrigin = url.startsWith(BASE) || url.startsWith('data:') || url.startsWith('blob:');
+        if (sameOrigin) req.continue().catch(() => {});
+        else req.abort().catch(() => {});
+      });
       let res;
       try {
-        const response = await page.goto(BASE + path, { waitUntil: 'networkidle0', timeout: 45000 });
+        const response = await page.goto(BASE + path, { waitUntil: 'load', timeout: 45000 });
+        /* Nothing external is in flight, so a short settle is enough for the
+           modules to have run and painted. */
+        await new Promise((r) => setTimeout(r, 150));
         if (response && response.status() >= 400 && !path.endsWith('404.html')) {
           violations.push({ page: path, scheme, viewport, id: 'http', impact: 'critical', help: `HTTP ${response.status()}`, nodes: [] });
           await page.close();

@@ -11,13 +11,13 @@
     "csp": "node scripts/csp_check.js",
     "qc": "node scripts/qc.js",
     "a11y:pa11y": "pa11y --config scripts/pa11y.json http://127.0.0.1:1313/",
-    "serve": "python3 -m http.server 1313 --bind 127.0.0.1 --directory public",
     "hugo:check": "node scripts/check-hugo.js",
     "extlinks": "node scripts/extlinks.js public",
     "balloon": "node scripts/balloon_test.js",
     "filters": "node scripts/works_filter_test.js",
     "audit": "node scripts/final_audit.js",
-    "qc:static": "npm run hugo:check && npm run build && npm run links"
+    "qc:static": "npm run hugo:check && npm run build && npm run links",
+    "marks:check": "python3 scripts/marks_check.py"
   },
   "devDependencies": {
     "axe-core": "4.11.1",

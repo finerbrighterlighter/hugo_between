@@ -31,6 +31,9 @@ if (sentence) {
       works_count: data.works_count ?? 0,
       h_index: data.summary_stats?.h_index ?? 0,
       i10_index: data.summary_stats?.i10_index ?? 0,
+      /* Canonical author page, e.g. https://openalex.org/A5065083669. The template
+         ships an orcid-prefixed fallback href; this is the one to link when we have it. */
+      id: typeof data.id === "string" ? data.id : "",
     };
   }
 
@@ -38,6 +41,11 @@ if (sentence) {
     for (const span of sentence.querySelectorAll("[data-metric]")) {
       const key = span.dataset.metric;
       if (key in metrics) span.textContent = Number(metrics[key]).toLocaleString();
+    }
+    /* Entries cached before this field existed have no id; the fallback href stands. */
+    if (metrics.id && /^https:\/\/openalex\.org\/\w+$/.test(metrics.id)) {
+      const link = sentence.querySelector("[data-openalex-link]");
+      if (link) link.href = metrics.id;
     }
     sentence.hidden = false;
   }

@@ -478,6 +478,12 @@ html:lang(my) .balloon-row{font-size:1rem;line-height:1.8}
 .colophon-tools{display:flex;gap:1.4rem;align-items:center;flex-wrap:wrap;margin-top:.8rem!important}
 .colophon-tools .linklike{text-decoration:none;color:var(--ink);border-bottom:1px solid var(--rule);display:inline-flex;align-items:center;gap:.4rem;font-size:var(--fs-meta)}
 .palette-toggle .ishihara{width:1.1em;height:1.1em;border-radius:50%;display:none}
+/* The inactive Ishihara plate is a pure black line drawing on transparency: 18.9:1
+   on the light paper, but 1.17:1 on the dark one, which is invisible. It is
+   monochrome, so inverting it loses nothing and restores the contrast. The active
+   plate is left alone: it is orange, it already reads at 7:1 on dark, and its
+   colour is the point. */
+:root[data-theme="dark"] .palette-toggle .ishihara-off{filter:invert(1)}
 :root:not([data-palette="colorblind"]) .palette-toggle .ishihara-off,:root[data-palette="colorblind"] .palette-toggle .ishihara-on{display:inline-block}
 .balloon-row[data-palette-toggle][aria-pressed="true"],.balloon-row[data-palette-toggle][aria-checked="true"],.palette-toggle[aria-pressed="true"]{border-bottom-color:var(--accent);color:var(--accent)}
 .theme-dot{width:.75em;height:.75em;border-radius:50%;border:1px solid var(--ink);background:linear-gradient(90deg,var(--ink) 50%,transparent 50%);display:inline-block}

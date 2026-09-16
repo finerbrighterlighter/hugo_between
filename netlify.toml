@@ -55,6 +55,13 @@ HUGO_VERSION = "0.157.0"
   [headers.values]
     Cache-Control = "public, max-age=604800"
 
+# Processed variants under /images/ carry a content hash too, so they can be
+# cached immutably like the ones in the content bundles below.
+[[headers]]
+  for = "/images/*_hu_*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
 # Hugo image processing writes a content hash into every generated filename
 # (`name_hu_<hash>.webp`), so processed bundle images can be cached immutably.
 [[headers]]

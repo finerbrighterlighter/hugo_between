@@ -138,7 +138,11 @@
     </div>
     <div class="voice voice-r">
       <p class="kicker">{{ i18n "k_published" }}</p>
-      <p id="metrics" data-openalex-author="{{ $hp.sidebar.orcid }}" hidden>Cited <span data-metric="cited_by_count">—</span> times across <span data-metric="works_count">—</span> indexed works, h-index <span data-metric="h_index">—</span> (OpenAlex).</p>
+      {{- /* The paragraph stays hidden until openalex.js has an answer, so the href below
+             is only a fallback: the module replaces it with the canonical author URL that
+             the API returns (`id`). OpenAlex resolves an `orcid:` prefixed identifier, so
+             the fallback still lands on the right page if the id is ever missing. */ -}}
+      <p id="metrics" data-openalex-author="{{ $hp.sidebar.orcid }}" hidden>Cited <span data-metric="cited_by_count">—</span> times across <span data-metric="works_count">—</span> indexed works, h-index <span data-metric="h_index">—</span> (<a data-openalex-link href="https://openalex.org/orcid:{{ $hp.sidebar.orcid }}" target="_blank" rel="noreferrer noopener">OpenAlex</a>).</p>
       <p>{{ partial "collab-summary.html" . }}</p>
       <ol class="bib">
         {{- range first (.Site.Params.recentWorksLimit | default 4) (sort $works "Date" "desc") }}

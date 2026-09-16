@@ -1,20 +1,37 @@
 # Institutions whose mark appears at the top of a work page.
 #
 # A work opts in with `institution: <key>` in its front matter, meaning "this is
-# where I was when I did the work". Absent or unknown key = no mark, which is the
-# safe default: a logo asserts affiliation, so it is never inferred from the date.
+# where I was when I did the work". Absent key = no mark. An unknown key fails the
+# build, because a mark is an explicit claim of affiliation and a typo must not
+# silently erase it.
 #
-# `logo` is a path under assets/; Hugo resizes it and converts it to WebP.
-# `name` is the alt text and the tooltip, so it must be the institution's real name.
+# `logo` is a path under assets/. Hugo resizes it and emits PNG, not the site's
+# usual WebP: Hugo's WebP output is lossy and subsamples chroma, which destroys
+# fine gold-on-blue seal detail. See layouts/partials/work-institution.html.
+#
+# RIGHTS. These marks are third-party institutional identifiers, not part of this
+# site's CC BY 4.0 licence. Each entry records where the file came from and on what
+# basis it is used, and the footer excludes them from the site licence. Do not add
+# an entry without filling in `source` and `rights`.
 
 mahidol:
   name: Mahidol University
   short: Mahidol
   logo: images/institutions/mahidol.png
   link: https://mahidol.ac.th/
+  source: Mahidol University corporate identity mark
+  rights: >-
+    Trademark of Mahidol University. Used for nominative identification of the
+    author's affiliation at the time of the work. Not covered by this site's
+    CC BY 4.0 licence; no endorsement or sponsorship is implied.
 
 udmy:
   name: University of Dental Medicine, Yangon
   short: UDMY
   logo: images/institutions/udmy.png
   link: https://www.udmy.edu.mm/
+  source: University of Dental Medicine, Yangon institutional seal
+  rights: >-
+    Trademark of the University of Dental Medicine, Yangon. Used for nominative
+    identification of the author's affiliation at the time of the work. Not covered
+    by this site's CC BY 4.0 licence; no endorsement or sponsorship is implied.

@@ -154,3 +154,16 @@ The experience row is **Now | Before**, split by whether an entry is ongoing (`c
 - **Timeline marks stay on the site.** A mark links to the work's own page, or, for the conference items and
   reports that are built list-only, to the Works list filtered to that year. It no longer falls back to a
   publisher, mirror or ResearchGate copy.
+
+## Pass 12 (2026-09-16, credits and the colour-blind control)
+
+- **Credits page** at `/general/credits/`, linked from the colophon in both languages. It names the typefaces
+  (Newsreader, Karla, Thit Sar Shwe Si, Z01-Umoe002, Architects Daughter), the software (Hugo, KaTeX, Mermaid,
+  GoatCounter) and the data sources, with their designers and licences. Every fact on it was read out of the
+  files the site ships, including the fonts' own name tables, so it stays true as long as the files do. The
+  page exists in English only; the footer link falls back to the English URL with `hreflang` on Burmese pages,
+  and adding `credits:` to `i18n/mm.yaml` is all a translation needs.
+- **The inactive Ishihara icon is inverted in dark mode.** It is a pure black line drawing on transparency:
+  18.9:1 on the light paper and 1.17:1 on the dark one, which is invisible. It is monochrome, so inverting
+  loses nothing. The active plate is untouched; it is orange, already reads at 7:1 on dark, and its colour is
+  the point.
