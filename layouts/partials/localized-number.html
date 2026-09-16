@@ -1,0 +1,10 @@
+{{- /* Render an integer in the digits the current language actually uses.
+       The Burmese pages write years and counts in Myanmar digits, so a bare
+       ASCII count inside a Burmese sentence looks wrong. English is unchanged. */ -}}
+{{- $n := printf "%d" . -}}
+{{- if eq site.Language.Lang "mm" -}}
+  {{- range $ascii, $my := dict "0" "၀" "1" "၁" "2" "၂" "3" "၃" "4" "၄" "5" "၅" "6" "၆" "7" "၇" "8" "၈" "9" "၉" -}}
+    {{- $n = replace $n $ascii $my -}}
+  {{- end -}}
+{{- end -}}
+{{- return $n -}}

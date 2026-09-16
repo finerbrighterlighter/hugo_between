@@ -1,0 +1,20 @@
+# Institutions whose mark appears at the top of a work page.
+#
+# A work opts in with `institution: <key>` in its front matter, meaning "this is
+# where I was when I did the work". Absent or unknown key = no mark, which is the
+# safe default: a logo asserts affiliation, so it is never inferred from the date.
+#
+# `logo` is a path under assets/; Hugo resizes it and converts it to WebP.
+# `name` is the alt text and the tooltip, so it must be the institution's real name.
+
+mahidol:
+  name: Mahidol University
+  short: Mahidol
+  logo: images/institutions/mahidol.png
+  link: https://mahidol.ac.th/
+
+udmy:
+  name: University of Dental Medicine, Yangon
+  short: UDMY
+  logo: images/institutions/udmy.png
+  link: https://www.udmy.edu.mm/

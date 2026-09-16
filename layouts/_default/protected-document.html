@@ -1,12 +1,21 @@
-{{- /* PIN gate for personal documents. This is a deterrent, not access control:
-       the document path, salt and verifier below are all public, and the PDF is a
-       static file anyone can request directly. Never use this template for a
-       genuinely confidential document. See docs/accepted-risks.md. */ -}}
+{{- /* Deterrent gate for personal documents. NOT access control: the document
+       path, salt and verifier below are all published in this page's source, and
+       the PDF is a static file anyone can request directly without a PIN. Never
+       use this template for a genuinely confidential document.
+
+       Every entry in data/protected_documents.yml must carry
+       `accepted_public_disclosure: true`, the author's explicit statement that
+       disclosure of that file would be unwelcome but not harmful. The build fails
+       without it, so the rule in docs/accepted-risks.md is enforced rather than
+       merely written down. */ -}}
 {{ define "body-class" }}page gate-page{{ end }}
 {{ define "main" }}
 {{- $key := .Params.protected_document -}}
 {{- $doc := index hugo.Data.protected_documents $key -}}
 {{- if not $doc -}}{{- errorf "protected document %q is not configured for %s" $key .File.Path -}}{{- end -}}
+{{- if ne $doc.accepted_public_disclosure true -}}
+  {{- errorf (printf "protected document %%q (used by %%s) is missing `accepted_public_disclosure: true` in data/protected_documents.yml. This gate is a deterrent, not access control: the PDF is a public static file and the salt and verifier are published in the page source. Confirm in the data file that disclosure of this document would be unwelcome but not harmful, or serve it through real authorization instead. See docs/accepted-risks.md." $key .File.Path) -}}
+{{- end -}}
 <header class="page-head">
   <h1>{{ .Title }}</h1>
   <p class="intro">{{ i18n "protected_document_privacy" }}</p>

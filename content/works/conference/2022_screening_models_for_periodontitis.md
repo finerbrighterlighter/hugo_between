@@ -2,6 +2,7 @@
 title: "Screening Models for Periodontitis"
 date: 2022-08-21
 type: conference-poster
+institution: mahidol
 venue: "International Society for Clinical Biostatistics Annual Conference — Newcastle, UK"
 
 authors:
@@ -13,7 +14,7 @@ authors:
 
 sources:
 - text: poster
-  url: http://doi.org/10.13140/RG.2.2.20986.77764
+  url: https://doi.org/10.13140/RG.2.2.20986.77764
 
 - text: book of abstracts
   url: https://iscb.international/wp-content/uploads/2022/08/ISCB_2022-PROGRAMME-final.pdf

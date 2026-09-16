@@ -1,0 +1,19 @@
+{{- /* Sort key for a chronology entry's `time` string.
+
+       Returns the entry's start year as an integer, so Now and Before can be
+       ordered latest first regardless of whether the entry came from the
+       education list or the experience list. Handles the three shapes the data
+       uses: "2019 - 2021", a bare "2018", and the Burmese forms with Myanmar
+       digits ("၂၀၁၉ - ၂၀၂၁"). Returns 0 when no year can be read, which sorts
+       such an entry last rather than breaking the build. */ -}}
+{{- $t := printf "%v" . -}}
+{{- $digits := dict "၀" "0" "၁" "1" "၂" "2" "၃" "3" "၄" "4" "၅" "5" "၆" "6" "၇" "7" "၈" "8" "၉" "9" -}}
+{{- range $my, $ascii := $digits -}}
+  {{- $t = replace $t $my $ascii -}}
+{{- end -}}
+{{- $year := 0 -}}
+{{- $match := findRE `[0-9]{4}` $t 1 -}}
+{{- with $match -}}
+  {{- $year = int (index . 0) -}}
+{{- end -}}
+{{- return $year -}}

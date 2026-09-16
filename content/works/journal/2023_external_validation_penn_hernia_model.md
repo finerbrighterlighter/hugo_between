@@ -2,6 +2,7 @@
 title: "External validation and revision of Penn incisional hernia prediction model: A large-scale retrospective cohort of abdominal operations"
 date: 2024-01-18
 type: journal
+institution: mahidol
 venue: "Surgeon"
 
 authors:

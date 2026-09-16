@@ -2,6 +2,7 @@
 title: "Hypertension and Its Associated Complications: A Thai Real-World Clinical Cohort"
 date: 2023-05-07
 type: conference-poster
+institution: mahidol
 venue: "ISPOR—The Professional Society for Health Economics and Outcomes Research 2023 — Boston, US"
 
 authors:

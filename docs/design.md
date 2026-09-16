@@ -136,3 +136,21 @@ Below 960px the portrait sits astride the top of the spine: its left edge is pla
 ## Pass 10 (2026-09-16, location-independent structure)
 
 The experience row is **Now | Before**, split by whether an entry is ongoing (`current: true` in the data, or a time string ending in Present / လက်ရှိ), not by country. A future role, institution or country only adds an entry. Health | Data remains the hero; balloon labels stay functional (Experience, Research, Output, Current work, Writing & lately). The current role shows its detail paragraph inline (first paragraph only on phones); past entries keep the collapsed "show more".
+
+## Pass 11 (2026-09-16, chronology order and work marks)
+
+- **Now | Before read latest first.** Education and experience are interleaved by start year rather than listed
+  one after the other, so the column reads as one career instead of two lists. The sort key is the start year
+  parsed from the `time` string (`layouts/partials/chron-year.html`, which handles Myanmar digits); entries that
+  share a year keep their order from the data file.
+- **The tail of a chronology folds into one disclosure.** `chronVisibleLimit` in `hugo.toml` (currently 3) sets
+  how many entries stay open; the rest sit behind "N earlier", styled like the existing per-entry "show more".
+  This replaces the phone-only rule that silently hid everything past the second entry with no way to reveal it.
+  The count is rendered in Myanmar digits on Burmese pages (`layouts/partials/localized-number.html`).
+- **Work pages open with an institution mark**, the counterpart to the home portrait: same row spacing, same
+  diameter, same paper ring and ink hairline, and the page's hairline leaves its edge the way the spine leaves
+  the portrait. A work opts in with `institution: <key>` in front matter; keys live in `data/institutions.yml`.
+  It is never inferred from the date, because a logo asserts an affiliation.
+- **Timeline marks stay on the site.** A mark links to the work's own page, or, for the conference items and
+  reports that are built list-only, to the Works list filtered to that year. It no longer falls back to a
+  publisher, mirror or ResearchGate copy.

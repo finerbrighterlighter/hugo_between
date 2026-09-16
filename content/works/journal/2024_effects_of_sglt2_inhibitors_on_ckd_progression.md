@@ -2,6 +2,7 @@
 title: "Effects of sodium-glucose cotransporter-2 inhibitors on chronic kidney disease progression: A multi-state parametric survival model"
 date: 2024-11-23
 type: journal
+institution: mahidol
 venue: "Diabetology & Metabolic Syndrome"
 
 authors:

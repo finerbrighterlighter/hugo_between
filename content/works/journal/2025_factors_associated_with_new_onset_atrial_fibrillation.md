@@ -2,6 +2,7 @@
 title: "Factors Associated with New-Onset Atrial Fibrillation in Thai Adults with Hypertension"
 date: 2025-08-09
 type: journal
+institution: mahidol
 venue: "American Journal of Hypertension"
 
 authors:

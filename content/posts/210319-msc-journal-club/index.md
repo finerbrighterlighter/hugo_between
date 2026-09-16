@@ -6,7 +6,7 @@ company: "Mahidol University, Thailand"
 math: true
 ---
 
-I presented at a journal club regarding the topic of "Mixed Effect Machine Learning". The presentation was based on the paper by Che Ngufora, Holly Van Houten, Brian S. Caffo, Nilay D. Shah and Rozalina G. McCoy, published in [Journal of Biomedical Informatics (2018)](http://doi.org/10.1016/j.jbi.2018.09.001). The resources for the Journal Club can be found [here](https://www.rama.mahidol.ac.th/ceb/news/10mar2021-0940).
+I presented at a journal club regarding the topic of "Mixed Effect Machine Learning". The presentation was based on the paper by Che Ngufora, Holly Van Houten, Brian S. Caffo, Nilay D. Shah and Rozalina G. McCoy, published in [Journal of Biomedical Informatics (2018)](https://doi.org/10.1016/j.jbi.2018.09.001). The resources for the Journal Club can be found [here](https://www.rama.mahidol.ac.th/ceb/news/10mar2021-0940).
 
 <!--more-->
 
@@ -131,7 +131,7 @@ Later, I applied this framework as one of the models in my research. The model a
 
 - My [Master's thesis](https://scholar.google.com/citations?view_op=view_citation&citation_for_view=7waEOqcAAAAJ:qjMakFHDy7sC)
 - The [proceeding paper](https://www.researchgate.net/publication/351563629_Clinical_Prediction_of_Chronic_Periodontitis)
-- The [poster](http://doi.org/10.13140/RG.2.2.20986.77764)
+- The [poster](https://doi.org/10.13140/RG.2.2.20986.77764)
 
 The corresponding journal manuscript was eventually published in [JMIR Formative Research (2023)](/works/journal/2023_development_of_risk_prediction_models_for_severe_periodontitis/).
 

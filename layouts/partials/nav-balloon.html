@@ -19,7 +19,7 @@
         {{- end }}
         {{- if $target }}<a class="balloon-row balloon-small" role="menuitem" href="{{ $target.RelPermalink }}" lang="{{ if eq $want "mm" }}my{{ else }}en{{ end }}" hreflang="{{ if eq $want "mm" }}my{{ else }}en{{ end }}">{{ i18n "lang_switch" }}</a>{{ end }}
         <button type="button" class="balloon-row balloon-small" role="menuitem" data-theme-toggle aria-label="{{ i18n "theme_toggle_dark" }}" data-label-dark="{{ i18n "dark_mode" }}" data-label-light="{{ i18n "light_mode" }}"><span data-theme-toggle-text>{{ i18n "dark_mode" }}</span></button>
-        <button type="button" class="balloon-row balloon-small" role="menuitem" data-palette-toggle aria-pressed="false" aria-label="{{ i18n "colorblind_label" }}"><span>{{ i18n "colorblind_mode" }}</span><span class="balloon-check" aria-hidden="true"></span></button>
+        <button type="button" class="balloon-row balloon-small" role="menuitemcheckbox" data-palette-toggle aria-checked="false" aria-label="{{ i18n "colorblind_label" }}"><span>{{ i18n "colorblind_mode" }}</span><span class="balloon-check" aria-hidden="true"></span></button>
       </div>
     </div>
   </div>

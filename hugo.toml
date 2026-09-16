@@ -30,6 +30,9 @@ buildFuture = true
   screenLimit = 3
   mangaLimit = 3
   photoLimit = 3
+  # Chronology entries shown in "Now" / "Before" before the rest fold into a
+  # "N earlier" disclosure. Keeps the column short as roles accumulate.
+  chronVisibleLimit = 3
   recentPostsLimit = 3
   recentWorksLimit = 4
   homeProjectsLimit = 3

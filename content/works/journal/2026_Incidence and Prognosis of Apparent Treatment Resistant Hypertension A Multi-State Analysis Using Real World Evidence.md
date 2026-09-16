@@ -2,6 +2,7 @@
 title: "Incidence and Prognosis of Apparent Treatment-Resistant Hypertension: A Multi-State Analysis Using Real-World Evidence"
 date: 2026-02-01
 type: journal
+institution: mahidol
 venue: "Clinical Hypertension"
 
 authors:

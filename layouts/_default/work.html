@@ -9,6 +9,7 @@
 {{- $multiAff := gt (len $affiliations) 1 -}}
 {{- $scholar := hugo.Data.homepage.sidebar.scholar_profile -}}
 
+{{ partial "work-institution.html" . }}
 <header class="page-head">
   <span class="meta">{{ i18n (printf "type_%s" .Params.type) | default .Params.type }}{{ with .Params.venue }}, {{ . }}{{ end }}</span>
 </header>

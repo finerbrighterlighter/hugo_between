@@ -30,11 +30,13 @@
       {{- $cx := add (mul $i $col) (div $col 2) -}}
       {{- $cy := sub (sub $baseY 8) (mul $k $step) -}}
       {{- $open := in $presented .Params.type -}}
+      {{- /* A mark links to the work's own page. Conference items and reports are
+             built list-only, so those fall back to the Works list filtered to that
+             year. Never to a publisher, mirror or ResearchGate copy: a mark on this
+             timeline should keep the reader on the site. */ -}}
       {{- $href := .RelPermalink -}}
       {{- if not $href -}}
-        {{- $src := slice -}}{{- with .Params.sources -}}{{- $src = . -}}{{- end -}}
-        {{- range $src -}}{{- if and (not $href) (in (slice "fulltext" "pubmed" "poster" "slides" "mirror") .text) -}}{{- $href = .url -}}{{- end -}}{{- end -}}
-        {{- if not $href -}}{{- $href = printf "%s?search=%d" (partial "lang-link.html" "/works/").href $y -}}{{- end -}}
+        {{- $href = printf "%s?search=%d" (partial "lang-link.html" "/works/").href $y -}}
       {{- end -}}
       {{- $kind := i18n (printf "type_%s" .Params.type) | default .Params.type -}}
       {{- $label := printf "%s. %s, %d%s" .Title $kind $y (cond (ne .Params.venue nil) (printf ". %s" .Params.venue) "") -}}

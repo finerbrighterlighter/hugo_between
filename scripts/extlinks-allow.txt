@@ -1,0 +1,40 @@
+# Allowlist for scripts/extlinks.js
+#
+# One substring pattern per line; `#` starts a comment. A URL matching any
+# pattern is still requested and still reported, but is never counted as a
+# problem. The weekly report stays readable that way.
+#
+# What belongs here:
+#   - hosts that block non-browser user agents outright (Cloudflare or Akamai
+#     bot rules answering 403 to anything without a real browser fingerprint)
+#   - paywalled or login-walled publisher pages that answer 403/401 to anyone
+#     not coming from an institutional IP
+#   - endpoints that need an API key or a POST body, so a bare GET of the
+#     origin is meaningless (a GraphQL endpoint answering 400 to GET, say)
+#   - deliberate rate limiters that answer 429 no matter how gently we knock
+#
+# What does NOT belong here: a link that is genuinely dead. Fix or remove that
+# link in content instead. This file is for false alarms, not for silence.
+
+# --- API endpoints that are meaningless to probe at the origin ---
+# graphql.anilist.co only speaks POST; probing the bare origin answers 404.
+graphql.anilist.co
+
+# --- confirmed bot-blockers (verified 2026-09-16) ---
+# Each of these answered a refusal to this checker while the page loads fine in
+# a browser. Re-test before trusting one of them as permanently broken.
+www.linkedin.com          # answers HTTP 999, LinkedIn's anti-scraping code
+www.researchgate.net      # 403 to any non-browser client
+www.scopus.com            # Elsevier drops the connection outright (no response)
+www.namecheap.com         # 403 from the edge/WAF
+authors.elsevier.com      # 403; share links only work from a real browser
+simkl.com                 # 403 on the marketing site (api.simkl.com is checked separately)
+openalex.org/works        # 403 on the web UI; the api.openalex.org origin is checked separately
+www.bangkokbank.com       # never answers this checker; times out at 15s
+
+# --- known flappers, deliberately NOT allowlisted ---
+# last.fm answers a nonstandard HTTP 600 to roughly one playlist per run, and a
+# different one each time; fetched on its own every playlist returns 200. If the
+# noise becomes tiresome, uncomment the line below - but note that a genuinely
+# deleted playlist would then go unreported, which is the thing worth catching.
+# www.last.fm/user/fibrili/playlists/

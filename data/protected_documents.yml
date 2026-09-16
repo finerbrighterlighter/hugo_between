@@ -1,11 +1,24 @@
+# Documents behind the PIN gate on the site.
+#
+# READ docs/accepted-risks.md BEFORE ADDING AN ENTRY HERE.
+#
+# The gate is a deterrent, not access control. Everything below is published in
+# the page source, and the PDF itself is a static file that anyone who reads the
+# markup can request without entering the PIN. `accepted_public_disclosure` is
+# the author stating, per document, that disclosure of this file would be
+# unwelcome but not harmful. The build fails without it, so nothing confidential
+# can be placed here by accident.
+
 msc-transcript:
   document_id: msc-transcript
   document_path: /general/documents/d6e5609a2d5acdbcd5627a56cdb2ea50.pdf
   salt: Pyinmana-
   password_hash: 5ac8f514e5ab509ea915cb1aebd34335f29c06a4e35b68221fb2aaa9f0d37c0c
+  accepted_public_disclosure: true
 
 bds-transcript:
   document_id: bds-transcript
   document_path: /general/documents/7bc4ddb932d5a4c51da057b82c090cc7.pdf
   salt: Pyinmana-
   password_hash: 5ac8f514e5ab509ea915cb1aebd34335f29c06a4e35b68221fb2aaa9f0d37c0c
+  accepted_public_disclosure: true

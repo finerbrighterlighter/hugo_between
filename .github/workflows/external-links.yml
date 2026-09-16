@@ -1,0 +1,87 @@
+name: External link health
+
+# Link rot and upstream drift report. Runs weekly and on demand only: never on
+# push or pull_request, because a third party going down is not a reason to
+# stop a deploy of this site.
+#
+# THIS WORKFLOW NEVER BLOCKS ANYTHING. scripts/extlinks.js always exits 0
+# unless it crashes, the check step additionally carries continue-on-error, and
+# no other workflow or branch protection depends on this job. Read the run
+# summary, decide what is worth fixing in content, and fix it deliberately.
+
+on:
+  schedule:
+    # 06:00 UTC every Monday - quiet for the APIs this hits, and the result is
+    # waiting at the start of the week.
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  extlinks:
+    name: External links and API health
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install tooling
+        run: npm ci
+
+      - name: Install Hugo extended 0.157.0
+        # Must match HUGO_VERSION in netlify.toml.
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: '0.157.0'
+          extended: true
+
+      - name: Build site
+        run: hugo --gc --minify
+
+      - name: Check external links and API health
+        id: check
+        # Reports only. The script exits 0 by design; continue-on-error is here
+        # as a second guarantee that a crash still cannot fail the run.
+        continue-on-error: true
+        run: |
+          node scripts/extlinks.js public \
+            --json-out=extlinks-report.json \
+            | tee extlinks-report.txt
+
+      - name: Write report to the run summary
+        # Runs even if the step above crashed, so a partial report is still
+        # readable from the Actions page.
+        if: always()
+        run: |
+          {
+            echo '## External link health'
+            echo
+            if [ -s extlinks-report.txt ]; then
+              echo '```'
+              cat extlinks-report.txt
+              echo '```'
+            else
+              echo 'The check produced no output - see the step log.'
+            fi
+            echo
+            echo '_Report only: this workflow never blocks a build or a deploy._'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: extlinks-report
+          path: |
+            extlinks-report.json
+            extlinks-report.txt
+          if-no-files-found: warn
+          retention-days: 90

@@ -2,6 +2,7 @@
 title: "Clinical Prediction of Chronic Periodontitis"
 date: 2021-01-16
 type: conference-proceeding
+institution: mahidol
 build:
   render: always
   list: always

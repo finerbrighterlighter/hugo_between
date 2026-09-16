@@ -10,7 +10,12 @@ if (toggles.length) {
   const on = () => root.dataset.palette === "colorblind";
 
   function sync() {
-    for (const b of toggles) b.setAttribute("aria-pressed", String(on()));
+    for (const b of toggles) {
+      /* aria-pressed is not allowed on a menu item; inside the balloon the button
+         is a menuitemcheckbox and carries aria-checked instead. */
+      const attr = b.getAttribute("role") === "menuitemcheckbox" ? "aria-checked" : "aria-pressed";
+      b.setAttribute(attr, String(on()));
+    }
     document.dispatchEvent(new CustomEvent("palette-changed", { detail: { palette: on() ? "colorblind" : "default" } }));
   }
 

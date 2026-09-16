@@ -83,20 +83,21 @@ if (root) {
       sectionRows.set(el, row);
     }
 
-    // Mark the section currently in view synchronously, so the first focus lands on it.
+    /* One rule decides which row is current: the last section whose top has passed
+       a line a quarter of the way down the viewport. It runs synchronously when the
+       menu is built, so the first focus lands on the current section, and again from
+       the observer. Letting the observer pick its own winner from whichever entries
+       happened to fire meant the highlight could move off the row that had just been
+       focused, so the observer now only says "recompute", never what the answer is. */
     if (list.length) {
-      const line = window.scrollY + window.innerHeight * 0.25;
-      let active = list[0].el;
-      for (const { el } of list) if (el.getBoundingClientRect().top + window.scrollY <= line) active = el;
-      for (const [el, row] of sectionRows) row.classList.toggle("is-active", el === active);
-    }
-    if (list.length) {
-      observer = new IntersectionObserver((entries) => {
-        let current = null;
-        for (const entry of entries) if (entry.isIntersecting) current = entry.target;
-        if (!current) return;
-        for (const [el, row] of sectionRows) row.classList.toggle("is-active", el === current);
-      }, { rootMargin: "0px 0px -60% 0px", threshold: 0 });
+      const markCurrent = () => {
+        const line = window.scrollY + window.innerHeight * 0.25;
+        let active = list[0].el;
+        for (const { el } of list) if (el.getBoundingClientRect().top + window.scrollY <= line) active = el;
+        for (const [el, row] of sectionRows) row.classList.toggle("is-active", el === active);
+      };
+      markCurrent();
+      observer = new IntersectionObserver(markCurrent, { rootMargin: "0px 0px -60% 0px", threshold: 0 });
       for (const { el } of list) observer.observe(el);
     }
 
@@ -104,7 +105,7 @@ if (root) {
   }
 
   function refreshRows() {
-    rows = Array.from(menu.querySelectorAll('[role="menuitem"]')).filter((el) => !el.closest(".balloon-more[hidden]"));
+    rows = Array.from(menu.querySelectorAll('[role="menuitem"],[role="menuitemcheckbox"]')).filter((el) => !el.closest(".balloon-more[hidden]"));
   }
 
   const more = menu.querySelector("[data-more]");
@@ -115,7 +116,7 @@ if (root) {
       more.setAttribute("aria-expanded", String(!open));
       moreBox.hidden = open;
       refreshRows();
-      if (!open) moreBox.querySelector('[role="menuitem"]')?.focus();
+      if (!open) moreBox.querySelector('[role="menuitem"],[role="menuitemcheckbox"]')?.focus();
     });
   }
 

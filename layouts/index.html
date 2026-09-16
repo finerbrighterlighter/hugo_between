@@ -40,18 +40,33 @@
   </section>
 
   {{- /* Now | Before: split by whether the entry is ongoing, not by place, so a future role or
-         country only adds an entry. Ongoing = `current: true` or a time string ending in Present. */ -}}
+         country only adds an entry. Ongoing = `current: true` or a time string ending in Present.
+
+         Both columns are ordered latest first. Education and experience are interleaved by start
+         year rather than listed one after the other, so the column reads as one career rather than
+         two lists. `sortkey` packs the start year with a descending sequence number, so entries
+         that share a start year keep their order from the data file. */ -}}
   {{- $now := slice -}}{{- $before := slice -}}
+  {{- $seq := 0 -}}
   {{- range $hp.experiences.info -}}
     {{- $e := dict "when" .time "what" .role "where" .company.name "link" .company.link "details" .details -}}
+    {{- $e = merge $e (dict "sortkey" (printf "%04d%03d" (partial "chron-year.html" .time) (sub 999 $seq))) -}}
+    {{- $seq = add $seq 1 -}}
     {{- $t := lower (printf "%v" .time) -}}
     {{- if or .current (strings.Contains $t "present") (strings.Contains $t "လက်ရှိ") (strings.Contains $t "ယခု") -}}{{- $now = $now | append $e -}}{{- else -}}{{- $before = $before | append $e -}}{{- end -}}
   {{- end -}}
   {{- range $hp.education.info -}}
     {{- $e := dict "when" .time "what" .degree "where" .university.name "link" .university.link "doc" .diploma -}}
+    {{- $e = merge $e (dict "sortkey" (printf "%04d%03d" (partial "chron-year.html" .time) (sub 999 $seq))) -}}
+    {{- $seq = add $seq 1 -}}
     {{- $t := lower (printf "%v" .time) -}}
     {{- if or .current (strings.Contains $t "present") (strings.Contains $t "လက်ရှိ") (strings.Contains $t "ယခု") -}}{{- $now = $now | append $e -}}{{- else -}}{{- $before = $before | append $e -}}{{- end -}}
   {{- end -}}
+  {{- $now = sort $now "sortkey" "desc" -}}
+  {{- $before = sort $before "sortkey" "desc" -}}
+  {{- /* Beyond this many entries the tail folds into a disclosure, so the column stays
+         readable as the career grows. Set `chronVisibleLimit` in hugo.toml to change it. */ -}}
+  {{- $limit := site.Params.chronVisibleLimit | default 5 -}}
   <section class="row" id="places" data-section="{{ i18n "nav_sec_experience" }}">
     <div class="voice voice-l">
       <p class="kicker">{{ i18n "k_now" }}</p>
@@ -63,11 +78,25 @@
     </div>
     <div class="voice voice-r">
       <p class="kicker">{{ i18n "k_before" }}</p>
+      {{- $head := $before -}}{{- $tail := slice -}}
+      {{- if gt (len $before) $limit -}}
+        {{- $head = first $limit $before -}}{{- $tail = after $limit $before -}}
+      {{- end -}}
       <ul class="chron">
-        {{- range $before }}
+        {{- range $head }}
         <li><span class="when">{{ .when }}</span><span class="what">{{ .what }}{{ with .doc }} <a href="{{ . | relLangURL }}" class="meta">transcript</a>{{ end }}</span><span class="where"><a href="{{ .link }}" target="_blank" rel="noreferrer noopener">{{ .where }}</a></span>{{ with .details }}<details><summary>{{ i18n "show_more" }}</summary>{{ . | markdownify }}</details>{{ end }}</li>
         {{- end }}
       </ul>
+      {{- with $tail }}
+      <details class="chron-more">
+        <summary>{{ i18n "chron_earlier" (dict "n" (partial "localized-number.html" (len .))) }}</summary>
+        <ul class="chron">
+          {{- range . }}
+          <li><span class="when">{{ .when }}</span><span class="what">{{ .what }}{{ with .doc }} <a href="{{ . | relLangURL }}" class="meta">transcript</a>{{ end }}</span><span class="where"><a href="{{ .link }}" target="_blank" rel="noreferrer noopener">{{ .where }}</a></span>{{ with .details }}<details><summary>{{ i18n "show_more" }}</summary>{{ . | markdownify }}</details>{{ end }}</li>
+          {{- end }}
+        </ul>
+      </details>
+      {{- end }}
     </div>
   </section>
 

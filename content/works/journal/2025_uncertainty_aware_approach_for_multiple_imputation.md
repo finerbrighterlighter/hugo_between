@@ -2,6 +2,7 @@
 title: "Uncertainty Aware Approach for Multiple Imputation Using Conventional and Machine Learning Models: A Real-World Data Study"
 date: 2025-04-17
 type: journal
+institution: mahidol
 venue: "Journal of Big Data"
 
 authors:

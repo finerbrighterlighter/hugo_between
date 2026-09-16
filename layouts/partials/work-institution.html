@@ -1,0 +1,31 @@
+{{- /* Institution mark at the top of a work page, the counterpart to the portrait
+       that opens the home page. It says where the author was when the work was
+       done, so it is opt-in per work via `institution: <key>` in front matter and
+       is never inferred from the date. Keys are defined in data/institutions.yml.
+
+       An unknown key is a content mistake worth surfacing, so it warns rather
+       than failing the build; a work with no `institution` renders nothing. */ -}}
+{{- $key := .Params.institution -}}
+{{- with $key -}}
+  {{- $inst := index site.Data.institutions . -}}
+  {{- if not $inst -}}
+    {{- warnf "work %q sets institution %q, which is not in data/institutions.yml" $.File.Path . -}}
+  {{- else -}}
+    {{- $res := resources.Get $inst.logo -}}
+    {{- if not $res -}}
+      {{- warnf "institution %q points at %q, which is not under assets/" . $inst.logo -}}
+    {{- else -}}
+      {{- /* The mark is at most 108 CSS px (the portrait's clamp ceiling), so 2x is
+             216 and 3x is 324. These are detailed seals, so they are rendered above
+             the site's default WebP quality; anything softer reads as blurry. */ -}}
+      {{- $logo := $res.Resize "216x webp q95" -}}
+      {{- $logo3x := $res.Resize "324x webp q95" -}}
+      <div class="work-mark-row">
+        <a class="work-mark" href="{{ $inst.link }}" target="_blank" rel="noreferrer noopener" title="{{ $inst.name }}">
+          <img src="{{ $logo.RelPermalink }}" srcset="{{ $logo.RelPermalink }} 216w, {{ $logo3x.RelPermalink }} 324w"
+               sizes="108px" width="216" height="216" alt="{{ $inst.name }}" loading="eager" decoding="async" fetchpriority="high">
+        </a>
+      </div>
+    {{- end -}}
+  {{- end -}}
+{{- end -}}

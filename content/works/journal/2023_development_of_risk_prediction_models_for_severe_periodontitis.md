@@ -2,6 +2,7 @@
 title: "Development of Risk Prediction Models for Severe Periodontitis in a Thai Population: Statistical and Machine-Learning Approaches"
 date: 2023-12-14
 type: journal
+institution: mahidol
 venue: "JMIR Formative Research"
 
 authors:

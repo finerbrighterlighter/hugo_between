@@ -2,6 +2,7 @@
 title: "Risk-factor based Diagnosis for Chronic Periodontitis using Machine Learning Models"
 date: 2021-05-27
 type: dissertation
+institution: mahidol
 venue: "Mahidol University, Bangkok"
 
 authors:
