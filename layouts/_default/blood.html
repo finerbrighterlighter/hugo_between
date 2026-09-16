@@ -1,0 +1,35 @@
+{{ define "body-class" }}page blood{{ end }}
+{{ define "main" }}
+{{- $bdata := hugo.Data.blood -}}{{- if eq .Site.Language.Lang "mm" -}}{{- $bdata = hugo.Data.blood_mm -}}{{- end -}}
+{{- $bld := $bdata.bld_cen -}}
+{{- $enSite := .Site -}}{{- range hugo.Sites -}}{{- if eq .Language.Lang "en" -}}{{- $enSite = . -}}{{- end -}}{{- end -}}
+{{- $bundle := $enSite.GetPage "blood-records" -}}
+{{- $images := $bundle.Resources.ByType "image" -}}
+<header class="page-head">
+  <h1>{{ .Title }}</h1>
+  <p class="intro">{{ i18n "blood_intro" }}</p>
+</header>
+<div class="page-body">
+  {{ .Content }}
+  <h2 class="kicker">{{ $bld.title }}</h2>
+  <ul class="centres">
+    {{- range $bld.direction }}
+    <li>
+      <h3><a href="{{ .link }}" target="_blank" rel="noreferrer noopener">{{ .name }}</a>{{ with .note }} <span class="note">{{ . }}</span>{{ end }}</h3>
+      {{ if .address }}<p>{{ if .geo }}<a href="{{ .geo }}" target="_blank" rel="noreferrer noopener">{{ i18n "blood_address" }}</a>{{ else }}{{ i18n "blood_address" }}{{ end }}: {{ .address }}</p>{{ end }}
+      {{ with .phone }}<p>{{ i18n "blood_telephone" }}: {{ . }}</p>{{ end }}
+    </li>
+    {{- end }}
+  </ul>
+
+  {{- $withExif := where $images "Meta.Date" "!=" nil -}}{{- $withoutExif := where $images "Meta.Date" "==" nil -}}
+  {{- $sorted := sort $withExif "Meta.Date" "desc" -}}{{- $named := sort $withoutExif "Name" "asc" -}}
+  <h2 class="kicker" style="margin-top:3rem">{{ i18n "blood_gallery" }}</h2>
+  <div class="image-grid">
+    {{- range (union $sorted $named) }}
+    {{- $full := "" }}{{ if gt .Width 2000 }}{{ $full = .Resize "2000x webp" }}{{ else }}{{ $full = .Process "webp" }}{{ end }}
+    <a href="{{ $full.RelPermalink }}" target="_blank" rel="noreferrer noopener">{{ partial "responsive-img.html" (dict "res" . "alt" .Name "widths" (slice 240 480 960) "sizes" (partial "image-sizes.html" "gallery")) }}</a>
+    {{- end }}
+  </div>
+</div>
+{{ end }}

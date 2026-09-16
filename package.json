@@ -1,0 +1,24 @@
+{
+  "name": "hugo-between",
+  "private": true,
+  "type": "commonjs",
+  "description": "QC tooling for htunteza.com (Hugo 0.157, no theme)",
+  "scripts": {
+    "build": "hugo --gc --minify",
+    "smoke": "node scripts/smoke.js",
+    "a11y": "node scripts/a11y.js",
+    "links": "node scripts/links.js public",
+    "csp": "node scripts/csp_check.js",
+    "qc": "npm run build && npm run links",
+    "a11y:pa11y": "pa11y --config scripts/pa11y.json http://127.0.0.1:1313/",
+    "serve": "python3 -m http.server 1313 --bind 127.0.0.1 --directory public"
+  },
+  "devDependencies": {
+    "axe-core": "4.11.1",
+    "pa11y": "9.1.1",
+    "puppeteer": "24.43.1"
+  },
+  "allowScripts": {
+    "puppeteer@24.43.1": true
+  }
+}

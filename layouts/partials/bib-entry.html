@@ -1,0 +1,29 @@
+{{- /* One bibliography line. Args: dict "page" . "authors" bool "sources" bool "search" bool */ -}}
+{{- $p := .page -}}
+{{- $rendered := and $p.RelPermalink (ne $p.RelPermalink "") -}}
+{{- $src := slice -}}{{- with $p.Params.sources -}}{{- $src = . -}}{{- end -}}
+{{- $ext := "" -}}
+{{- range $src -}}{{- if and (not $ext) (in (slice "fulltext" "pubmed" "poster" "mirror" "slides") .text) -}}{{- $ext = .url -}}{{- end -}}{{- end -}}
+{{- $href := "" -}}{{- if $rendered -}}{{- $href = $p.RelPermalink -}}{{- else -}}{{- $href = $ext -}}{{- end -}}
+{{- $doi := "" -}}{{- range $src -}}{{- if and (not $doi) (strings.Contains .url "doi.org/") -}}{{- $doi = .url | strings.TrimPrefix "https://doi.org/" | strings.TrimPrefix "http://doi.org/" -}}{{- end -}}{{- end -}}
+{{- $tags := slice -}}
+{{- with $p.Params.conditions -}}{{- $tags = $tags | append . -}}{{- end -}}
+{{- with $p.Params.datasource -}}{{- $tags = $tags | append . -}}{{- end -}}
+{{- with $p.Params.methods -}}{{- $tags = $tags | append . -}}{{- end -}}
+{{- $hay := "" -}}
+{{- if .search -}}
+  {{- $names := slice -}}
+  {{- $rm := partial "researcher-map.html" $p -}}
+  {{- range $p.Params.authors -}}{{- $g := .given -}}{{- $f := .family -}}{{- with .id -}}{{- with index $rm . -}}{{- $g = .given -}}{{- $f = .family -}}{{- end -}}{{- end -}}{{- $names = $names | append (printf "%s %s" $g $f) -}}{{- end -}}
+  {{- $hay = printf "%s %s %s %s %s %s" $p.Title ($p.Params.venue | default "") (delimit $names " ") (delimit $tags " ") ($p.Date.Format "2006") ($p.Params.type | default "") | lower -}}
+{{- end -}}
+<li class="bib-entry"{{ if .search }} data-search="{{ $hay }}" data-tags="{{ delimit $tags "|" | lower }}" data-year="{{ $p.Date.Format "2006" }}"{{ end }}{{ with $doi }} data-doi="{{ . | lower }}"{{ end }}>
+  <span class="year">{{ $p.Date.Format "2006" }}</span>
+  <span>
+    {{ if $href }}<a class="title" href="{{ $href }}"{{ if not $rendered }} target="_blank" rel="noreferrer noopener"{{ end }}>{{ $p.Title }}</a>{{ else }}<span class="title">{{ $p.Title }}</span>{{ end }}
+    {{ with $p.Params.venue }}<span class="venue">{{ . }}</span>{{ end }}
+    {{ if .authors }}<span class="authors">{{ partial "bib-authors.html" $p }}</span>{{ end }}
+    {{ if and .sources $doi }}<span class="cites" data-cites hidden></span>{{ end }}
+    {{ if and .sources $src }}<span class="sources">{{ range $src }}{{ $int := strings.HasPrefix .url "/" }}<a href="{{ if $int }}{{ .url | relURL }}{{ else }}{{ .url }}{{ end }}"{{ if not $int }} target="_blank" rel="noreferrer noopener"{{ end }}>{{ .text | humanize | lower }}</a>{{ end }}{{ with $p.Params.scholar }}<a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user={{ hugo.Data.homepage.sidebar.scholar_profile }}&citation_for_view={{ hugo.Data.homepage.sidebar.scholar_profile }}:{{ . }}" target="_blank" rel="noreferrer noopener">scholar</a>{{ end }}</span>{{ end }}
+  </span>
+</li>

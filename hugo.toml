@@ -1,0 +1,94 @@
+baseURL = "https://htunteza.com"
+defaultContentLanguage = "en"
+defaultContentLanguageInSubdir = false
+enableRobotsTXT = false
+buildFuture = true
+
+[languages.en]
+  locale = "en-us"
+  weight = 1
+  title = "Htun Teza"
+  [languages.en.outputs]
+    home = ["HTML", "RSS", "llmstxt", "llmsfull"]
+  [languages.en.params]
+    description = "Htun Teza studies when routinely collected clinical data can be reused to answer epidemiological questions, and when it cannot."
+
+[languages.mm]
+  locale = "my"
+  weight = 2
+  title = "ထွန်းတေဇာ"
+  [languages.mm.outputs]
+    home = ["HTML"]
+  [languages.mm.params]
+    description = "ထွန်းတေဇာ မြန်မာလူမျိုး ဒေတာသိပ္ပံပညာရှင်၊ သုတေသီနှင့် သွားဘက်ဆိုင်ရာဆရာဝန်တစ်ဦးဖြစ်ပြီး ထိုင်းနိုင်ငံ ဘန်ကောက်မြို့တွင် တာဝန်ထမ်းဆောင်လျက်ရှိသည်။"
+
+[params]
+  author = "Htun Teza"
+  buildFuture = true
+  cacheTTLMinutes = 60
+  researchTagLimit = 8
+  screenLimit = 3
+  mangaLimit = 3
+  photoLimit = 3
+  recentPostsLimit = 3
+  recentWorksLimit = 4
+  homeProjectsLimit = 3
+  timezone = "Asia/Bangkok"
+  city = "Bangkok"
+  lastfmUser = "fibrili"
+  goatcounter = "https://stats.htunteza.com/count"
+
+[[params.nav]]
+  name = "nav_works"
+  url = "/works/"
+  side = "left"
+[[params.nav]]
+  name = "nav_posts"
+  url = "/posts/"
+  side = "right"
+
+[outputs]
+  section = ["HTML"]
+  taxonomy = ["HTML"]
+  term = ["HTML"]
+
+[outputFormats.llmstxt]
+  mediaType      = "text/plain"
+  baseName       = "llms"
+  isPlainText    = true
+  notAlternative = true
+
+[outputFormats.llmsfull]
+  mediaType      = "text/plain"
+  baseName       = "llms-full"
+  isPlainText    = true
+  notAlternative = true
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.extensions]
+      [markup.goldmark.extensions.passthrough]
+        enable = true
+        [markup.goldmark.extensions.passthrough.delimiters]
+          block = [["$$", "$$"]]
+          inline = [["$", "$"]]
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel = 3
+
+[taxonomies]
+
+[security]
+  enableInlineShortcodes = false
+  [security.funcs]
+    getenv = ["^HUGO_"]
+
+[caches]
+  [caches.getresource]
+    maxAge = "1h"
+
+[imaging]
+  quality = 82
+
+[sitemap]
+  changefreq = "monthly"

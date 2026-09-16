@@ -1,0 +1,4 @@
+{{- /* BCP 47 language tag for a Hugo language key. The site key "mm" is not a
+       valid language tag; Burmese is "my". Used by head.html and sitemap.xml. */ -}}
+{{- $tag := index (dict "en" "en" "mm" "my") . | default . -}}
+{{- return $tag -}}

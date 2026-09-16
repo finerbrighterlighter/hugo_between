@@ -1,0 +1,14 @@
+conditions:
+- Hypertension
+- Chronic Kidney Disease
+- Chronic Periodontitis
+
+datasource:
+- Electronic Health Records
+- Thailand
+- Myanmar
+
+methods:
+- Cox Proportional Hazards
+- Time-varying
+- Machine Learning

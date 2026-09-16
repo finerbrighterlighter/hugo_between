@@ -1,0 +1,38 @@
+bld_cen:
+  title: Blood Donation Centres
+  intro:
+  direction:
+    - name: "Ramathibodi Hospital"
+      link: "https://www.rama.mahidol.ac.th/patho/th/Laboratory/blood_bank"
+      note: "in Thai"
+      geo: "https://goo.gl/maps/BuxTjdq52jfdWp2f9"
+      address: "270 Rama VI Rd, Thung Phaya Thai, Ratchathewi, Bangkok, Thailand 10400"
+      phone: "0 2201 1219, 0 2201 1229"
+
+    - name: "National Blood Center, Thai Red Cross Society"
+      link: "https://blooddonationthai.com/"
+      note: "in Thai"
+      geo: "https://g.page/nbctrc?share"
+      address: "1871 Henri Dunant Road, Pathum Wan, Bangkok, Thailand 10330"
+      phone: "0 2263 9600-99, 0 2256 4300"
+
+    - name: "National Blood Center, Myanmar"
+      link: "https://www.donatebloodmyanmar.org/"
+      note: "in Burmese"
+      geo: "https://goo.gl/maps/i6zzRPL9iyRkGQsd8"
+      address: "97, Corner of Bogyoke Aung San Road and Shwedagon Pagoda Road, Latha, Yangon, Myanmar 11131"
+      phone: "01 372 753"
+
+    - name: "Thailand RH- Blood Donation"
+      link: "https://web.facebook.com/groups/1059111434217206"
+      note: "in English"
+      geo:
+      address: "Bangkok; Chiang Mai; Koh Samui"
+      phone: "0955487022, 0909725565; 0935866141; 0935987415"
+
+    - name: "List of blood donation agencies"
+      link: "https://en.wikipedia.org/wiki/List_of_blood_donation_agencies"
+      note: "Wikipedia"
+      geo: "https://goo.gl/maps/i6zzRPL9iyRkGQsd8"
+      address:
+      phone:

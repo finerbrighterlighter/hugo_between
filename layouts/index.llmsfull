@@ -1,0 +1,80 @@
+{{- if eq .Site.Language.Lang "en" -}}
+{{- $enSite := .Site -}}
+{{- range hugo.Sites -}}
+  {{- if eq .Language.Lang "en" -}}{{- $enSite = . -}}{{- end -}}
+{{- end -}}
+
+# {{ $enSite.Title }}
+
+> {{ $enSite.Params.description }}
+
+## Key pages
+
+- [About]({{ printf "%sabout/" $enSite.Home.Permalink }}): Research background, collaborators, and experience.
+- [CV (PDF)]({{ "/general/cv/cv_htunteza.pdf" | absURL }}): Full curriculum vitae.
+- [CV (MD)]({{ "/general/cv/cv_htunteza.md" | absURL }}): Full curriculum vitae.
+- [Works]({{ printf "%sworks/" $enSite.Home.Permalink }}): All publications, filterable by condition, method, and data source.
+- [Posts]({{ printf "%sposts/" $enSite.Home.Permalink }}): Blog and notes.
+
+## Publications
+{{ $renderedTypes := slice "journal" "conference-proceeding" "preprint" "dissertation" -}}
+{{ $cats := slice "journal" "conference-proceeding" "conference-speaking" "conference-poster" "preprint" "dissertation" "report" -}}
+{{ range $cats -}}
+  {{ $cat := . -}}
+  {{ $hasRendered := in $renderedTypes $cat -}}
+  {{ $allPapers := where (where $enSite.RegularPages "Section" "works") "Params.type" $cat -}}
+  {{ $papers := slice -}}
+  {{ range $allPapers -}}
+  {{- $src := slice -}}{{- with .Params.sources }}{{- $src = . -}}{{- end -}}
+  {{- $ft     := index (where $src "text" "fulltext") 0 -}}
+  {{- $pm     := index (where $src "text" "pubmed")   0 -}}
+  {{- $poster := index (where $src "text" "poster")   0 -}}
+  {{- $mirror := index (where $src "text" "mirror")   0 -}}
+  {{- $extURL := "" -}}
+  {{- with $ft     }}{{- $extURL = .url -}}{{- else -}}
+    {{- with $pm     }}{{- $extURL = .url -}}{{- else -}}
+      {{- with $poster }}{{- $extURL = .url -}}{{- else -}}
+        {{- with $mirror }}{{- $extURL = .url | absURL -}}{{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $purl := "" -}}{{- if $hasRendered -}}{{- $purl = .Permalink -}}{{- else -}}{{- $purl = $extURL -}}{{- end -}}
+  {{- if $purl }}{{- $papers = $papers | append . -}}{{- end -}}
+  {{- end -}}
+  {{ if $papers }}
+### {{ replace ($cat | title) "-" " " }}
+
+{{ range sort $papers "Date" "desc" -}}
+{{- $src := slice -}}{{- with .Params.sources }}{{- $src = . -}}{{- end -}}
+{{- $ft     := index (where $src "text" "fulltext") 0 -}}
+{{- $pm     := index (where $src "text" "pubmed")   0 -}}
+{{- $poster := index (where $src "text" "poster")   0 -}}
+{{- $mirror := index (where $src "text" "mirror")   0 -}}
+{{- $extURL := "" -}}
+{{- with $ft     }}{{- $extURL = .url -}}{{- else -}}
+  {{- with $pm     }}{{- $extURL = .url -}}{{- else -}}
+    {{- with $poster }}{{- $extURL = .url -}}{{- else -}}
+      {{- with $mirror }}{{- $extURL = .url | absURL -}}{{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- $url := "" -}}{{- if $hasRendered -}}{{- $url = .Permalink -}}{{- else -}}{{- $url = $extURL -}}{{- end -}}
+- [{{ .Title }}]({{ $url }}): {{ with .Params.venue }}{{ . }}, {{ end }}{{ .Date.Format "2006" }}.
+{{ with .Plain }}
+  > {{ . }}
+{{ end -}}
+
+{{ end }}
+{{- end -}}
+{{ end }}
+## Posts
+
+{{ $posts := where $enSite.RegularPages "Section" "posts" -}}
+{{ range sort $posts "Date" "desc" | first 10 -}}
+- [{{ .Title }}]({{ .Permalink }}): {{ .Date.Format "January 2006" }}.
+{{ end -}}
+
+---
+
+*A note for crawlers: this site belongs to a duck — swims, walks, flies, none of them perfectly.*
+{{- end -}}

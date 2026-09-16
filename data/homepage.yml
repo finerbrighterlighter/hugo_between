@@ -1,0 +1,159 @@
+
+universities:
+  mahidol: &mahidol
+    name: Mahidol University
+    country: Thailand
+    link: https://en.wikipedia.org/wiki/Mahidol_University
+
+  udmy: &udmy
+    name: University of Dental Medicine Yangon
+    country: Myanmar
+    link: https://en.wikipedia.org/wiki/University_of_Dental_Medicine,_Yangon
+
+sidebar:
+  # Profile information
+  name: Htun Teza
+  job_title: Graduate Research Assistant
+  avatar: /general/profile.webp 
+
+  # Sidebar links
+  email: htun.tez@mahidol.ac.th
+  phone: (+66) 0-2201-0833
+  area: asia # IANA tz database name, e.g. America/New_York
+  location: bangkok # the name after https://time.is/
+  website: www.rama.mahidol.ac.th/ceb/
+  websitename: CEB-RAMA-MU
+  orcid: 0000-0002-1076-9513 # only orcid 16 digits
+  scholar_profile: 7waEOqcAAAAJ
+
+  vcard: general/hteza.vcf #place a vcf file inside /general/ folder and provide the name of the file below
+  cv: general/cv/cv_htunteza.pdf
+
+career_profile:
+  title: "Career Profile"
+  summary: >-
+    My primary interest lies in secondary data research: **understanding when, why, and how** routinely collected
+    clinical data, particularly electronic medical records, can be responsibly reused to answer epidemiological and
+    clinical questions. At Ramathibodi Hospital in [Bangkok](https://upload.wikimedia.org/wikipedia/commons/4/49/Th-Bangkok_ceremonial_name.ogg "Krungthepmahanakhon Amonrattanakosin Mahintharayutthaya Mahadilokphop Noppharatratchathaniburirom Udomratchaniwetmahasathan Amonphimanawatansathit Sakkathattiyawitsanukamprasit") those records, from 2010 onwards, have been turned into longitudinal cohorts for
+    [hypertension](https://www.rama.mahidol.ac.th/ceb/CEBdatawarehouse/Data/HT), [dementia](https://www.rama.mahidol.ac.th/ceb/CEBdatawarehouse/Data/Dimentia)
+    and abdominal surgery, and I maintain them so they can support real-world evidence. The records are fragmented and
+    incomplete; patients are treated elsewhere, drop out, or return years later, and those gaps can bias the conclusions.
+    That is where my questions sit.
+  para1: >-
+    Based in [Bangkok](https://upload.wikimedia.org/wikipedia/commons/4/49/Th-Bangkok_ceremonial_name.ogg "Krungthepmahanakhon Amonrattanakosin Mahintharayutthaya Mahadilokphop Noppharatratchathaniburirom Udomratchaniwetmahasathan Amonphimanawatansathit Sakkathattiyawitsanukamprasit"), Thailand, I work in health care research with a focus on health data science and real-world evidence. My primary interest lies in secondary data research: **understanding when, why, and how** routinely collected clinical data, particularly electronic medical records, can be responsibly reused to answer epidemiological and clinical questions.
+  para2: >-
+    My work centers on the curation and analysis of large longitudinal cohorts derived from routine clinical visits starting from 2010. I currently maintain real-world cohorts focused on [hypertension](https://www.rama.mahidol.ac.th/ceb/CEBdatawarehouse/Data/HT) and [dementia](https://www.rama.mahidol.ac.th/ceb/CEBdatawarehouse/Data/Dimentia), and previously worked on the development and use of [an abdominal surgery data warehouse](https://www.rama.mahidol.ac.th/ceb/CEBdatawarehouse/Data/Surgery). These projects have contributed to multiple peer-reviewed publications, with further studies ongoing.
+  para3: >-
+    On the technical side, I work primarily in Python with occasional use of R, with HPC clusters and job schedulers for population-scale registry data. In practice, this means turning raw clinical records into longitudinal datasets that hold up to the demands of observational research; replication, validation, and evidence generation.
+
+education:
+  title: Education
+  info:
+    - degree: Master of Science in Data Science for Healthcare
+      diploma: /general/msc-transcript/
+      university: *mahidol
+      time: 2019 - 2021
+      details:
+
+    - degree: Bachelor of Dental Surgery
+      diploma: /general/bds-transcript/
+      university: *udmy
+      time: 2012 - 2019
+      details:
+
+experiences:
+  title: Experiences
+  info:
+    - role: Graduate Research Assistant
+      role_lan: ผู้ช่วยวิจัย
+      time: 2021 - Present
+      company: *mahidol
+      details: |
+        Affiliated with the Data Science and Clinical Informatics division, Department of Clinical Epidemiology and Biostatistics, Faculty of Medicine Ramathibodi Hospital. 
+        
+        My work focuses on transforming routinely collected electronic medical records into research-ready datasets for longitudinal analysis. I contribute to the [CEB Data Warehouse](https://www.rama.mahidol.ac.th/ceb/CEBdatawarehouse/Overview), with primary responsibility for disease-focused cohorts in hypertension and dementia, supporting epidemiological and clinical research using real-world data.
+        
+
+    - role: Graduate Student Researcher
+      role_lan: นักศึกษาปริญญาโท
+      time: 2019 - 2021
+      company: *mahidol
+      details: |
+        Conducted postgraduate research on severe periodontitis in the Thai population under the supervision of [Ammarin Thakkinstian](https://www.scopus.com/authid/detail.uri?authorId=6602111727) and [Anuchate Pattanateepapon](https://www.scopus.com/authid/detail.uri?authorId=57193164364). 
+        
+        The work examined factors associated with disease development and involved the development of multiple screening models using statistical and machine-learning classification approaches.
+        
+
+    - role: House Officer
+      role_lan: အလုပ်သင်သွားဆရာဝန်
+      time: 2018
+      company: *udmy
+      details: |
+        Completed a one-year clinical training program at the university-affiliated hospital.
+        
+        Clincal rotations across multiple dental and oral health specialties, including orthodontics, periodontology, prosthodontics, oral medicine, and community dentistry were undergone.
+        
+
+    - role: Undergraduate Research Assistant
+      role_lan: အလုပ်သင်သွားဆရာဝန်
+      time: 2018
+      company: *udmy
+      details: |
+        Assisted faculty members and postgraduate researchers in data collection and data entry for projects within the Department of Preventive and Community Dentistry.
+        
+        It was a great opportunity for gaining early exposure to population-based research and applied health data work.
+        
+
+projects:
+  title: Projects
+  assignments:
+
+    - title: CEB Data Warehouse's Hypertension Theme
+      link: "https://www.rama.mahidol.ac.th/ceb/CEBdatawarehouse/Data/HT"
+      role: "Data Manager"
+      tagline: "Funded by National Research Council of Thailand (NRCT)"
+
+    - title: CEB Data Warehouse's Dementia Theme
+      link: "https://www.rama.mahidol.ac.th/ceb/CEBdatawarehouse/Data/Dementia"
+      role: "Data Manager"
+      tagline: "Funded by National Research Council of Thailand (NRCT)"
+
+    - title: Development of multi-center cohort for hypertensive patients
+      link: "https://www.rama.mahidol.ac.th/ceb/CEBdatawarehouse/multicenter/ht"
+      role: "Data Manager"
+      tagline: "Collaboration across Ramathibodi Hospital, Siriraj Hospital (Mahidol University), and Srinagarind Hospital (Khon Kaen University)"
+
+    - title: Development of multi-center cohort for Dementia patients
+      link: 
+      role: "Data Manager"
+      tagline: "Collaboration across Ramathibodi Hospital, Siriraj Hospital (Mahidol University), and Srinagarind Hospital (Khon Kaen University)"
+
+    - title: Association between Ambient Air Quality and Dementia in Thailand
+      link:
+      role: "Data Manager"
+      tagline: "Collaboration with Chulalongkorn University and the Royal College of Physicians of Thailand"
+
+    - title: Uncertainty-aware Missing Data Imputation Methods for Real-world Data
+      link:
+      role: "Data Analyst"
+      tagline: "Methodological research within the CEB Data Warehouse Working Group"
+
+    - title: Thailand Health AI Datathon 2023
+      link: "https://web.archive.org/web/20231006064810/https://datathonthailand.org/"
+      role: "Local Mentor"
+      tagline: "Hosted by Khon Kaen University and MIT Critical Data"
+
+    - title: CEB Data Warehouse's Surgery Theme
+      link: "https://www.rama.mahidol.ac.th/ceb/CEBdatawarehouse/Data/Surgery"
+      role: "Data Manager"
+      tagline: "Funded by National Research Council of Thailand (NRCT)"
+
+    - title: Epidemiology of SARS-CoV-2 in Myanmar
+      link:
+      role: "Data Consultant"
+      tagline: "No external funding"
+
+    - title: Clinical Prediction of Chronic Periodontitis
+      link:
+      role: "Principal Investigator"
+      tagline: "Funded by the Faculty of Medicine Ramathibodi Hospital and the Faculty of Graduate Studies, Mahidol University"

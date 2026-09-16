@@ -1,0 +1,253 @@
+# Theme palette definitions
+# default: light  → author's canonical pick for light mode
+# default: dark   → author's canonical pick for dark mode
+# Only one theme should carry each default marker.
+# if we want a theme to be the default for both modes, we can set default: [dark, light]
+- id: duck
+  label: Duck
+  default: [dark, light]
+  dark:
+    background: "#2d2a2e"  # Monokai's signature dark purple-grey
+    font: "#fcfcfa"        # Near-white foreground
+    invert_font: "#2d2a2e"
+    primary: "#ffd866"     # Monokai yellow — 100% sat, 70% lightness: airy not harsh
+    secondary: "#aaa7aa"   # Comment grey — muted but WCAG AA on dark panels
+    tertiary: "#3d3b3f"    # Slightly lighter than bg for panels/containers
+    error: "#ff7a9d"       # Monokai red/pink, lifted for AA on dark panels
+    progress_bar_background: "#3d3b3f"
+    progress_bar_fill: "#ffd866"
+    code_bg: "#221f22"     # Slightly darker than bg for code blocks
+  light:
+    background: "#f8f5f0"  # Near-neutral cream — warmth as whisper, not canvas
+    font: "#1c1814"        # Warm dark font
+    invert_font: "#f8f5f0"
+    primary: "#9c5010"     # Warm amber-orange — readable (≈6:1)
+    secondary: "#7a6040"   # Muted warm brown
+    tertiary: "#e4dfd8"    # Warm light grey for structural lines
+    error: "#b92e00"       # Dropped Brick
+    progress_bar_background: "#e4dfd8"
+    progress_bar_fill: "#9c5010"
+    code_bg: "#f0ece4"     # Slightly warmer than background for code blocks
+- id: nord
+  label: Nord
+  dark:
+    background: "#2e3440"
+    font: "#eceff4"
+    invert_font: "#2e3440"
+    primary: "#5e81ac"
+    secondary: "#d8dee9"
+    tertiary: "#4c566a"
+    error: "#bf616a"
+    progress_bar_background: "#3b4252"
+    progress_bar_fill: "#5e81ac"
+    code_bg: "#3b4252"
+  light:
+    background: "#eceff4"
+    font: "#2e3440"
+    invert_font: "#eceff4"
+    primary: "#5e81ac"
+    secondary: "#4c566a"
+    tertiary: "#d8dee9"
+    error: "#bf616a"
+    progress_bar_background: "#d8dee9"
+    progress_bar_fill: "#5e81ac"
+    code_bg: "#e5e9f0"
+- id: catppuccin
+  label: Catppuccin
+  dark:
+    background: "#1e1e2e"
+    font: "#cdd6f4"
+    invert_font: "#1e1e2e"
+    primary: "#89b4fa"
+    secondary: "#bac2de"
+    tertiary: "#a6adc8"
+    error: "#f38ba8"
+    progress_bar_background: "#313244"
+    progress_bar_fill: "#89b4fa"
+    code_bg: "#313244"
+  light:
+    background: "#eff1f5"
+    font: "#4c4f69"
+    invert_font: "#eff1f5"
+    primary: "#1e66f5"
+    secondary: "#6c6f85"
+    tertiary: "#9ca0b0"
+    error: "#d20f39"
+    progress_bar_background: "#ccd0da"
+    progress_bar_fill: "#1e66f5"
+    code_bg: "#e6e9ef"
+- id: tokyonight
+  label: Tokyo Night
+  dark:
+    background: "#1a1b26"
+    font: "#a9b1d6"
+    invert_font: "#1a1b26"
+    primary: "#7aa2f7"
+    secondary: "#787c99"
+    tertiary: "#3b3d57"
+    error: "#f7768e"
+    progress_bar_background: "#24283b"
+    progress_bar_fill: "#7aa2f7"
+    code_bg: "#24283b"
+  light:
+    background: "#e6e7ed"
+    font: "#343b58"
+    invert_font: "#e6e7ed"
+    primary: "#2e7de9"
+    secondary: "#6172b0"
+    tertiary: "#c4c8da"
+    error: "#c64343"
+    progress_bar_background: "#c4c8da"
+    progress_bar_fill: "#2e7de9"
+    code_bg: "#d5d6db"
+- id: dracula
+  label: Dracula
+  dark:
+    background: "#282a36"
+    font: "#f8f8f2"
+    invert_font: "#282a36"
+    primary: "#bd93f9"
+    secondary: "#6272a4"
+    tertiary: "#44475a"
+    error: "#ff5555"
+    progress_bar_background: "#44475a"
+    progress_bar_fill: "#bd93f9"
+    code_bg: "#44475a"
+  light:
+    background: "#f8f8f2"
+    font: "#282a36"
+    invert_font: "#f8f8f2"
+    primary: "#6272a4"
+    secondary: "#44475a"
+    tertiary: "#e2e2e9"
+    error: "#ff5555"
+    progress_bar_background: "#e2e2e9"
+    progress_bar_fill: "#6272a4"
+    code_bg: "#e2e2e9"
+- id: gruvbox
+  label: Gruvbox
+  dark:
+    background: "#282828"
+    font: "#ebdbb2"
+    invert_font: "#282828"
+    primary: "#83a598"
+    secondary: "#a89984"
+    tertiary: "#928374"
+    error: "#fb4934"
+    progress_bar_background: "#3c3836"
+    progress_bar_fill: "#83a598"
+    code_bg: "#3c3836"
+  light:
+    background: "#fbf1c7"
+    font: "#3c3836"
+    invert_font: "#fbf1c7"
+    primary: "#458588"
+    secondary: "#7c6f64"
+    tertiary: "#bdae93"
+    error: "#cc241d"
+    progress_bar_background: "#ebdbb2"
+    progress_bar_fill: "#458588"
+    code_bg: "#ebdbb2"
+- id: everforest
+  label: Everforest
+  dark:
+    background: "#2f383e"
+    font: "#d3c6aa"
+    invert_font: "#2f383e"
+    primary: "#7fbbb3"
+    secondary: "#9da9a0"
+    tertiary: "#4a555b"
+    error: "#e67e80"
+    progress_bar_background: "#374247"
+    progress_bar_fill: "#7fbbb3"
+    code_bg: "#374247"
+  light:
+    background: "#fdf6e3"
+    font: "#5c6a72"
+    invert_font: "#fdf6e3"
+    primary: "#3a94c5"
+    secondary: "#829181"
+    tertiary: "#e0dcc7"
+    error: "#f85552"
+    progress_bar_background: "#f4f0d9"
+    progress_bar_fill: "#3a94c5"
+    code_bg: "#f4f0d9"
+- id: rosepine
+  label: Rosé Pine
+  dark:
+    # Main variant — dark warm-black with brown-purple undertones
+    background: "#191724"
+    font: "#e0def4"
+    invert_font: "#191724"
+    primary: "#c4a7e7"
+    secondary: "#6e6a86"
+    tertiary: "#26233a"
+    error: "#eb6f92"
+    progress_bar_background: "#21202e"
+    progress_bar_fill: "#c4a7e7"
+    code_bg: "#1f1d2e"
+  light:
+    # Dawn variant — warm parchment/linen
+    background: "#faf4ed"
+    font: "#575279"
+    invert_font: "#faf4ed"
+    primary: "#907aa9"
+    secondary: "#9893a5"
+    tertiary: "#dfdad9"
+    error: "#b4637a"
+    progress_bar_background: "#dfdad9"
+    progress_bar_fill: "#907aa9"
+    code_bg: "#f2e9e1"
+- id: github
+  label: GitHub
+  dark:
+    background: "#0d1117"
+    font: "#e6edf3"
+    invert_font: "#0d1117"
+    primary: "#58a6ff"
+    secondary: "#8b949e"
+    tertiary: "#21262d"
+    error: "#f85149"
+    progress_bar_background: "#21262d"
+    progress_bar_fill: "#58a6ff"
+    code_bg: "#161b22"
+  light:
+    background: "#ffffff"
+    font: "#1f2328"
+    invert_font: "#ffffff"
+    primary: "#0969da"
+    secondary: "#656d76"
+    tertiary: "#d0d7de"
+    error: "#d1242f"
+    progress_bar_background: "#d0d7de"
+    progress_bar_fill: "#0969da"
+    code_bg: "#f6f8fa"
+# Designed for red-green color blindness (deuteranopia / protanopia).
+# Colors derived from the Okabe & Ito (2008) Color Universal Design palette —
+# the standard recommended by Nature journals and the scientific community.
+# Primary: Okabe Sky Blue (#56B4E9 / #0072B2).
+# Error: Okabe Vermillion (#D55E00) — orange-shifted, not red, safe for all CVD types.
+- id: colorblind
+  label: Colorblind
+  dark:
+    background: "#1c1c1c"
+    font: "#f0efeb"
+    invert_font: "#1c1c1c"
+    primary: "#56b4e9"
+    secondary: "#e69f00"
+    tertiary: "#2e2e2e"
+    error: "#f07000"
+    progress_bar_background: "#2e2e2e"
+    progress_bar_fill: "#56b4e9"
+    code_bg: "#2a2a2a"
+  light:
+    background: "#fafafa"
+    font: "#1c1c1c"
+    invert_font: "#fafafa"
+    primary: "#0072b2"
+    secondary: "#6b5e4a"
+    tertiary: "#dcdcdc"
+    error: "#4d0000"
+    progress_bar_background: "#dcdcdc"
+    progress_bar_fill: "#0072b2"
+    code_bg: "#efefef"

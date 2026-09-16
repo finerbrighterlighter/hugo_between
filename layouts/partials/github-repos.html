@@ -1,0 +1,25 @@
+{{- /* Build-time GitHub metadata, rendered as a plain list. Never fatal. */ -}}
+{{- $gh := hugo.Data.github_repository -}}
+{{- $headers := dict "Accept" "application/vnd.github+json" "X-GitHub-Api-Version" "2022-11-28" -}}
+{{- with getenv "HUGO_GITHUB_TOKEN" -}}{{- $headers = merge $headers (dict "Authorization" (printf "Bearer %s" .)) -}}{{- end -}}
+{{- $opts := dict "headers" $headers -}}
+<ul class="repos">
+{{- range $gh.groups -}}
+  {{- $owner := .owner -}}
+  {{- range .repos -}}
+    {{- $name := .name -}}{{- $label := .label -}}
+    {{- $desc := "" -}}{{- $langs := slice -}}{{- $stars := 0 -}}
+    {{- with try (resources.GetRemote (printf "https://api.github.com/repos/%s/%s" $owner $name) $opts) -}}
+      {{- with .Err -}}{{- warnf "github: %s/%s: %s" $owner $name . -}}
+      {{- else with .Value -}}
+        {{- $d := .Content | transform.Unmarshal -}}
+        {{- $desc = $d.description | default "" -}}{{- $stars = $d.stargazers_count | default 0 -}}
+      {{- end -}}
+    {{- end -}}
+    {{- with try (resources.GetRemote (printf "https://api.github.com/repos/%s/%s/languages" $owner $name) $opts) -}}
+      {{- with .Value -}}{{- $l := .Content | transform.Unmarshal -}}{{- range $k, $v := $l -}}{{- $langs = $langs | append $k -}}{{- end -}}{{- end -}}
+    {{- end -}}
+  <li><a href="https://github.com/{{ $owner }}/{{ $name }}" target="_blank" rel="noreferrer noopener">{{ $owner }}/{{ $name }}</a>{{ with $desc }} <span class="desc">{{ . }}</span>{{ end }}{{ if $langs }} <span class="langs">{{ delimit (first 3 $langs) ", " }}</span>{{ end }}</li>
+  {{- end -}}
+{{- end -}}
+</ul>

@@ -1,0 +1,31 @@
+{{- $cfgName := "js/config.js" -}}
+{{- if ne .Site.Language.Lang "en" -}}{{- $cfgName = printf "js/config.%s.js" .Site.Language.Lang -}}{{- end -}}
+{{- with resources.Get "js/config.js" -}}
+{{- $cfg := resources.ExecuteAsTemplate $cfgName $ . | js.Build (dict "minify" true "targetPath" $cfgName) | fingerprint -}}
+<script src="{{ $cfg.RelPermalink }}" integrity="{{ $cfg.Data.Integrity }}"></script>
+{{- end }}
+<script type="module" src="/js/theme.js"></script>
+<script type="module" src="/js/palette.js"></script>
+<script type="module" src="/js/privacy.js"></script>
+<script type="module" src="/js/currenttime.js"></script>
+<script type="module" src="/js/nav_balloon.js"></script>
+{{ if eq .Site.Language.Lang "mm" }}<script type="module" src="/js/mm_font_toggle.js"></script>{{ end }}
+{{ if .IsHome }}
+<script type="module" src="/js/lastFM.js"></script>
+<script type="module" src="/js/anilist.js"></script>
+<script type="module" src="/js/simkl.js"></script>
+<script type="module" src="/js/unsplash.js"></script>
+<script type="module" src="/js/openalex.js"></script>
+<script type="module" src="/js/duck.js"></script>
+{{ end }}
+{{ if eq .Layout "work" }}
+<script type="module" src="/js/work-citation.js"></script>
+<script type="module" src="/js/work-cite.js"></script>
+{{ end }}
+{{ if eq .Layout "works" }}
+<script type="module" src="/js/works_filter.js"></script>
+<script type="module" src="/js/openalex.js"></script>
+{{ end }}
+{{ if not hugo.IsServer }}
+<script data-goatcounter="{{ .Site.Params.goatcounter }}" data-goatcounter-settings='{"allow_local": false}' async src="https://gc.zgo.at/count.js"></script>
+{{ end }}

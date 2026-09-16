@@ -1,0 +1,102 @@
+[build]
+command = "hugo --gc --minify"
+publish = "public"
+
+[build.environment]
+HUGO_VERSION = "0.157.0"
+
+[[redirects]]
+  from = "/general/msc_transcript_htunteza.pdf"
+  to = "/general/msc-transcript/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/general/bds_transcript_htunteza.pdf"
+  to = "/general/bds-transcript/"
+  status = 301
+  force = true
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+    # Enforced CSP. No 'unsafe-inline' for scripts: the theme pre-paint is an
+    # external blocking script (static/js/theme-init.js); everything else is a module.
+    #   script-src  self + GoatCounter + Mermaid ESM from jsDelivr (path-scoped)
+    #   style-src   'unsafe-inline' stays: Chroma/KaTeX inline style attrs, Mermaid <style> in SVG
+    #   font-src    self (Newsreader, Karla, Noto Myanmar are self-hosted under /fonts/)
+    #   connect-src live-data APIs + doi.org content negotiation (redirects to Crossref/DataCite/mEDRA)
+    #   frame-src   blob: for the protected-document PDF iframe
+    #   img-src     https: because Last.fm/AniList/Simkl/Unsplash covers come from their CDNs
+    Content-Security-Policy = "default-src 'self'; script-src 'self' https://gc.zgo.at https://cdn.jsdelivr.net/npm/mermaid@11/; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https:; media-src 'self'; connect-src 'self' https://api.github.com https://api.openalex.org https://api.unsplash.com https://doi.org https://api.crossref.org https://data.crossref.org https://api.datacite.org https://data.datacite.org https://data.medra.org https://graphql.anilist.co https://api.simkl.com https://ws.audioscrobbler.com https://gc.zgo.at https://stats.htunteza.com; frame-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; manifest-src 'self'"
+
+[[headers]]
+  for = "/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+# Hugo image processing writes a content hash into every generated filename
+# (`name_hu_<hash>.webp`), so processed bundle images can be cached immutably.
+[[headers]]
+  for = "/posts/*_hu_*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/blood-records/*_hu_*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/works/*_hu_*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/general/cv/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+[[headers]]
+  for = "/general/msc_transcript_htunteza.pdf"
+  [headers.values]
+    Cache-Control = "private, no-store"
+    X-Robots-Tag = "noindex, noarchive, nosnippet"
+
+[[headers]]
+  for = "/general/bds_transcript_htunteza.pdf"
+  [headers.values]
+    Cache-Control = "private, no-store"
+    X-Robots-Tag = "noindex, noarchive, nosnippet"
+
+[[headers]]
+  for = "/general/documents/d6e5609a2d5acdbcd5627a56cdb2ea50.pdf"
+  [headers.values]
+    Cache-Control = "private, no-store"
+    X-Robots-Tag = "noindex, noarchive, nosnippet"
+
+[[headers]]
+  for = "/general/documents/7bc4ddb932d5a4c51da057b82c090cc7.pdf"
+  [headers.values]
+    Cache-Control = "private, no-store"
+    X-Robots-Tag = "noindex, noarchive, nosnippet"

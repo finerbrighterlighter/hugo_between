@@ -1,0 +1,13 @@
+{{- /* Inline author list "Teza H, Pattanateepapon A, …" — highlight author bold. Args: page */ -}}
+{{- $rm := partial "researcher-map.html" . -}}
+{{- $out := slice -}}
+{{- range .Params.authors -}}
+  {{- $given := .given -}}{{- $family := .family -}}
+  {{- with .id -}}{{- with index $rm . -}}{{- $given = .given -}}{{- $family = .family -}}{{- end -}}{{- end -}}
+  {{- $init := "" -}}
+  {{- range split (strings.TrimSpace ($given | default "")) " " -}}{{- with . -}}{{- $init = printf "%s%s" $init (substr . 0 1) -}}{{- end -}}{{- end -}}
+  {{- $name := printf "%s %s" $family $init | strings.TrimSpace -}}
+  {{- if .highlight -}}{{- $name = printf "<strong>%s</strong>" $name -}}{{- end -}}
+  {{- $out = $out | append $name -}}
+{{- end -}}
+{{- delimit $out ", " | safeHTML -}}

@@ -1,0 +1,7 @@
+{{/* Returns a dict mapping researcher id → researcher object.
+     Usage: {{ $rm := partial "researcher-map.html" . }} */}}
+{{ $lookup := dict }}
+{{ range hugo.Data.researchers }}
+  {{ $lookup = merge $lookup (dict .id .) }}
+{{ end }}
+{{ return $lookup }}

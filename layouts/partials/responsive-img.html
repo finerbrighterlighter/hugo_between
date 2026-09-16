@@ -1,0 +1,37 @@
+{{- /*
+  Responsive <img> for a page-bundle (or global) image resource.
+
+  Args (dict):
+    res    — image resource (required; caller must ensure it is a processable raster)
+    alt    — alt text (default "")
+    title  — optional title attribute
+    class  — CSS class (default "img-responsive")
+    sizes  — sizes attribute (required for a meaningful srcset)
+    widths — optional slice of variant widths (default 480 960 1600); the
+             gallery passes 240 960 1600 480-style ladders for small cells
+    loading       — "lazy" (default) or "eager"; pass "eager" for above-the-fold imagery
+    fetchpriority — optional "high" | "low" | "auto"; pass "high" for the likely LCP image
+    decoding      — "async" (default), "sync" or "auto"
+
+  Emits WebP variants at the ladder widths, skipping any width that is not
+  smaller than the source (never upscales). When the source is narrower than
+  the largest ladder width its own width is added as the largest variant.
+  src, width and height describe the largest variant.
+*/ -}}
+{{- $res := .res -}}
+{{- $widths := .widths | default (slice 480 960 1600) -}}
+{{- $variants := slice -}}
+{{- range $widths -}}
+  {{- if lt . $res.Width -}}
+    {{- $variants = $variants | append ($res.Resize (printf "%dx webp" .)) -}}
+  {{- end -}}
+{{- end -}}
+{{- if le $res.Width (index $widths (sub (len $widths) 1)) -}}
+  {{- $variants = $variants | append ($res.Process "webp") -}}
+{{- end -}}
+{{- $largest := index $variants (sub (len $variants) 1) -}}
+{{- $srcset := slice -}}
+{{- range $variants -}}
+  {{- $srcset = $srcset | append (printf "%s %dw" .RelPermalink .Width) -}}
+{{- end -}}
+<img src="{{ $largest.RelPermalink }}" srcset="{{ delimit $srcset ", " }}"{{ with .sizes }} sizes="{{ . }}"{{ end }} width="{{ $largest.Width }}" height="{{ $largest.Height }}" alt="{{ .alt | default "" }}"{{ with .title }} title="{{ . }}"{{ end }} class="{{ .class | default "img-responsive" }}" loading="{{ .loading | default "lazy" }}"{{ with .fetchpriority }} fetchpriority="{{ . }}"{{ end }} decoding="{{ .decoding | default "async" }}">

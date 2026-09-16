@@ -1,0 +1,24 @@
+{{- /* Works-only feed: journal articles, preprints, proceedings, dissertations (rendered pages). */ -}}
+{{- $works := where (where .Site.RegularPages "Section" "works") "Params.type" "in" (slice "journal" "preprint" "conference-proceeding" "dissertation" "under-review") -}}
+{{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>{{ .Site.Title }}: works</title>
+    <link>{{ "/works/" | absURL }}</link>
+    <description>Publications by {{ .Site.Params.author }}</description>
+    <language>{{ .Site.Language.Lang }}</language>
+    {{ with (index (sort $works "Date" "desc") 0) }}<lastBuildDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</lastBuildDate>{{ end }}
+    <atom:link href="{{ .Permalink }}" rel="self" type="application/rss+xml" />
+    {{- range sort $works "Date" "desc" }}
+    {{- if .RelPermalink }}
+    <item>
+      <title>{{ .Title }}</title>
+      <link>{{ .Permalink }}</link>
+      <pubDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</pubDate>
+      <guid>{{ .Permalink }}</guid>
+      <description>{{ with .Params.venue }}{{ . }}, {{ end }}{{ .Date.Format "2006" }}.{{ with .Summary }} {{ . | plainify | truncate 400 }}{{ end }}</description>
+    </item>
+    {{- end }}
+    {{- end }}
+  </channel>
+</rss>

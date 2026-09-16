@@ -1,0 +1,101 @@
+{{ define "body-class" }}page work{{ end }}
+{{ define "main" }}
+{{- $src := slice -}}{{- with .Params.sources -}}{{- $src = . -}}{{- end -}}
+{{- $doi := "" -}}
+{{- range $src -}}{{- if and (not $doi) (strings.Contains .url "doi.org/") -}}{{- $doi = .url | strings.TrimPrefix "https://doi.org/" | strings.TrimPrefix "http://doi.org/" -}}{{- end -}}{{- end -}}
+{{- $rm := partial "researcher-map.html" . -}}
+{{- $affiliations := slice -}}
+{{- range .Params.authors -}}{{- with .id -}}{{- with index $rm . -}}{{- range .affiliations -}}{{- if not (in $affiliations .) -}}{{- $affiliations = $affiliations | append . -}}{{- end -}}{{- end -}}{{- end -}}{{- end -}}{{- end -}}
+{{- $multiAff := gt (len $affiliations) 1 -}}
+{{- $scholar := hugo.Data.homepage.sidebar.scholar_profile -}}
+
+<header class="page-head">
+  <span class="meta">{{ i18n (printf "type_%s" .Params.type) | default .Params.type }}{{ with .Params.venue }}, {{ . }}{{ end }}</span>
+</header>
+
+<article class="paper" data-doi="{{ $doi }}" itemscope itemtype="https://schema.org/ScholarlyArticle">
+  <h1 class="paper-title" itemprop="name">{{ .Title }}</h1>
+
+  <p class="authors" itemprop="author">
+    {{- $authors := .Params.authors -}}{{- $count := len $authors -}}
+    {{- range $i, $a := $authors -}}
+      {{- $given := $a.given -}}{{- $family := $a.family -}}{{- $affNums := slice -}}{{- $orcid := "" -}}
+      {{- with $a.id -}}{{- with index $rm . -}}
+        {{- $given = .given -}}{{- $family = .family -}}{{- with .orcid -}}{{- $orcid = . -}}{{- end -}}
+        {{- range .affiliations -}}{{- $this := . -}}{{- range $j, $aff := $affiliations -}}{{- if eq $aff $this -}}{{- $affNums = $affNums | append (add $j 1) -}}{{- end -}}{{- end -}}{{- end -}}
+      {{- end -}}{{- end -}}
+      {{ if $a.highlight }}<strong>{{ end -}}
+      {{- if $orcid -}}<a href="https://orcid.org/{{ $orcid }}" target="_blank" rel="noreferrer noopener" aria-label="{{ $given }} {{ $family }}, ORCID profile">{{- end -}}
+      {{- $given }} {{ $family -}}
+      {{- if $orcid -}}</a>{{- end -}}
+      {{- if $a.highlight }}</strong>{{ end -}}
+      {{- if and $multiAff $affNums -}}<sup>{{ delimit $affNums "," }}</sup>{{- end -}}
+      {{- if lt (add $i 1) $count }}, {{ end }}
+    {{- end }}
+  </p>
+  {{- if $affiliations }}
+  <ol class="affil" aria-label="{{ i18n "affiliations" }}">
+    {{- range $i, $aff := $affiliations }}
+    <li><span>{{ if $multiAff }}{{ add $i 1 }}{{ end }}</span><span>{{ $aff }}</span></li>
+    {{- end }}
+  </ol>
+  {{- end }}
+
+  <div class="pubmeta">
+    {{ with .Params.venue }}<span class="venue" itemprop="isPartOf">{{ . }}</span>{{ end }}
+    <time datetime="{{ .Date.Format "2006-01-02" }}" itemprop="datePublished">{{ .Date.Format "2 January 2006" }}</time>
+    {{ if $doi }}<a data-citation-count data-doi="{{ $doi }}" href="https://openalex.org/works?filter=cites:doi:{{ $doi }}" target="_blank" rel="noreferrer noopener" hidden>{{ i18n "cited_times" }} <span>—</span> times</a>{{ end }}
+  </div>
+
+  {{ with .Content }}
+  <section class="abstract" itemprop="abstract">
+    <h2>{{ i18n "abstract" }}</h2>
+    {{ . }}
+  </section>
+  {{ end }}
+
+  <section class="find">
+    <h2>{{ i18n "find_paper" }}</h2>
+    <ul class="sources-list">
+      {{- range $src }}
+      {{- $int := strings.HasPrefix .url "/" }}
+      <li><a href="{{ if $int }}{{ .url | relURL }}{{ else }}{{ .url }}{{ end }}"{{ if not $int }} target="_blank" rel="noreferrer noopener"{{ end }}>{{ .text | humanize }}</a></li>
+      {{- end }}
+      {{- with .Params.scholar }}
+      <li><a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user={{ $scholar }}&citation_for_view={{ $scholar }}:{{ . }}" target="_blank" rel="noreferrer noopener">Google Scholar</a></li>
+      {{- end }}
+      {{- if $doi }}<li><a href="https://doi.org/{{ $doi }}" target="_blank" rel="noreferrer noopener">DOI {{ $doi }}</a></li>{{ end }}
+    </ul>
+    {{- if $doi }}
+    <details class="cite" data-doi="{{ $doi }}">
+      <summary>{{ i18n "cite_summary" }}</summary>
+      <div class="cite-body">
+        <p class="cite-status" role="status"></p>
+        <div class="cite-formats" role="group" aria-label="Citation format">
+          <button type="button" data-format="bibtex" aria-pressed="true">BibTeX</button>
+          <button type="button" data-format="nlm" aria-pressed="false">NLM</button>
+          <button type="button" data-format="apa" aria-pressed="false">APA</button>
+          <button type="button" data-format="ama" aria-pressed="false">AMA</button>
+        </div>
+        <pre class="cite-output" tabindex="0"></pre>
+        <div class="cite-actions">
+          <button type="button" data-action="copy" disabled>Copy</button>
+          <button type="button" data-action="bib" disabled>Download .bib</button>
+          <button type="button" data-action="ris" disabled>Download .ris</button>
+        </div>
+      </div>
+    </details>
+    {{- end }}
+  </section>
+
+  {{- if or .Params.conditions .Params.datasource .Params.methods }}
+  <section class="tags">
+    <dl>
+      {{ with .Params.conditions }}<dt>{{ i18n "tags_condition" }}</dt><dd>{{ range . }}<a href="{{ "/works/" | relURL }}?search={{ . | urlquery }}">{{ . }}</a>{{ end }}</dd>{{ end }}
+      {{ with .Params.datasource }}<dt>{{ i18n "tags_data" }}</dt><dd>{{ range . }}<a href="{{ "/works/" | relURL }}?search={{ . | urlquery }}">{{ . }}</a>{{ end }}</dd>{{ end }}
+      {{ with .Params.methods }}<dt>{{ i18n "tags_method" }}</dt><dd>{{ range . }}<a href="{{ "/works/" | relURL }}?search={{ . | urlquery }}">{{ . }}</a>{{ end }}</dd>{{ end }}
+    </dl>
+  </section>
+  {{- end }}
+</article>
+{{ end }}

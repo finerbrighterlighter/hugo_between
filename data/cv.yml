@@ -1,0 +1,74 @@
+contact:
+  phone: "(+66) xxx-xxx-xxx"
+  email: "kohtunteza@gmail.com"
+  website: "https://htunteza.com/"
+
+header:
+  name: "Htun Teza"
+  address: "Department of Clinical Epidemiology and Biostatistics, Faculty of Medicine Ramathibodi Hospital, Mahidol University, Sukhothai Road, Dusit, Bangkok 10300"
+
+show_qs_rankings: false
+show_phone_number: false
+
+research_interests:
+  - Electronic medical records
+  - Real world data
+  - Data Observability
+  - Biases inherent or introduced through data integration
+  - Imputation for missing data in real world data
+  - Secondary data analysis
+  - Epidemiology
+  - Risk prediction models
+
+education:
+  - degree: "Data Science for Healthcare"
+    field: "Master of Science"
+    university: "Mahidol University, Thailand"
+    ranking: "QS WUR 2021 #252; by subject #142 (life sciences and medicine)"
+    time: "2019 - 2021"
+    thesis: "Risk-factor based Diagnosis for Chronic Periodontitis using Machine Learning Models"
+
+  - degree: "Dental Surgery"
+    field: "6-year program"
+    university: "University of Dental Medicine Yangon, Myanmar"
+    time: "2012 - 2019"
+    note: "General practitioner licensed in Myanmar"
+
+work_experience:
+  - role: "Graduate Research Assistant"
+    institution: "Mahidol University, Faculty of Medicine Ramathibodi Hospital"
+    time: "2021 - Present"
+    bullets:
+      - "Affiliated under the Data Science and Clinical Informatics division, Department of Clinical Epidemiology and Biostatistics"
+      - text: "Research database development and quarterly updates"
+        links:
+          - {label: "CEB Data Warehouse", url: "https://www.rama.mahidol.ac.th/ceb/CEBdatawarehouse/Overview"}
+          - {label: "Hypertension Cohort", url: "https://github.com/CEB-Data-Science-Clinical-Informatics/Hypertension-Cohort"}
+          - {label: "Dementia Cohort", url: "https://github.com/CEB-Data-Science-Clinical-Informatics/Dementia-Cohort"}
+      - "Data extraction and engineering of electronic medical records to research datasets"
+      - "Data pre-processing in real-world datasets including standardization, harmonization and imputation"
+      - "Secondary data analysis for epidemiological and methodological research"
+      - "Risk prediction using statistical and machine learning models"
+      - "Multidisciplinary collaborations with clinicians, surgeons, pharmacists, epidemiologists, biostatisticians, economists and data-scientists"
+      - "Experienced in Python, R, Stata and SPSS"
+
+additional_experiences:
+  - title: "Thailand Health AI Conference & Datathon 2023"
+    institution: "Khon Kaen University in conjunction with Massachusetts Institute of Technology (MIT) and Harvard Medical School"
+    bullets:
+      - "Mentor for 2nd Runner up team alongside Dr. Michael G. Morley (Harvard Medical School)"
+      - "Data engineer for the largest participating dataset comprising cohort of 100,000 subjects"
+
+  - title: "Undergraduate Research Assistant"
+    institution: "Department of Preventive and Community Dentistry, University of Dental Medicine Yangon"
+    bullets:
+      - "Assessment of Oral Health Status in Taung-Tha Township, Myingyan District, Mandalay Division, Myanmar: A Cross-sectional Descriptive Study"
+      - "Research to inform public health initiatives regarding dental health"
+
+awards:
+  - year: 2019
+    title: "Scholarship for postgraduate students"
+    institution: "Faculty of Medicine Ramathibodi Hospital, Mahidol University"
+  - year: 2019
+    title: "Mahidol postgraduate scholarships for international students"
+    institution: "Faculty of Graduate Studies, Mahidol University"

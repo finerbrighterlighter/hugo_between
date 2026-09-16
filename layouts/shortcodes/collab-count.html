@@ -1,0 +1,27 @@
+{{- $rm := dict -}}
+{{- range hugo.Data.researchers -}}
+  {{- $rm = merge $rm (dict .id .) -}}
+{{- end -}}
+
+{{- $meOrcid := "" -}}
+{{- with index $rm "me-ceb" -}}{{- $meOrcid = .orcid -}}{{- end -}}
+
+{{- $seen := slice -}}
+{{- range where site.RegularPages "Section" "works" -}}
+  {{- range .Params.authors -}}
+    {{- with .id -}}
+      {{- $person := index $rm . -}}
+      {{- with $person -}}
+        {{- $key := .id -}}
+        {{- with .orcid -}}{{- $key = . -}}{{- end -}}
+        {{- $isMe := false -}}
+        {{- if eq .id "me-ceb" -}}{{- $isMe = true -}}{{- end -}}
+        {{- if and (not $isMe) (ne $meOrcid "") (eq $key $meOrcid) -}}{{- $isMe = true -}}{{- end -}}
+        {{- if and (not $isMe) (not (in $seen $key)) -}}
+          {{- $seen = $seen | append $key -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- len $seen -}}

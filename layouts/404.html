@@ -1,0 +1,8 @@
+{{ define "main" }}
+<div class="lost">
+  <p class="word" aria-hidden="true">404</p>
+  <h1 style="font-size:var(--fs-h1)">{{ i18n "not_found_title" }}</h1>
+  <p class="intro" style="max-width:44ch;margin:1rem auto;color:var(--mute)">{{ i18n "not_found_body" }}</p>
+  <p><a href="{{ "/" | relLangURL }}">{{ i18n "nav_home" }}</a>, {{ $w := partial "lang-link.html" "/works/" }}<a href="{{ $w.href }}"{{ with $w.hreflang }} hreflang="{{ . }}"{{ end }}>{{ i18n "nav_works" }}</a>, {{ $p := partial "lang-link.html" "/posts/" }}<a href="{{ $p.href }}"{{ with $p.hreflang }} hreflang="{{ . }}"{{ end }}>{{ i18n "nav_posts" }}</a></p>
+</div>
+{{ end }}

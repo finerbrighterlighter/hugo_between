@@ -1,0 +1,47 @@
+{{ define "body-class" }}page about{{ end }}
+{{ define "main" }}
+{{- $lang := .Site.Language.Lang -}}
+{{- $hp := hugo.Data.homepage -}}{{- if eq $lang "mm" -}}{{- $hp = hugo.Data.homepage_mm -}}{{- end -}}
+<header class="page-head">
+  <h1>{{ .Title }}</h1>
+  <span class="meta">{{ $hp.sidebar.name }}, {{ $hp.sidebar.job_title }}</span>
+</header>
+<div class="page-body">
+  <div class="essay">
+    <div class="prose post-body">
+      {{ .Content }}
+
+      <h2 id="projects">{{ i18n "k_projects" }}</h2>
+      <ul class="projects">
+        {{- range $hp.projects.assignments }}
+        <li>{{ if .link }}<a href="{{ .link }}" target="_blank" rel="noreferrer noopener">{{ .title }}</a>{{ else }}{{ .title }}{{ end }}<span class="role">{{ .role }}</span><span class="tag">{{ .tagline }}</span></li>
+        {{- end }}
+      </ul>
+
+      <h2 id="code">{{ i18n "k_code" }}</h2>
+      {{ partial "github-repos.html" . }}
+
+      <h2 id="off-duty">{{ i18n "k_offduty" }}</h2>
+      <p>{{ i18n "offduty_blood" | replaceRE "(blood page|သွေးစာမျက်နှာ)" (printf `<a href="%s">$1</a>` ("/blood/" | relLangURL)) | safeHTML }} {{ i18n "offduty_photos" | replaceRE "Unsplash" `<a href="https://unsplash.com/@finerbrighterlighter" target="_blank" rel="noreferrer noopener">Unsplash</a>` | safeHTML }} {{ i18n "offduty_reading" | replaceRE "AniList" `<a href="https://anilist.co/user/finer" target="_blank" rel="noreferrer noopener">AniList</a>` | replaceRE "Simkl" `<a href="https://simkl.com/" target="_blank" rel="noreferrer noopener">Simkl</a>` | safeHTML }}</p>
+      {{- with hugo.Data.playlists }}
+      <p class="meta">{{ i18n "offduty_music" | replaceRE "Last.fm" (printf `<a href="%s" target="_blank" rel="noreferrer noopener">Last.fm</a>` .link) | safeHTML }}</p>
+      <ul class="covers square" aria-label="{{ .title }}">
+        {{- range .items }}
+        <li class="cover"><a href="{{ .url }}" target="_blank" rel="noreferrer noopener">{{ partial "playlist-cover.html" (dict "image" .image "title" .title) }}<span class="cover-title">{{ .title }}</span></a></li>
+        {{- end }}
+      </ul>
+      {{- end }}
+    </div>
+    <aside class="margin">
+      <div>
+        <img class="essay-portrait" src="{{ $hp.sidebar.avatar | relURL }}" alt="" width="216" height="216" loading="lazy">
+        <p><b>{{ $hp.sidebar.name }}</b><br>{{ $hp.sidebar.job_title }}<br>Ramathibodi Hospital, Mahidol University, Bangkok</p>
+        <p>{{ partial "collab-summary.html" . }}</p>
+        <p><a href="{{ $hp.sidebar.cv | relURL }}" target="_blank" rel="noreferrer noopener">{{ i18n "cv_pdf" }}</a></p>
+        <nav class="toc" id="toc" aria-label="{{ i18n "contents" }}"></nav>
+      </div>
+    </aside>
+  </div>
+</div>
+{{ end }}
+{{ define "scripts-extra" }}<script type="module" src="/js/post_toc.js"></script>{{ end }}

@@ -1,0 +1,11 @@
+msc-transcript:
+  document_id: msc-transcript
+  document_path: /general/documents/d6e5609a2d5acdbcd5627a56cdb2ea50.pdf
+  salt: Pyinmana-
+  password_hash: 5ac8f514e5ab509ea915cb1aebd34335f29c06a4e35b68221fb2aaa9f0d37c0c
+
+bds-transcript:
+  document_id: bds-transcript
+  document_path: /general/documents/7bc4ddb932d5a4c51da057b82c090cc7.pdf
+  salt: Pyinmana-
+  password_hash: 5ac8f514e5ab509ea915cb1aebd34335f29c06a4e35b68221fb2aaa9f0d37c0c

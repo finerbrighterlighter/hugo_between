@@ -1,0 +1,20 @@
+{{- /* Tag buttons for one facet; priority tags first, the rest behind a "more" toggle. */ -}}
+{{- $priority := slice -}}{{- with .priority -}}{{- $priority = . -}}{{- end -}}
+{{- $first := slice -}}{{- $rest := slice -}}
+{{- range $priority -}}{{- if in $.values . -}}{{- $first = $first | append . -}}{{- end -}}{{- end -}}
+{{- range .values -}}{{- if not (in $first .) -}}{{- $rest = $rest | append . -}}{{- end -}}{{- end -}}
+{{- if lt (len $first) 6 -}}{{- $need := sub 6 (len $first) -}}{{- $first = $first | append (first $need $rest) -}}{{- $rest = after $need $rest -}}{{- end -}}
+<fieldset class="filter-group" data-group="{{ .group }}">
+  <legend>{{ .label }}</legend>
+  <div class="tags">
+    {{- range $first }}
+    <button type="button" class="filter-tag" data-tag="{{ . | lower }}" aria-pressed="false">{{ . }}</button>
+    {{- end }}
+    {{- range $rest }}
+    <button type="button" class="filter-tag is-extra" data-tag="{{ . | lower }}" aria-pressed="false" hidden>{{ . }}</button>
+    {{- end }}
+    {{- if $rest }}
+    <button type="button" class="filter-more" data-more aria-expanded="false">{{ len $rest }} more</button>
+    {{- end }}
+  </div>
+</fieldset>

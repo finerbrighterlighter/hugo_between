@@ -1,0 +1,61 @@
+name: QC
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  qc:
+    name: Build, links, accessibility
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install QC tooling
+        run: npm ci
+
+      - name: Install Hugo extended 0.157.0
+        # Must match HUGO_VERSION in netlify.toml.
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: '0.157.0'
+          extended: true
+
+      - name: Build site
+        run: npm run build
+
+      - name: Check internal links
+        run: npm run links
+
+      - name: Serve built site
+        run: |
+          python3 -m http.server 1313 --bind 127.0.0.1 --directory public &
+          for i in $(seq 1 30); do
+            curl -sf -o /dev/null http://127.0.0.1:1313/ && break
+            sleep 1
+          done
+          curl -sf -o /dev/null http://127.0.0.1:1313/
+
+      - name: Accessibility (axe-core, light and dark, both languages)
+        run: npm run a11y
+
+      - name: Assert no HUGO_ env values leaked into public/
+        # The variable *names* legitimately appear in static/js/simkl.js (a debug
+        # message), so look for NAME=value assignments and a copied .env instead.
+        # The Simkl token is public by design; see docs/accepted-risks.md. This
+        # step guards against an .env dump, not against that decision.
+        run: |
+          if grep -rnE "HUGO_[A-Z0-9_]+=[^ \"'<]" public; then
+            echo "::error::HUGO_* assignment found in built output"; exit 1
+          fi
+          if find public -name '.env*' | grep .; then
+            echo "::error::.env file copied into built output"; exit 1
+          fi
+          echo "no HUGO_ secrets in public/"

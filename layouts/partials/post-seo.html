@@ -1,0 +1,18 @@
+{{- $desc := .Site.Params.description -}}
+{{- with .Params.description -}}
+  {{- $desc = . -}}
+{{- else -}}
+  {{- with $.Summary -}}
+    {{- $desc = . | plainify | truncate 160 "..." -}}
+  {{- end -}}
+{{- end -}}
+{{- $ld := dict
+  "@context" "https://schema.org"
+  "@type" "BlogPosting"
+  "headline" .Title
+  "datePublished" (.Date.Format "2006-01-02")
+  "url" .Permalink
+  "author" (dict "@type" "Person" "name" .Site.Params.author)
+  "description" $desc
+-}}
+<script type="application/ld+json">{{ $ld | jsonify | safeJS }}</script>

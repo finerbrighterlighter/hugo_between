@@ -1,0 +1,41 @@
+{{- /*
+  Image grid from page-bundle resources.
+
+  Params:
+    match — glob passed to Resources.Match (default "*")
+    page  — optional path of another page bundle to read resources from,
+            e.g. page="/blood-records" (resolved via site.GetPage, falling
+            back to the English site so shared bundles work from /mm/ too)
+*/ -}}
+{{- $match := .Get "match" | default "*" -}}
+{{- $pg := .Page -}}
+{{- with .Get "page" -}}
+  {{- $path := . -}}
+  {{- $pg = site.GetPage $path -}}
+  {{- if not $pg -}}
+    {{- range hugo.Sites -}}{{- if eq .Language.Lang "en" -}}{{- $pg = .GetPage $path -}}{{- end -}}{{- end -}}
+  {{- end -}}
+  {{- if not $pg -}}{{- errorf "gallery shortcode: page %q not found (%s)" . $.Position -}}{{- end -}}
+{{- end -}}
+<div class="image-grid">
+    {{- range $pg.Resources.Match $match }}
+        {{- $res := . }}
+        {{- if and (eq $res.ResourceType "image") (not (in (slice "gif" "svg+xml") $res.MediaType.SubType)) }}
+        {{- /* Link target: 2000px-wide WebP, or the WebP of the original when it is narrower */}}
+        {{- $full := "" }}
+        {{- if gt $res.Width 2000 }}
+            {{- $full = $res.Resize "2000x webp" }}
+        {{- else }}
+            {{- $full = $res.Process "webp" }}
+        {{- end }}
+        <a href="{{ $full.RelPermalink }}" target="_blank" rel="noreferrer noopener">
+            {{- /* Grid cells are ~120–200px wide, so the ladder starts at 240 */}}
+            {{ partial "responsive-img.html" (dict
+                  "res"    $res
+                  "alt"    $res.Name
+                  "widths" (slice 240 480 960 1600)
+                  "sizes"  (partial "image-sizes.html" "gallery")) }}
+        </a>
+        {{- end }}
+    {{- end }}
+</div>

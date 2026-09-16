@@ -1,0 +1,67 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<script src="/js/theme-init.js"></script>
+<title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} — {{ .Site.Title }}{{ end }}</title>
+
+{{- $desc := partial "work-meta-description.html" . -}}
+{{- $permalink := .Permalink -}}
+{{- $ogImage := "general/og_image.webp" | absURL -}}
+{{- with .Params.image -}}{{- with $.Resources.GetMatch . -}}{{- $ogImage = .Permalink -}}{{- end -}}{{- end -}}
+<meta name="description" content="{{ $desc }}">
+<meta name="author" content="{{ .Site.Params.author }}">
+{{ if eq .Params.private true }}<meta name="robots" content="noindex, nofollow">{{ else if eq .Kind "404" }}<meta name="robots" content="noindex, follow">{{ else }}<meta name="robots" content="index, follow">{{ end }}
+{{ if and $permalink (ne $permalink "") }}<link rel="canonical" href="{{ .Permalink }}">{{ end }}
+
+{{- $ogLocale := dict "en" "en_US" "mm" "my_MM" -}}
+{{- if .IsTranslated }}
+{{- range .AllTranslations }}
+<link rel="alternate" hreflang="{{ partial "lang-tag.html" .Language.Lang }}" href="{{ .Permalink }}">
+{{- end }}
+{{- range .AllTranslations }}{{ if eq .Language.Lang "en" }}
+<link rel="alternate" hreflang="x-default" href="{{ .Permalink }}">
+{{- end }}{{ end }}
+{{- end }}
+
+<meta property="og:title" content="{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}">
+<meta property="og:description" content="{{ $desc }}">
+<meta property="og:type" content="{{ if .IsHome }}website{{ else }}article{{ end }}">
+{{ if and $permalink (ne $permalink "") }}<meta property="og:url" content="{{ .Permalink }}">{{ end }}
+<meta property="og:image" content="{{ $ogImage }}">
+<meta property="og:image:alt" content="{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}">
+<meta property="og:site_name" content="{{ .Site.Title }}">
+<meta property="og:locale" content="{{ index $ogLocale .Site.Language.Lang | default "en_US" }}">
+{{- range .Translations }}
+<meta property="og:locale:alternate" content="{{ index $ogLocale .Language.Lang | default "en_US" }}">
+{{- end }}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}">
+<meta name="twitter:description" content="{{ $desc }}">
+<meta name="twitter:image" content="{{ $ogImage }}">
+{{ with .OutputFormats.Get "RSS" }}<link rel="alternate" type="application/rss+xml" title="{{ $.Site.Title }}" href="{{ .RelPermalink }}">{{ end }}
+
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+
+<link rel="preload" as="font" type="font/woff2" href="/fonts/newsreader-latin-opsz-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/fonts/karla-latin-wght-normal.woff2" crossorigin>
+{{- if eq .Site.Language.Lang "mm" }}
+<link rel="preload" as="font" type="font/woff2" href="/theme/font/Thit_Sar_Shwe_Si.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/theme/font/Z01-Umoe002%20Regular.woff2" crossorigin>
+{{- end }}
+{{- $css := resources.Get "css/main.css" | resources.Minify | fingerprint }}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+
+{{ if .IsHome }}{{ partial "home-seo.html" . }}{{ end }}
+{{ if and (eq .Section "posts") .IsPage }}{{ partial "post-seo.html" . }}{{ end }}
+{{ if and (eq .Section "works") .IsPage }}{{ partial "work-seo.html" . }}{{ end }}
+{{ if not .IsHome }}{{ partial "breadcrumb-ld.html" . }}{{ end }}
+
+<link rel="preconnect" href="https://api.openalex.org">
+<link rel="dns-prefetch" href="https://ws.audioscrobbler.com">
+<link rel="dns-prefetch" href="https://graphql.anilist.co">
+<link rel="dns-prefetch" href="https://api.unsplash.com">
+<link rel="dns-prefetch" href="https://api.simkl.com">
+<link rel="dns-prefetch" href="https://doi.org">

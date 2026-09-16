@@ -1,0 +1,48 @@
+{{- $desc := .Site.Params.description -}}
+{{- if and (eq .Section "works") .IsPage -}}
+  {{- $rm := partial "researcher-map.html" . -}}
+  {{- $doi := "" -}}
+  {{- with .Params.sources -}}
+    {{- range . -}}
+      {{- if and (not $doi) (strings.Contains .url "doi.org/") -}}
+        {{- $doi = .url -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- if eq .Params.type "journal" -}}
+    {{- $maxAuthors := 4 -}}
+    {{- $authorNames := slice -}}
+    {{- range first $maxAuthors .Params.authors -}}
+      {{- $given := .given -}}
+      {{- $family := .family -}}
+      {{- with .id -}}
+        {{- $person := index $rm . -}}
+        {{- with $person -}}
+          {{- $given = $person.given -}}
+          {{- $family = $person.family -}}
+        {{- end -}}
+      {{- end -}}
+      {{- $authorNames = $authorNames | append (printf "%s %s" $family (substr $given 0 1)) -}}
+    {{- end -}}
+    {{- $authorText := delimit $authorNames ", " -}}
+    {{- if gt (len .Params.authors) $maxAuthors -}}
+      {{- $authorText = printf "%s, et al." $authorText -}}
+    {{- end -}}
+    {{- $desc = printf "%s %s. %s." $authorText .Params.venue (.Date.Format "2006") -}}
+    {{- with $doi -}}
+      {{- $desc = printf "%s %s" $desc . -}}
+    {{- end -}}
+  {{- else if .Plain -}}
+    {{- $desc = .Plain | truncate 150 "…" -}}
+  {{- end -}}
+{{- else -}}
+  {{- with .Params.description -}}
+    {{- $desc = . -}}
+  {{- else -}}
+    {{- if and (eq $.Section "posts") $.IsPage $.Summary -}}
+      {{- $desc = $.Summary | plainify | truncate 150 "…" -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- return $desc -}}

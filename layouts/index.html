@@ -1,0 +1,159 @@
+{{ define "body-class" }}page home{{ end }}
+{{ define "main" }}
+{{- $lang := .Site.Language.Lang -}}
+{{- $hp := hugo.Data.homepage -}}{{- if eq $lang "mm" -}}{{- $hp = hugo.Data.homepage_mm -}}{{- end -}}
+{{- $enSite := .Site -}}{{- range hugo.Sites -}}{{- if eq .Language.Lang "en" -}}{{- $enSite = . -}}{{- end -}}{{- end -}}
+{{- $works := where (where $enSite.RegularPages "Section" "works") "Params.type" "ne" "under-review" -}}
+{{- $posts := where (where .Site.RegularPages "Section" "posts") "Params.private" "ne" true -}}
+{{- if not $posts -}}{{- $posts = where (where $enSite.RegularPages "Section" "posts") "Params.private" "ne" true -}}{{- end -}}
+{{- $about := .Site.GetPage "/about" -}}
+
+<div class="spine">
+
+  <div class="row portrait-row no-dot">
+    <button class="portrait" id="portrait" type="button" aria-label="{{ i18n "portrait_label" }}" aria-keyshortcuts="Enter Space">
+      <img class="portrait-photo" src="{{ $hp.sidebar.avatar | relURL }}" alt="" width="216" height="216" fetchpriority="high">
+      <img class="portrait-duck" src="/general/duck_mascot.svg" alt="" width="216" height="216" hidden>
+    </button>
+    <audio id="quack" src="/general/duck_quack.mp3" preload="none"></audio>
+  </div>
+
+  {{- /* Phone: a plain introduction. Desktop and tablet: the two words. */ -}}
+  <section class="row intro no-dot" id="intro" data-section="{{ i18n "nav_sec_intro" }}">
+    <div class="intro-body">
+      <h1 class="intro-name">{{ .Site.Title }}</h1>
+      <p class="intro-tagline">{{ i18n "intro_tagline" }}</p>
+      <p class="intro-text">{{ if eq $lang "mm" }}{{ .Site.Params.description }}{{ else }}{{ i18n "intro_body" }}{{ end }}</p>
+      {{ with $about }}<a class="more" href="{{ .RelPermalink }}">{{ i18n "intro_more" }}</a>{{ end }}
+    </div>
+  </section>
+
+  <section class="row hero" id="hero" aria-label="{{ i18n "voice_left" }} / {{ i18n "voice_right" }}" data-section="{{ i18n "nav_sec_intro" }}">
+    <div class="voice voice-l">
+      <h2 class="word">{{ i18n "voice_left" }}</h2>
+      <p>{{ i18n "hero_left" }}</p>
+    </div>
+    <div class="voice voice-r">
+      <h2 class="word">{{ i18n "voice_right" }}</h2>
+      <p>{{ i18n "hero_right" }}</p>
+    </div>
+  </section>
+
+  {{- /* Now | Before: split by whether the entry is ongoing, not by place, so a future role or
+         country only adds an entry. Ongoing = `current: true` or a time string ending in Present. */ -}}
+  {{- $now := slice -}}{{- $before := slice -}}
+  {{- range $hp.experiences.info -}}
+    {{- $e := dict "when" .time "what" .role "where" .company.name "link" .company.link "details" .details -}}
+    {{- $t := lower (printf "%v" .time) -}}
+    {{- if or .current (strings.Contains $t "present") (strings.Contains $t "လက်ရှိ") (strings.Contains $t "ယခု") -}}{{- $now = $now | append $e -}}{{- else -}}{{- $before = $before | append $e -}}{{- end -}}
+  {{- end -}}
+  {{- range $hp.education.info -}}
+    {{- $e := dict "when" .time "what" .degree "where" .university.name "link" .university.link "doc" .diploma -}}
+    {{- $t := lower (printf "%v" .time) -}}
+    {{- if or .current (strings.Contains $t "present") (strings.Contains $t "လက်ရှိ") (strings.Contains $t "ယခု") -}}{{- $now = $now | append $e -}}{{- else -}}{{- $before = $before | append $e -}}{{- end -}}
+  {{- end -}}
+  <section class="row" id="places" data-section="{{ i18n "nav_sec_experience" }}">
+    <div class="voice voice-l">
+      <p class="kicker">{{ i18n "k_now" }}</p>
+      <ul class="chron">
+        {{- range $now }}
+        <li><span class="when">{{ .when }}</span><span class="what">{{ .what }}{{ with .doc }} <a href="{{ . | relLangURL }}" class="meta">transcript</a>{{ end }}</span><span class="where"><a href="{{ .link }}" target="_blank" rel="noreferrer noopener">{{ .where }}</a></span>{{ with .details }}<div class="chron-details">{{ . | markdownify }}</div>{{ end }}</li>
+        {{- end }}
+      </ul>
+    </div>
+    <div class="voice voice-r">
+      <p class="kicker">{{ i18n "k_before" }}</p>
+      <ul class="chron">
+        {{- range $before }}
+        <li><span class="when">{{ .when }}</span><span class="what">{{ .what }}{{ with .doc }} <a href="{{ . | relLangURL }}" class="meta">transcript</a>{{ end }}</span><span class="where"><a href="{{ .link }}" target="_blank" rel="noreferrer noopener">{{ .where }}</a></span>{{ with .details }}<details><summary>{{ i18n "show_more" }}</summary>{{ . | markdownify }}</details>{{ end }}</li>
+        {{- end }}
+      </ul>
+    </div>
+  </section>
+
+  {{- /* Neutral, full width: what I study */ -}}
+  <section class="row no-dot" id="study" data-section="{{ i18n "nav_sec_research" }}">
+    <div class="wide">
+      <p class="kicker">{{ i18n "k_study" }}</p>
+      {{- with $hp.career_profile.summary }}
+      {{ . | markdownify }}
+      {{- else }}
+      {{ $hp.career_profile.para1 | markdownify }}
+      <div class="wide-more">
+      {{ $hp.career_profile.para2 | markdownify }}
+      {{ $hp.career_profile.para3 | markdownify }}
+      </div>
+      {{- end }}
+      {{- with hugo.Data.cv.research_interests }}
+      <p class="meta" style="margin-top:1.4rem">{{ i18n "interests_lead" }}</p>
+      <p class="topics">{{ range $i, $t := . }}{{ if $i }}, {{ end }}{{ $t | lower }}{{ end }}.</p>
+      {{- end }}
+    </div>
+  </section>
+
+  {{- /* Output timeline: a full-width interruption, built at build time */ -}}
+  <section class="row no-dot rug-row">
+    {{ partial "output-timeline.html" . }}
+  </section>
+
+  {{- /* Working on | Published */ -}}
+  <section class="row" id="working" data-section="{{ i18n "nav_sec_current" }}">
+    <div class="voice voice-l">
+      <p class="kicker">{{ i18n "k_working" }}</p>
+      <ul class="projects">
+        {{- range first (.Site.Params.homeProjectsLimit | default 3) $hp.projects.assignments }}
+        <li>{{ if .link }}<a href="{{ .link }}" target="_blank" rel="noreferrer noopener">{{ .title }}</a>{{ else }}{{ .title }}{{ end }}<span class="role">{{ .role }}</span></li>
+        {{- end }}
+      </ul>
+      {{ with $about }}<a class="more" href="{{ .RelPermalink }}#projects">{{ i18n "k_projects" }}</a>{{ end }}
+    </div>
+    <div class="voice voice-r">
+      <p class="kicker">{{ i18n "k_published" }}</p>
+      <p id="metrics" data-openalex-author="{{ $hp.sidebar.orcid }}" hidden>Cited <span data-metric="cited_by_count">—</span> times across <span data-metric="works_count">—</span> indexed works, h-index <span data-metric="h_index">—</span> (OpenAlex).</p>
+      <p>{{ partial "collab-summary.html" . }}</p>
+      <ol class="bib">
+        {{- range first (.Site.Params.recentWorksLimit | default 4) (sort $works "Date" "desc") }}
+        {{ partial "bib-entry.html" (dict "page" . "authors" false "sources" false "search" false) }}
+        {{- end }}
+      </ol>
+      {{ $l := partial "lang-link.html" "/works/" }}<a class="more" href="{{ $l.href }}"{{ with $l.hreflang }} hreflang="{{ . }}"{{ end }}>{{ i18n "all_works" }}</a>
+    </div>
+  </section>
+
+  {{- /* Writing | Lately */ -}}
+  <section class="row asym" id="writes" data-section="{{ i18n "nav_sec_writing" }}">
+    <div class="voice voice-l">
+      <p class="kicker">{{ i18n "k_writes" }}</p>
+      <ul class="datelist">
+        {{- range first (.Site.Params.recentPostsLimit | default 3) (sort $posts "Date" "desc") }}
+        <li><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+        {{- end }}
+      </ul>
+      {{ $l := partial "lang-link.html" "/posts/" }}<a class="more" href="{{ $l.href }}"{{ with $l.hreflang }} hreflang="{{ . }}"{{ end }}>{{ i18n "all_posts" }}</a>
+    </div>
+    <div class="voice voice-r">
+      <p class="kicker">{{ i18n "k_lately" }}</p>
+      <p id="now-playing" data-fallback="{{ i18n "now_playing_fallback" }}">{{ i18n "now_playing_fallback" }}</p>
+      <p class="meta"><a href="{{ hugo.Data.playlists.link }}" target="_blank" rel="noreferrer noopener">{{ i18n "listening_archive" }}</a></p>
+      <div class="lately-row">
+        <div class="lately-item">
+          <p class="meta">{{ i18n "manga_label" }}</p>
+          <ul class="covers" id="strip-manga" aria-label="{{ i18n "manga_label" }}" data-limit="1"></ul>
+          <p class="covers-empty"><a href="https://anilist.co/user/{{ .Site.Params.anilistUser | default "finer" }}" target="_blank" rel="noreferrer noopener">AniList</a></p>
+        </div>
+        <div class="lately-item">
+          <p class="meta">{{ i18n "screen_label" }}</p>
+          <ul class="covers" id="strip-screen" aria-label="{{ i18n "screen_label" }}" data-limit="1"></ul>
+          <p class="covers-empty"><a href="https://simkl.com/" target="_blank" rel="noreferrer noopener">Simkl</a></p>
+        </div>
+        <div class="lately-item">
+          <p class="meta">{{ i18n "photos_label" }}</p>
+          <ul class="covers" id="strip-photos" aria-label="{{ i18n "photos_label" }}" data-limit="1"></ul>
+          <p class="covers-empty"><a href="https://unsplash.com/@finerbrighterlighter" target="_blank" rel="noreferrer noopener">Unsplash</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+{{ end }}

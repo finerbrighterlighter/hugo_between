@@ -1,0 +1,38 @@
+bld_cen:
+  title: သွေးလှူဒါန်းရေးဌာနများ
+  intro:
+  direction:
+    - name: "ရာမာသီဘိုဒီဆေးရုံကြီး"
+      link: "https://www.rama.mahidol.ac.th/patho/th/Laboratory/blood_bank"
+      note: "ထိုင်းဘာသာ"
+      geo: "https://goo.gl/maps/BuxTjdq52jfdWp2f9"
+      address: "၂၇၀ ရာမာ ၆ လမ်း၊ သုံးဖယာထိုင်း၊ ရာချ်ထေဝီ၊ ဘန်ကောက်မြို့၊ ထိုင်းနိုင်ငံ ၁၀၄၀၀"
+      phone: "၀ ၂၂၀၁ ၁၂၁၉၊ ၀ ၂၂၀၁ ၁၂၂၉"
+
+    - name: "အမျိုးသား သွေးဌာန၊ ထိုင်းနိုင်ငံ ကြက်ခြေနီအသင်း"
+      link: "https://blooddonationthai.com/"
+      note: "ထိုင်းဘာသာ"
+      geo: "https://g.page/nbctrc?share"
+      address: "၁၈၇၁ အွန်နရီ ဒူးနန့် လမ်း၊ ပထုံဝမ်၊ ဘန်ကောက်မြို့၊ ထိုင်းနိုင်ငံ ၁၀၃၃၀"
+      phone: "၀ ၂၂၆၃ ၉၆၀၀-၉၉၊ ၀ ၂၂၅၆ ၄၃၀၀"
+
+    - name: "အမျိုးသား သွေးဌာန (မြန်မာ)"
+      link: "https://www.donatebloodmyanmar.org/"
+      note: "မြန်မာဘာသာ"
+      geo: "https://goo.gl/maps/i6zzRPL9iyRkGQsd8"
+      address: "အမှတ် ၉၇၊ ဗိုလ်ချုပ်အောင်ဆန်းလမ်းနှင့် ရွှေတိဂုံဘုရားလမ်းထောင့်၊ လသာမြို့နယ်၊ ရန်ကုန်မြို့၊ မြန်မာနိုင်ငံ ၁၁၁၃၁"
+      phone: "၀၁ ၃၇၂ ၇၅၃"
+
+    - name: "ထိုင်းနိုင်ငံ RH- သွေးလှူဒါန်းမှု ကွန်ရက်"
+      link: "https://web.facebook.com/groups/1059111434217206"
+      note: "အင်္ဂလိပ်ဘာသာ"
+      geo:
+      address: "ဘန်ကောက်၊ ချင်းမိုင်၊ ကိုစမွေ"
+      phone: "၀၉၅ ၅၄၈ ၇၀၂၂၊ ၀၉၀ ၉၇၂ ၅၅၆၅၊ ၀၉၃ ၅၈၆ ၆၁၄၁၊ ၀၉၃ ၅၉၈ ၇၄၁၅"
+
+    - name: "သွေးလှူဒါန်းရေး အဖွဲ့အစည်းများ စာရင်း"
+      link: "https://en.wikipedia.org/wiki/List_of_blood_donation_agencies"
+      note: "ဝီကီပီးဒီးယား"
+      geo: "https://goo.gl/maps/i6zzRPL9iyRkGQsd8"
+      address:
+      phone:

@@ -1,0 +1,15 @@
+groups:
+  - owner: CEB-Data-Science-Clinical-Informatics
+    label: Data Science & Clinical Informatics
+    repos:
+      - name: Hypertension-Cohort
+        label: Hypertension
+      - name: Dementia-Cohort
+        label: Dementia
+  - owner: finerbrighterlighter
+    label: finerbrighterlighter
+    repos:
+      - name: myanmar_covid19
+        label: MM-COVID19
+      - name: personal_web_hugo
+        label: Hugo-TUI

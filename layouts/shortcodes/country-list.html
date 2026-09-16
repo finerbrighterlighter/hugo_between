@@ -1,0 +1,79 @@
+{{- $rm := dict -}}
+{{- range hugo.Data.researchers -}}
+  {{- $rm = merge $rm (dict .id .) -}}
+{{- end -}}
+
+{{- $meOrcid := "" -}}
+{{- with index $rm "me-ceb" -}}{{- $meOrcid = .orcid -}}{{- end -}}
+
+{{- $expand := dict
+  "UK"  "the United Kingdom"
+  "USA" "the United States"
+  "US"  "the United States"
+  "UAE" "the United Arab Emirates"
+-}}
+
+{{- $keywords := slice "University" "Hospital" "Academy" "Institute" "College" "Unit" -}}
+
+{{/* Count unique institutions per country — same institution+country pair counted once */}}
+{{- $countMap := dict -}}
+{{- $seenPairs := slice -}}
+{{- range where site.RegularPages "Section" "works" -}}
+  {{- range .Params.authors -}}
+    {{- with .id -}}
+      {{- $person := index $rm . -}}
+      {{- with $person -}}
+        {{- $key := .id -}}
+        {{- with .orcid -}}{{- $key = . -}}{{- end -}}
+        {{- $isMe := false -}}
+        {{- if eq .id "me-ceb" -}}{{- $isMe = true -}}{{- end -}}
+        {{- if and (not $isMe) (ne $meOrcid "") (eq $key $meOrcid) -}}{{- $isMe = true -}}{{- end -}}
+        {{- if not $isMe -}}
+          {{- range .affiliations -}}
+            {{- $parts := split . "," -}}
+            {{- $raw := index $parts (sub (len $parts) 1) | strings.TrimSpace -}}
+            {{- $country := $raw -}}
+            {{- with index $expand $raw -}}{{- $country = . -}}{{- end -}}
+
+            {{- $org := "" -}}
+            {{- range $parts -}}
+              {{- $seg := . | strings.TrimSpace -}}
+              {{- if not $org -}}
+                {{- range $keywords -}}
+                  {{- if strings.Contains $seg . -}}{{- $org = $seg -}}{{- end -}}
+                {{- end -}}
+              {{- end -}}
+            {{- end -}}
+
+            {{- $pair := printf "%s|%s" $org $country -}}
+            {{- if and $org $country (not (in $seenPairs $pair)) -}}
+              {{- $seenPairs = $seenPairs | append $pair -}}
+              {{- $cur := index $countMap $country | default 0 -}}
+              {{- $countMap = merge $countMap (dict $country (add $cur 1)) -}}
+            {{- end -}}
+          {{- end -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $entries := slice -}}
+{{- range $country, $count := $countMap -}}
+  {{- $entries = $entries | append (dict "name" $country "count" $count) -}}
+{{- end -}}
+{{- $sorted := sort $entries "count" "desc" -}}
+
+{{- $names := slice -}}
+{{- range $sorted -}}{{- $names = $names | append .name -}}{{- end -}}
+
+{{- $n := len $names -}}
+{{- if eq $n 1 -}}
+  {{- index $names 0 -}}
+{{- else if eq $n 2 -}}
+  {{- index $names 0 }} and {{ index $names 1 -}}
+{{- else -}}
+  {{- range $i, $c := $names -}}
+    {{- if eq $i (sub $n 1) -}}and {{ $c }}{{- else -}}{{ $c }}, {{ end -}}
+  {{- end -}}
+{{- end -}}

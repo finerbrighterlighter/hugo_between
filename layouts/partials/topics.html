@@ -1,0 +1,15 @@
+{{- /* Top research tags as an inline sentence. */ -}}
+{{- $enSite := site -}}{{- range hugo.Sites -}}{{- if eq .Language.Lang "en" -}}{{- $enSite = . -}}{{- end -}}{{- end -}}
+{{- $works := where $enSite.RegularPages "Section" "works" -}}
+{{- $counts := dict -}}
+{{- range $works -}}
+  {{- $t := slice -}}
+  {{- with .Params.conditions -}}{{- $t = $t | append . -}}{{- end -}}
+  {{- with .Params.methods -}}{{- $t = $t | append . -}}{{- end -}}
+  {{- with .Params.datasource -}}{{- $t = $t | append . -}}{{- end -}}
+  {{- range $t | uniq -}}{{- $counts = merge $counts (dict . (add (index $counts . | default 0) 1)) -}}{{- end -}}
+{{- end -}}
+{{- $list := slice -}}
+{{- range $k, $v := $counts -}}{{- $list = $list | append (dict "tag" $k "n" $v) -}}{{- end -}}
+{{- $list = sort $list "n" "desc" | first (site.Params.researchTagLimit | default 8) -}}
+<p class="topics">{{ range $i, $e := $list }}{{ if $i }}, {{ end }}<a href="{{ "/works/" | relURL }}?search={{ $e.tag | urlquery }}">{{ $e.tag }}</a> <span class="n">{{ $e.n }}</span>{{ end }}.</p>

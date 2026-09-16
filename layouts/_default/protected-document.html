@@ -1,0 +1,32 @@
+{{- /* PIN gate for personal documents. This is a deterrent, not access control:
+       the document path, salt and verifier below are all public, and the PDF is a
+       static file anyone can request directly. Never use this template for a
+       genuinely confidential document. See docs/accepted-risks.md. */ -}}
+{{ define "body-class" }}page gate-page{{ end }}
+{{ define "main" }}
+{{- $key := .Params.protected_document -}}
+{{- $doc := index hugo.Data.protected_documents $key -}}
+{{- if not $doc -}}{{- errorf "protected document %q is not configured for %s" $key .File.Path -}}{{- end -}}
+<header class="page-head">
+  <h1>{{ .Title }}</h1>
+  <p class="intro">{{ i18n "protected_document_privacy" }}</p>
+</header>
+<div class="page-body">
+  <section class="gate" data-document-id="{{ $doc.document_id }}" data-src="{{ $doc.document_path | relURL }}" data-salt="{{ $doc.salt }}" data-verifier="{{ $doc.password_hash }}"
+    data-i18n-prompt="{{ i18n "protected_document_prompt" }}" data-i18n-checking="{{ i18n "protected_document_checking" }}" data-i18n-loading="{{ i18n "protected_document_loading" }}"
+    data-i18n-incorrect="{{ i18n "protected_document_incorrect" }}" data-i18n-error="{{ i18n "protected_document_load_error" }}" data-i18n-unlocked="{{ i18n "protected_document_unlocked" }}" data-i18n-unsupported="{{ i18n "protected_document_unsupported" }}">
+    <form class="gate-form" novalidate>
+      <div><label for="pin">{{ i18n "protected_document_password_label" }}</label>
+      <input id="pin" name="pin" type="password" inputmode="numeric" autocomplete="off" required></div>
+      <button type="submit">{{ i18n "protected_document_unlock" | title }}</button>
+      <p class="gate-status" role="status">{{ i18n "protected_document_prompt" }}</p>
+    </form>
+    <div class="gate-viewer" hidden>
+      <iframe title="{{ i18n "protected_document_viewer_title" }}" hidden></iframe>
+      <a class="gate-open" href="#" target="_blank" rel="noreferrer noopener" hidden>{{ i18n "protected_document_open" | title }}</a>
+    </div>
+  </section>
+  {{ .Content }}
+</div>
+{{ end }}
+{{ define "scripts-extra" }}<script type="module" src="/js/protected-document.js"></script>{{ end }}

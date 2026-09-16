@@ -1,0 +1,10 @@
+{{- /* Language-aware internal link for a site path such as "/works/".
+       Returns a dict: href, and hreflang ("" when the page exists in the current
+       language, "en" when it falls back to the English page because no translation
+       exists, e.g. /mm/works/). Callers emit hreflang only when non-empty. */ -}}
+{{- $u := . -}}
+{{- $out := dict "href" ($u | relLangURL) "hreflang" "" -}}
+{{- if not (site.GetPage $u) -}}
+  {{- $out = dict "href" ($u | relURL) "hreflang" "en" -}}
+{{- end -}}
+{{- return $out -}}

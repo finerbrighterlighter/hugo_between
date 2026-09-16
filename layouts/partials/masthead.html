@@ -1,0 +1,20 @@
+{{- $cur := .RelPermalink -}}
+{{- $home := "/" | relLangURL -}}
+<header class="masthead">
+  <nav class="masthead-nav masthead-left" aria-label="Primary">
+    {{- range where .Site.Params.nav "side" "left" }}
+    {{- $l := partial "lang-link.html" .url -}}{{- $u := $l.href -}}
+    {{- $active := and (ne $u $home) (strings.HasPrefix $cur $u) -}}
+    <a href="{{ $u }}"{{ with $l.hreflang }} hreflang="{{ . }}"{{ end }}{{ if $active }} aria-current="{{ if eq $cur $u }}page{{ else }}true{{ end }}"{{ end }}>{{ i18n .name }}</a>
+    {{- end }}
+  </nav>
+  <a class="masthead-name" href="{{ $home }}"{{ if .IsHome }} aria-current="page"{{ end }}>{{ .Site.Title }}</a>
+  <nav class="masthead-nav masthead-right" aria-label="Primary, continued">
+    {{- range where .Site.Params.nav "side" "right" }}
+    {{- $l := partial "lang-link.html" .url -}}{{- $u := $l.href -}}
+    {{- $active := and (ne $u $home) (strings.HasPrefix $cur $u) -}}
+    <a href="{{ $u }}"{{ with $l.hreflang }} hreflang="{{ . }}"{{ end }}{{ if $active }} aria-current="{{ if eq $cur $u }}page{{ else }}true{{ end }}"{{ end }}>{{ i18n .name }}</a>
+    {{- end }}
+  </nav>
+  <div class="masthead-lang">{{ partial "lang-switch.html" . }}</div>
+</header>

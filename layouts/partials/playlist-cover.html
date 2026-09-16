@@ -1,0 +1,7 @@
+{{- with resources.Get (printf "images/playlists/%s" .image) -}}
+  {{- $c1 := .Fill "96x96 center webp" -}}
+  {{- $c2 := .Fill "192x192 center webp" -}}
+  <img src="{{ $c2.RelPermalink }}" srcset="{{ $c1.RelPermalink }} 96w, {{ $c2.RelPermalink }} 192w" sizes="96px" width="{{ $c2.Width }}" height="{{ $c2.Height }}" alt="" loading="lazy" decoding="async">
+{{- else -}}
+  {{- warnf "playlist-cover: assets/images/playlists/%s not found" .image -}}
+{{- end -}}

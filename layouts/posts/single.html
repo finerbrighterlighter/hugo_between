@@ -1,0 +1,21 @@
+{{ define "head-extra" }}
+{{ if .Params.math }}<link rel="stylesheet" href="/vendor/katex/0.16.22/katex.min.css">{{ end }}
+{{ end }}
+{{ define "body-class" }}page post{{ end }}
+{{ define "main" }}
+<header class="page-head">
+  <h1>{{ .Title }}</h1>
+  <span class="meta"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time>{{ with .Params.company }}, {{ . }}{{ end }}, {{ i18n "minutes_read" (dict "n" .ReadingTime) }}</span>
+</header>
+<div class="page-body">
+  <div class="essay">
+    <div class="prose post-body">{{ .Content }}</div>
+    <aside class="margin"><nav class="toc" id="toc" aria-label="{{ i18n "contents" }}"></nav></aside>
+  </div>
+</div>
+{{ end }}
+{{ define "scripts-extra" }}
+<script type="module" src="/js/post_toc.js"></script>
+{{ if .Params.math }}<script defer src="/vendor/katex/0.16.22/katex.min.js"></script><script defer src="/vendor/katex/0.16.22/contrib/auto-render.min.js"></script><script type="module" src="/js/katex-init.js"></script>{{ end }}
+{{ if .Params.mermaid }}<script type="module" src="/js/mermaid-init.js"></script>{{ end }}
+{{ end }}

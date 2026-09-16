@@ -1,0 +1,41 @@
+{{- $rm := dict -}}
+{{- range hugo.Data.researchers -}}
+  {{- $rm = merge $rm (dict .id .) -}}
+{{- end -}}
+
+{{- $meOrcid := "" -}}
+{{- with index $rm "me-ceb" -}}{{- $meOrcid = .orcid -}}{{- end -}}
+
+{{- $keywords := slice "University" "Hospital" "Academy" "Institute" "College" "Unit" -}}
+{{- $orgs := slice -}}
+{{- range where site.RegularPages "Section" "works" -}}
+  {{- range .Params.authors -}}
+    {{- with .id -}}
+      {{- $person := index $rm . -}}
+      {{- with $person -}}
+        {{- $key := .id -}}
+        {{- with .orcid -}}{{- $key = . -}}{{- end -}}
+        {{- $isMe := false -}}
+        {{- if eq .id "me-ceb" -}}{{- $isMe = true -}}{{- end -}}
+        {{- if and (not $isMe) (ne $meOrcid "") (eq $key $meOrcid) -}}{{- $isMe = true -}}{{- end -}}
+        {{- if not $isMe -}}
+          {{- range .affiliations -}}
+            {{- $org := "" -}}
+            {{- range (split . ",") -}}
+              {{- $seg := . | strings.TrimSpace -}}
+              {{- if not $org -}}
+                {{- range $keywords -}}
+                  {{- if strings.Contains $seg . -}}{{- $org = $seg -}}{{- end -}}
+                {{- end -}}
+              {{- end -}}
+            {{- end -}}
+            {{- if and $org (not (in $orgs $org)) -}}
+              {{- $orgs = $orgs | append $org -}}
+            {{- end -}}
+          {{- end -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- len $orgs -}}

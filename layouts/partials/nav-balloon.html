@@ -1,0 +1,27 @@
+{{- /* Mobile balloon: a compact page navigator (callback to hugo_console's nav_bubble).
+       Main: section jumps built by nav_balloon.js. Secondary: Works, Posts, More… (About, Blood, language, theme, palette). */ -}}
+{{- $cur := .RelPermalink -}}
+{{- $want := "mm" -}}{{- if eq .Site.Language.Lang "mm" -}}{{- $want = "en" -}}{{- end -}}
+{{- $target := false -}}{{- range .AllTranslations -}}{{- if eq .Language.Lang $want -}}{{- $target = . -}}{{- end -}}{{- end -}}
+<div class="balloon" data-balloon hidden data-label-top="{{ i18n "nav_bubble_top" }}">
+  <div class="balloon-menu" id="balloon-menu" role="menu" aria-label="{{ i18n "nav_balloon_label" }}" hidden>
+    <div class="balloon-sections" role="group" aria-label="{{ i18n "balloon_sections" }}"></div>
+    <div class="balloon-site" role="group" aria-label="{{ i18n "balloon_site" }}">
+      {{- range $e := slice (dict "u" "/works/" "k" "nav_works") (dict "u" "/posts/" "k" "nav_posts") }}
+      {{- $l := partial "lang-link.html" $e.u }}{{- $u := $l.href }}
+      {{- if ne $cur $u }}<a class="balloon-row balloon-small" role="menuitem" href="{{ $u }}"{{ with $l.hreflang }} hreflang="{{ . }}"{{ end }}>{{ i18n $e.k }}</a>{{ end }}
+      {{- end }}
+      <button type="button" class="balloon-row balloon-small" role="menuitem" data-more aria-expanded="false" aria-controls="balloon-more">{{ i18n "more_ellipsis" }}</button>
+      <div class="balloon-more" id="balloon-more" hidden>
+        {{- range $e := slice (dict "u" "/" "k" "nav_home") (dict "u" "/about/" "k" "nav_about") (dict "u" "/blood/" "k" "nav_blood") }}
+        {{- $l := partial "lang-link.html" $e.u }}{{- $u := $l.href }}
+        {{- if ne $cur $u }}<a class="balloon-row balloon-small" role="menuitem" href="{{ $u }}"{{ with $l.hreflang }} hreflang="{{ . }}"{{ end }}>{{ i18n $e.k }}</a>{{ end }}
+        {{- end }}
+        {{- if $target }}<a class="balloon-row balloon-small" role="menuitem" href="{{ $target.RelPermalink }}" lang="{{ if eq $want "mm" }}my{{ else }}en{{ end }}" hreflang="{{ if eq $want "mm" }}my{{ else }}en{{ end }}">{{ i18n "lang_switch" }}</a>{{ end }}
+        <button type="button" class="balloon-row balloon-small" role="menuitem" data-theme-toggle aria-label="{{ i18n "theme_toggle_dark" }}" data-label-dark="{{ i18n "dark_mode" }}" data-label-light="{{ i18n "light_mode" }}"><span data-theme-toggle-text>{{ i18n "dark_mode" }}</span></button>
+        <button type="button" class="balloon-row balloon-small" role="menuitem" data-palette-toggle aria-pressed="false" aria-label="{{ i18n "colorblind_label" }}"><span>{{ i18n "colorblind_mode" }}</span><span class="balloon-check" aria-hidden="true"></span></button>
+      </div>
+    </div>
+  </div>
+  <button type="button" class="balloon-button" id="balloon-button" aria-haspopup="true" aria-expanded="false" aria-controls="balloon-menu" aria-label="{{ i18n "nav_balloon_label" }}"><span aria-hidden="true">≡</span></button>
+</div>

@@ -1,0 +1,360 @@
+# researchers.yml
+# Collaborator registry. Works front matter references authors by id.
+#
+# id convention:
+#   - Thai/Burmese authors: given name (more distinctive than family name)
+#   - International authors: family name
+#   - Myanmar compound given names: hyphenated (aung-min, tun-tun, etc.)
+#   - Disambiguation suffix only when given names collide
+#     e.g. amarit stays amarit; if he moves institutions, add amarit-nmu
+#     both entries share the same orcid
+#
+# orcid: fill in from ORCID.org — do not guess.
+#
+# Sort order: me first, then A→Z by id.
+# Same-person entries (different institutions, same orcid) sit adjacent.
+#
+# search by "ID="
+
+# ── Me ────────────────────────────────────────────────────────────────────────
+
+- id: me-ceb
+  given: Htun
+  family: Teza
+  orcid: 0000-0002-1076-9513
+  affiliations:
+    - Department of Clinical Epidemiology and Biostatistics, Faculty of Medicine
+      Ramathibodi Hospital, Mahidol University, Bangkok, Thailand
+
+# ── ID=A ─────────────────────────────────────────────────────────────────────────
+
+- id: amarit
+  given: Amarit
+  family: Tansawet
+  orcid: 0000-0002-2040-7970
+  affiliations:
+    - Department of Clinical Epidemiology and Biostatistics, Faculty of Medicine
+      Ramathibodi Hospital, Mahidol University, Bangkok, Thailand
+    - Department of Surgery, Faculty of Medicine Vajira Hospital,
+      Navamindradhiraj University, Bangkok, Thailand
+
+- id: amarit-chula
+  given: Amarit
+  family: Tansawet
+  orcid: 0000-0002-2040-7970
+  affiliations:
+    - Research Affairs, Faculty of Medicine,
+      Chulalongkorn University, Bangkok, Thailand
+
+- id: ammarin
+  given: Ammarin
+  family: Thakkinstian
+  orcid: 0000-0001-9991-386X
+  affiliations:
+    - Department of Clinical Epidemiology and Biostatistics, Faculty of Medicine
+      Ramathibodi Hospital, Mahidol University, Bangkok, Thailand
+
+- id: anuchate
+  given: Anuchate
+  family: Pattanateepapon
+  orcid: 0000-0003-1246-9482
+  affiliations:
+    - Department of Clinical Epidemiology and Biostatistics, Faculty of Medicine
+      Ramathibodi Hospital, Mahidol University, Bangkok, Thailand
+
+- id: anupol
+  given: Anupol
+  family: Panitchoke
+  orcid: 0000-0001-7125-9886
+  affiliations:
+    - Faculty of Medicine, Khon Kaen University, Khon Kaen, Thailand
+
+- id: attia
+  given: John
+  family: Attia
+  orcid: 0000-0001-9800-1308
+  affiliations:
+    - School of Medicine and Public Health, University of Newcastle, Australia
+    - Hunter Medical Research Institute, Newcastle, Australia
+
+- id: attawood
+  given: Attawood
+  family: Lertpimonchai
+  orcid: 0000-0003-2501-1534
+  affiliations:
+    - Department of Periodontology, Faculty of Dentistry,
+      Chulalongkorn University, Bangkok, Thailand
+    - Center of Excellence in Periodontal Disease and Dental Implant,
+      Chulalongkorn University, Bangkok, Thailand
+
+- id: aung-min
+  given: Aung Min
+  family: Thway
+  orcid: 0000-0001-7787-7247
+  affiliations:
+    - Defence Services Medical Academy, Mingaladon, Yangon, Myanmar
+
+# ── ID=C ─────────────────────────────────────────────────────────────────────────
+
+- id: cholatid
+  given: Cholatid
+  family: Ratanatharathorn
+  orcid: 0000-0002-1439-371X
+  affiliations:
+    - Department of Clinical Epidemiology and Biostatistics, Faculty of Medicine
+      Ramathibodi Hospital, Mahidol University, Bangkok, Thailand
+
+# ── ID=K ─────────────────────────────────────────────────────────────────────────
+
+- id: kunlawat
+  given: Kunlawat
+  family: Thadanipon
+  orcid: 0000-0001-6324-2312
+  affiliations:
+    - Department of Clinical Epidemiology and Biostatistics, Faculty of Medicine
+      Ramathibodi Hospital, Mahidol University, Bangkok, Thailand
+
+- id: kyaw-myo
+  given: Kyaw Myo
+  family: Tun
+  orcid: 0000-0003-1211-1034
+  affiliations:
+    - Defence Services Medical Academy, Mingaladon, Yangon, Myanmar
+
+# ── ID=M ─────────────────────────────────────────────────────────────────────────
+
+- id: mckay
+  given: Gareth J.
+  family: McKay
+  orcid: 0000-0001-8197-6280
+  affiliations:
+    - Centre for Public Health, School of Medicine, Dentistry, and Biomedical Sciences,
+      Queen's University Belfast, Northern Ireland, UK
+
+- id: moe-myint
+  given: Moe Myint
+  family: Aung
+  orcid: 0009-0005-3329-5057
+  affiliations:
+    - Health and Disease Control Unit, Nay Pyi Taw, Myanmar
+
+# ── ID=N ─────────────────────────────────────────────────────────────────────────
+
+- id: napaphat
+  given: Napaphat
+  family: Poprom
+  orcid: 0000-0001-9980-038X
+  affiliations:
+    - Department of Clinical Epidemiology and Biostatistics, Faculty of Medicine
+      Ramathibodi Hospital, Mahidol University, Bangkok, Thailand
+
+- id: nattawut
+  given: Nattawut
+  family: Unwanatham
+  orcid: 0000-0001-9174-3448
+  affiliations:
+    - Department of Clinical Epidemiology and Biostatistics, Faculty of Medicine
+      Ramathibodi Hospital, Mahidol University, Bangkok, Thailand
+
+# ── ID=O ─────────────────────────────────────────────────────────────────────────
+
+- id: oraluck
+  given: Oraluck
+  family: Pattanaprateep
+  orcid: 0000-0001-9570-2635
+  affiliations:
+    - Department of Clinical Epidemiology and Biostatistics, Faculty of Medicine
+      Ramathibodi Hospital, Mahidol University, Bangkok, Thailand
+
+# ── ID=P ─────────────────────────────────────────────────────────────────────────
+
+- id: panu
+  given: Panu
+  family: Looareesuwan
+  orcid: 0000-0001-8179-9149
+  affiliations:
+    - Department of Clinical Epidemiology and Biostatistics, Faculty of Medicine
+      Ramathibodi Hospital, Mahidol University, Bangkok, Thailand
+
+- id: pawin
+  given: Pawin
+  family: Numthavaj
+  orcid: 0000-0002-1369-2945
+  affiliations:
+    - Department of Clinical Epidemiology and Biostatistics, Faculty of Medicine
+      Ramathibodi Hospital, Mahidol University, Bangkok, Thailand
+
+- id: pongsathorn
+  given: Pongsathorn
+  family: Piebpien
+  orcid: 0000-0002-7701-9098
+  affiliations:
+    - Information Technology Department, Faculty of Medicine
+      Ramathibodi Hospital, Mahidol University, Bangkok, Thailand
+
+- id: preeda
+  given: Preeda
+  family: Sumritpradit
+  orcid: 0000-0003-2513-3961
+  affiliations:
+    - Department of Surgery, Faculty of Medicine
+      Ramathibodi Hospital, Mahidol University, Bangkok, Thailand
+
+- id: prin
+  given: Prin
+  family: Vathesatogkit
+  orcid: 0000-0003-0433-2072
+  affiliations:
+    - Department of Medicine, Faculty of Medicine
+      Ramathibodi Hospital, Mahidol University, Bangkok, Thailand
+
+- id: prut
+  given: Prut
+  family: Saowaprut
+  orcid: 0009-0005-9976-5197
+  affiliations:
+    - Department of Clinical Epidemiology and Biostatistics, Faculty of Medicine
+      Ramathibodi Hospital, Mahidol University, Bangkok, Thailand
+
+# ── ID=R ─────────────────────────────────────────────────────────────────────────
+
+- id: romen
+  given: Romen Samuel
+  family: Wabina
+  orcid: 0000-0002-6085-9576
+  affiliations:
+    - Department of Clinical Epidemiology and Biostatistics, Faculty of Medicine
+      Ramathibodi Hospital, Mahidol University, Bangkok, Thailand
+
+# ── ID=S ─────────────────────────────────────────────────────────────────────────
+
+- id: sarinya
+  given: Sarinya
+  family: Boongrid
+  orcid: 0000-0002-3194-1511
+  affiliations:
+    - Division of Nephrology, Department of Internal Medicine, Faculty of Medicine
+      Ramathibodi Hospital, Mahidol University, Bangkok, Thailand
+
+- id: sermkiat
+  given: Sermkiat
+  family: Lolak
+  orcid: 0000-0002-6379-523X
+  affiliations:
+    - Department of Clinical Epidemiology and Biostatistics, Faculty of Medicine
+      Ramathibodi Hospital, Mahidol University, Bangkok, Thailand
+
+- id: sermkiat-chula
+  given: Sermkiat
+  family: Lolak
+  orcid: 0000-0002-6379-523X
+  affiliations:
+    - King Chulalongkorn Memorial Hospital, Bangkok, Thailand
+
+- id: sukanya
+  given: Sukanya
+  family: Siriyotha
+  orcid: 0000-0001-7905-8392
+  affiliations:
+    - Department of Clinical Epidemiology and Biostatistics, Faculty of Medicine
+      Ramathibodi Hospital, Mahidol University, Bangkok, Thailand
+
+- id: suparee
+  given: Suparee
+  family: Boonmanunt
+  orcid: 0000-0003-0474-9986
+  affiliations:
+    - Department of Clinical Epidemiology and Biostatistics, Faculty of Medicine
+      Ramathibodi Hospital, Mahidol University, Bangkok, Thailand
+
+- id: suphachoke
+  given: Suphachoke
+  family: Sonsilphong
+  orcid: 0000-0003-4142-5534
+  affiliations:
+    - Faculty of Medicine, Khon Kaen University, Khon Kaen, Thailand
+
+- id: suphakarn
+  given: Suphakarn
+  family: Techapongsatorn
+  orcid: 0000-0001-5373-7362
+  affiliations:
+    - Department of Surgery, Faculty of Medicine Vajira Hospital,
+      Navamindradhiraj University, Bangkok, Thailand
+
+# ── ID=T ─────────────────────────────────────────────────────────────────────────
+
+- id: thinnakrit
+  given: Thinnakrit
+  family: Sasiprapha
+  orcid: 0009-0008-4156-3826
+  affiliations:
+    - Division of Cardiology, Department of Medicine, Faculty of Medicine
+      Ramathibodi Hospital, Mahidol University, Bangkok, Thailand
+
+- id: thosaphol
+  given: Thosaphol
+  family: Limpijankit
+  orcid: 0000-0002-1457-350X
+  affiliations:
+    - Division of Cardiology, Department of Medicine, Faculty of Medicine
+      Ramathibodi Hospital, Mahidol University, Bangkok, Thailand
+
+- id: thunyarat
+  given: Thunyarat
+  family: Anothaisintawee
+  orcid: 0000-0003-1002-8536
+  affiliations:
+    - Department of Clinical Epidemiology and Biostatistics, Faculty of Medicine
+      Ramathibodi Hospital, Mahidol University, Bangkok, Thailand
+
+- id: tint-lwin
+  given: Tint Lwin
+  family: Win
+  orcid: 0000-0003-2644-9132
+  affiliations:
+    - Department of Clinical Epidemiology and Biostatistics, Faculty of Medicine
+      Ramathibodi Hospital, Mahidol University, Bangkok, Thailand
+
+- id: tun-tun
+  given: Tun Tun
+  family: Win
+  orcid: 0000-0001-9353-9766
+  affiliations:
+    - Defence Services Medical Academy, Mingaladon, Yangon, Myanmar
+
+# ── ID=V ─────────────────────────────────────────────────────────────────────────
+
+- id: varisa
+  given: Varisa
+  family: Limpijankit
+  orcid: 0009-0002-0528-0227
+  affiliations:
+    - Chulalongkorn University International Medical Program, Faculty of Medicine,
+      Chulalongkorn University, Bangkok, Thailand
+
+# ── ID=W ─────────────────────────────────────────────────────────────────────────
+
+- id: wanchana
+  given: Wanchana
+  family: Ponthongmak
+  orcid: 0000-0002-9896-1349
+  affiliations:
+    - Department of Clinical Epidemiology and Biostatistics, Faculty of Medicine
+      Ramathibodi Hospital, Mahidol University, Bangkok, Thailand
+
+# ── ID=Y ─────────────────────────────────────────────────────────────────────────
+
+- id: yan-naung
+  given: Yan Naung
+  family: Win
+  orcid: 0000-0002-9078-5029
+  affiliations:
+    - Health and Disease Control Unit, Nay Pyi Taw, Myanmar
+
+- id: ye-min
+  given: Ye Min
+  family: Htun
+  orcid: 0000-0002-9706-9834
+  affiliations:
+    - Health and Disease Control Unit, Nay Pyi Taw, Myanmar

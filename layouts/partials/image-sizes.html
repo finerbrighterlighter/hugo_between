@@ -1,0 +1,19 @@
+{{- /*
+  Returns the `sizes` attribute matching the real main-column width.
+
+  Layout (assets/css/console.css + terminal.css):
+    .container  max-width 95vw, 20px padding each side
+    <768px      single column          → main = 95vw - 40px
+    768–1439px  330px sidebar + 2rem   → main = 95vw - 40px - 330px - 2rem
+    ≥1440px     25% | 1fr | 25%, 2rem gaps → main = (95vw - 40px - 4rem) / 2
+
+  Arg (string): "main" (default), "figure" (60px side margins), "gallery" (4-col grid, 1em gaps)
+*/ -}}
+{{- $kind := . | default "main" -}}
+{{- $sizes := "(max-width: 767px) calc(95vw - 40px), (max-width: 1439px) calc(95vw - 370px - 2rem), calc(47.5vw - 20px - 2rem)" -}}
+{{- if eq $kind "gallery" -}}
+  {{- $sizes = "(max-width: 767px) calc((95vw - 40px - 3em) / 4), (max-width: 1439px) calc((95vw - 370px - 5em) / 4), calc((47.5vw - 20px - 5em) / 4)" -}}
+{{- else if eq $kind "figure" -}}
+  {{- $sizes = "(max-width: 767px) calc(95vw - 160px), (max-width: 1439px) calc(95vw - 490px - 2rem), calc(47.5vw - 140px - 2rem)" -}}
+{{- end -}}
+{{- return $sizes -}}

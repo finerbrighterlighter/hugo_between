@@ -1,0 +1,33 @@
+{{- if ne .Kind "404" -}}
+{{- $items := slice (dict "@type" "ListItem" "position" 1 "name" "Home" "item" .Site.BaseURL) -}}
+{{- $pos   := 2 -}}
+{{- $path  := "" -}}
+{{- $parts := slice -}}
+{{- $crumbPath := .RelPermalink -}}
+{{- $languageRoot := strings.TrimSuffix "/" .Site.Home.RelPermalink -}}
+{{- $langPrefix := printf "/%s/" .Site.Language.Lang -}}
+{{- if hasPrefix .RelPermalink $langPrefix -}}
+  {{- $crumbPath = printf "/%s" (strings.TrimPrefix $langPrefix .RelPermalink) -}}
+{{- end -}}
+{{- range (split $crumbPath "/") -}}
+  {{- if ne . "" -}}{{- $parts = $parts | append . -}}{{- end -}}
+{{- end -}}
+{{- $lastIdx := sub (len $parts) 1 -}}
+{{- range $i, $part := $parts -}}
+  {{- $path = printf "%s/%s" $path $part -}}
+  {{- $isLast := eq $i $lastIdx -}}
+  {{- $pg   := site.GetPage $path -}}
+  {{- if $pg -}}
+    {{- $name := $pg.Title -}}
+    {{- $url  := cond $isLast $.Permalink (printf "%s%s/" $languageRoot $path | absURL) -}}
+    {{- $items = $items | append (dict "@type" "ListItem" "position" $pos "name" $name "item" $url) -}}
+    {{- $pos = add $pos 1 -}}
+  {{- else if $isLast -}}
+    {{- $items = $items | append (dict "@type" "ListItem" "position" $pos "name" $.Title "item" $.Permalink) -}}
+    {{- $pos = add $pos 1 -}}
+  {{- end -}}
+{{- end -}}
+{{- if gt (len $items) 1 -}}
+<script type="application/ld+json">{{ dict "@context" "https://schema.org" "@type" "BreadcrumbList" "itemListElement" $items | jsonify | safeJS }}</script>
+{{- end -}}
+{{- end -}}

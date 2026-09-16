@@ -1,0 +1,53 @@
+# Local secrets for developer machines only.
+.env
+
+# Any local env variants (e.g., .env.local, .env.dev) should stay private.
+.env.*
+
+# Keep the template file tracked so new setups have a documented skeleton.
+!.env.example
+
+# Hugo generated site output; reproducible from source.
+public/
+
+# Hugo image/resource cache; machine/build specific generated artifacts.
+resources/_gen/
+
+# Hugo runtime lock file created during local server/build sessions.
+.hugo_build.lock
+
+# Finder metadata from macOS; not part of project source.
+.DS_Store
+
+# Python bytecode/cache files from local tooling/scripts.
+__pycache__/
+
+# Compiled Python artifacts; deterministic and not source of truth.
+*.pyc
+
+# Keep BibTeX cache tracked intentionally for CV/build reproducibility.
+# scripts/.bibtex_cache.json
+
+# Local assistant notes; intentionally excluded from repository history.
+CLAUDE.md
+
+# Local Copilot working notes; intentionally excluded from repository history.
+COPILOT.md
+
+# Local agent working notes; intentionally excluded from repository history.
+agents.md
+
+# Local Claude workspace config directory.
+.claude/
+
+# Local editor configuration directory; keep all workspace settings private.
+.vscode/
+
+# Local markdownlint preferences (not required for project behavior).
+.markdownlint.json
+
+# Node dev dependencies for the QC scripts; restored by `npm ci` from package-lock.json.
+node_modules/
+
+# Puppeteer's downloaded browser cache, when it lands in the project.
+.cache/puppeteer/

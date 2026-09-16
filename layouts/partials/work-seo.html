@@ -1,0 +1,105 @@
+{{- $rm := partial "researcher-map.html" . -}}
+
+{{- $src := slice -}}
+{{- with .Params.sources }}{{- $src = . -}}{{- end -}}
+{{- $ft  := index (where $src "text" "fulltext") 0 -}}
+{{- $doi := "" -}}
+{{- $pdf := "" -}}
+{{- range $src -}}
+  {{- if and (not $doi) (strings.Contains .url "doi.org/") -}}
+    {{- $doi = .url | strings.TrimPrefix "https://doi.org/" | strings.TrimPrefix "http://doi.org/" -}}
+  {{- end -}}
+  {{- if and (not $pdf) (hasSuffix (lower .url) ".pdf") -}}
+    {{- if hasPrefix .url "http" -}}
+      {{- $pdf = .url -}}
+    {{- else -}}
+      {{- $pdf = .url | absURL -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- $keywords := slice -}}
+{{- with .Params.conditions }}{{- $keywords = $keywords | append . -}}{{- end -}}
+{{- with .Params.datasource }}{{- $keywords = $keywords | append . -}}{{- end -}}
+{{- with .Params.methods }}{{- $keywords = $keywords | append . -}}{{- end -}}
+
+{{/* ── citation_* meta tags (Google Scholar, Semantic Scholar, etc.) ── */}}
+<meta name="citation_title" content="{{ .Title }}">
+{{- range .Params.authors -}}
+  {{- $given := .given -}}
+  {{- $family := .family -}}
+  {{- with .id -}}
+    {{- $person := index $rm . -}}
+    {{- with $person -}}
+      {{- $given = $person.given -}}
+      {{- $family = $person.family -}}
+    {{- end -}}
+  {{- end -}}
+  <meta name="citation_author" content="{{ $family }}, {{ $given }}">
+{{- end }}
+<meta name="citation_publication_date" content="{{ .Date.Format "2006/01/02" }}">
+{{ with .Params.venue -}}
+<meta name="citation_journal_title" content="{{ . }}">
+{{ end -}}
+{{ with $doi -}}
+<meta name="citation_doi" content="{{ . }}">
+{{ end -}}
+{{ with $pdf -}}
+<meta name="citation_pdf_url" content="{{ . }}">
+{{ end -}}
+<meta name="citation_abstract_html_url" content="{{ .Permalink }}">
+{{ with $ft -}}
+<meta name="citation_fulltext_html_url" content="{{ .url }}">
+{{ end }}
+{{ with $keywords -}}
+<meta name="citation_keywords" content="{{ delimit . ", " }}">
+{{ end -}}
+
+{{/* ── Article meta for social/share consumers ── */}}
+<meta property="article:published_time" content="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
+
+{{/* ── JSON-LD ScholarlyArticle ── */}}
+{{- $authors := slice -}}
+{{- range .Params.authors -}}
+  {{- $given := .given -}}
+  {{- $family := .family -}}
+  {{- $orcid := "" -}}
+  {{- with .id -}}
+    {{- $person := index $rm . -}}
+    {{- with $person -}}
+      {{- $given = $person.given -}}
+      {{- $family = $person.family -}}
+      {{- with $person.orcid -}}{{- $orcid = . -}}{{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $entry := dict "@type" "Person" "name" (printf "%s %s" $given $family) -}}
+  {{- with $orcid -}}
+    {{- $entry = merge $entry (dict "identifier" (printf "https://orcid.org/%s" .)) -}}
+  {{- end -}}
+  {{- $authors = $authors | append $entry -}}
+{{- end -}}
+
+{{- $ld := dict
+  "@context" "https://schema.org"
+  "@type"    "ScholarlyArticle"
+  "name"     .Title
+  "headline" .Title
+  "datePublished" (.Date.Format "2006-01-02")
+  "url"      .Permalink
+  "author"   $authors
+-}}
+{{- with $doi -}}
+  {{- $ld = merge $ld (dict "sameAs" (printf "https://doi.org/%s" .)) -}}
+{{- end -}}
+{{- with .Params.venue -}}
+  {{- $ld = merge $ld (dict "isPartOf" (dict "@type" "Periodical" "name" .)) -}}
+{{- end -}}
+{{- with .Plain -}}
+  {{- $ld = merge $ld (dict "description" (. | truncate 500 "...")) -}}
+{{- end -}}
+{{- with $keywords -}}
+  {{- $ld = merge $ld (dict "keywords" .) -}}
+{{- end -}}
+{{- with $pdf -}}
+  {{- $ld = merge $ld (dict "encoding" (dict "@type" "MediaObject" "contentUrl" . "encodingFormat" "application/pdf")) -}}
+{{- end -}}
+<script type="application/ld+json">{{ $ld | jsonify | safeJS }}</script>

@@ -1,0 +1,19 @@
+{{- $hp   := hugo.Data.homepage.sidebar -}}
+{{- $orcid   := $hp.orcid -}}
+{{- $scholar := $hp.scholar_profile -}}
+
+{{- $sameAs := slice -}}
+{{- with $orcid   -}}{{- $sameAs = $sameAs | append (printf "https://orcid.org/%s" .) -}}{{- end -}}
+{{- with $scholar -}}{{- $sameAs = $sameAs | append (printf "https://scholar.google.com/citations?user=%s" .) -}}{{- end -}}
+
+{{- $ld := dict
+  "@context" "https://schema.org"
+  "@type"    "Person"
+  "name"     $hp.name
+  "jobTitle" $hp.job_title
+  "url"      .Site.BaseURL
+  "image"    (absURL "apple-touch-icon.png")
+  "description" .Site.Params.description
+  "sameAs"   $sameAs
+-}}
+<script type="application/ld+json">{{ $ld | jsonify | safeJS }}</script>

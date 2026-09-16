@@ -1,0 +1,20 @@
+{{ define "main" }}
+{{- $pages := where .RegularPages "Params.private" "ne" true -}}
+<header class="page-head">
+  <h1>{{ .Title }}</h1>
+  {{ if eq .Section "posts" }}<p class="intro">{{ i18n "posts_intro" }}</p>{{ end }}
+</header>
+<div class="page-body narrow" style="max-width:56rem">
+  {{ .Content }}
+  {{- range $pages.GroupByDate "2006" }}
+  <section class="yeargroup">
+    <h2>{{ .Key }}</h2>
+    <ul class="datelist">
+      {{- range .Pages }}
+      <li><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January" }}</time><a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ with .Params.company }}<span class="sub">{{ . }}</span>{{ end }}</li>
+      {{- end }}
+    </ul>
+  </section>
+  {{- end }}
+</div>
+{{ end }}
