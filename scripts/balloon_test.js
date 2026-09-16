@@ -1,4 +1,12 @@
 const puppeteer = require('puppeteer');
+/* Screenshots are diagnostics, not artefacts of the repository. They go to
+   QC_SHOT_DIR when set (CI points it at an upload path), otherwise to .qc-shots/,
+   which is gitignored. Previously they landed in the working directory and had to
+   be swept up by hand after every run. */
+const shotDir = process.env.QC_SHOT_DIR || '.qc-shots';
+require('node:fs').mkdirSync(shotDir, { recursive: true });
+const shot = (name) => require('node:path').join(shotDir, name);
+
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const B = process.argv[2] || 'http://127.0.0.1:1313';
 
@@ -54,7 +62,7 @@ const MIN_ROW_H = 30; // tap-target floor for a menu row, in CSS px
     check(`[${w}] balloon menu has no rows`, r.length > 0, String(r.length));
     check(`[${w}] a menu row is shorter than ${MIN_ROW_H}px`, r.every(x => x.h >= MIN_ROW_H), fmt(r.filter(x => x.h < MIN_ROW_H)));
     check(`[${w}] a menu row has no label`, r.every(x => x.text.length > 0));
-    if (w === 390) await p.screenshot({ path: 'g-top-390.png' });
+    if (w === 390) await p.screenshot({ path: shot('g-top-390.png') });
     // More…
     await p.$eval('[data-more]', e => e.click()); await sleep(200);
     const r2 = await rows(p);
@@ -63,8 +71,8 @@ const MIN_ROW_H = 30; // tap-target floor for a menu row, in CSS px
     check(`[${w}] More… revealed no extra rows`, r2.length > r.length, `${r.length} → ${r2.length}`);
     check(`[${w}] More… did not move focus to a revealed row`, moreFocus.length > 0 && !r.some(x => x.text === moreFocus), moreFocus);
     check(`[${w}] a revealed row is shorter than ${MIN_ROW_H}px`, r2.every(x => x.h >= MIN_ROW_H), fmt(r2.filter(x => x.h < MIN_ROW_H)));
-    if (w === 375) await p.screenshot({ path: 'g-more-375.png' });
-    if (w === 430) await p.screenshot({ path: 'g-more-430.png' });
+    if (w === 375) await p.screenshot({ path: shot('g-more-375.png') });
+    if (w === 430) await p.screenshot({ path: shot('g-more-430.png') });
     await p.close();
   }
   // keyboard: jump to Research, active detection, End/Home/Escape
@@ -90,7 +98,7 @@ const MIN_ROW_H = 30; // tap-target floor for a menu row, in CSS px
     out.push('reopen focus=' + reopenFocus + ' active=' + reopenActive);
     check('reopened menu did not focus the current section', reopenActive === true, reopenFocus);
     check('reopened focus is not a menu row', (await rows(p)).some(x => x.text === reopenFocus), reopenFocus);
-    await p.screenshot({ path: 'g-mid-390.png' });
+    await p.screenshot({ path: shot('g-mid-390.png') });
     const collapsed = await rows(p);
     await p.keyboard.press('End');
     // Snapshot the rows right after each key press so a live-reload rebuild
@@ -122,17 +130,17 @@ const MIN_ROW_H = 30; // tap-target floor for a menu row, in CSS px
     await p.evaluate(() => scrollTo(0, document.body.scrollHeight)); await sleep(300); await p.$eval('#balloon-button', e => e.click()); await sleep(300);
     await assertOpen(p, '[bottom]');
     check('[bottom] menu has no rows when opened at page end', (await rows(p)).length > 0);
-    await p.screenshot({ path: 'g-bottom-390.png' }); await p.close(); }
+    await p.screenshot({ path: shot('g-bottom-390.png') }); await p.close(); }
   { const p = await open(390, B + '/', { dark: true }); await p.evaluate(() => scrollTo(0, 1500)); await sleep(300); await p.$eval('#balloon-button', e => e.click()); await sleep(200); await p.$eval('[data-more]', e => e.click()); await sleep(200);
     check('[dark] menu did not open', await p.$eval('#balloon-menu', e => e.hidden) === false);
     check('[dark] theme is not dark', await p.evaluate(() => document.documentElement.dataset.theme) === 'dark');
-    await p.screenshot({ path: 'g-dark-390.png' }); await p.close(); }
+    await p.screenshot({ path: shot('g-dark-390.png') }); await p.close(); }
   { const p = await open(390, B + '/', { cb: true }); await p.$eval('#balloon-button', e => e.click()); await sleep(200); await p.$eval('[data-more]', e => e.click()); await sleep(200);
     const pressed = await p.$eval('[data-palette-toggle]', e => e.getAttribute('aria-pressed'));
     out.push('cb pressed=' + pressed);
     check('stored colour-blind palette not reflected in the menu toggle', pressed === 'true', String(pressed));
     check('stored colour-blind palette not applied to <html>', await p.evaluate(() => document.documentElement.dataset.palette) === 'colorblind');
-    await p.screenshot({ path: 'g-cb-390.png' }); await p.close(); }
+    await p.screenshot({ path: shot('g-cb-390.png') }); await p.close(); }
   { const p = await open(390, B + '/works/'); await sleep(1500); await p.$eval('#balloon-button', e => e.click()); await sleep(300);
     const r = await rows(p);
     out.push('works: ' + fmt(r));
@@ -145,7 +153,7 @@ const MIN_ROW_H = 30; // tap-target floor for a menu row, in CSS px
     check('[mm] balloon menu has no rows', r.length > 0);
     check('[mm] menu offers no switch back to English', r.some(x => /English/i.test(x.text)), fmt(r));
     check('[mm] a menu row is shorter than ' + MIN_ROW_H + 'px', r.every(x => x.h >= MIN_ROW_H), fmt(r.filter(x => x.h < MIN_ROW_H)));
-    await p.screenshot({ path: 'g-mm-390.png' }); await p.close(); }
+    await p.screenshot({ path: shot('g-mm-390.png') }); await p.close(); }
   console.log(out.join('\n')); console.log('errors:', errors.length ? errors.join('\n') : 'none');
   check('same-origin console/page/request errors', errors.length === 0, errors.slice(0,10).join(' | '));
   } finally {

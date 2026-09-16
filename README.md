@@ -3,6 +3,10 @@
 Personal website of Htun Teza, rebuilt in 2026 as an editorial two-voice page (see `docs/design.md`).
 Hugo 0.157 (pinned in `netlify.toml`), no theme, no build step beyond Hugo's own pipes.
 
+**[docs/operations.md](docs/operations.md) is the task-first guide**: how to add a post or a paper, put an
+institution mark on a work, gate a document, add an external script, read a QC failure, and push this
+repository to GitHub for the first time.
+
 ```bash
 cp .env.example .env            # API keys for the live panels (optional)
 dotenv run -- hugo server -w    # http://localhost:1313

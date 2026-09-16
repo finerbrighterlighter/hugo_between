@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """
-Convert TTF fonts to WOFF2 and update @font-face src in console.css.
+Convert TTF fonts to WOFF2 and update @font-face src in main.css.
 
 USAGE
 -----
   conda run -n hugo python scripts/convert_fonts.py
 
 Drops a .woff2 beside each .ttf in static/theme/font/ and
-rewrites every @font-face src in console.css to list woff2 first with ttf
+rewrites every @font-face src in main.css to list woff2 first with ttf
 as fallback.
 
 Idempotent: already-converted fonts and already-patched CSS lines are skipped.
@@ -25,7 +25,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 FONT_DIR   = REPO_ROOT / "static/theme/font"
-CSS_FILE   = REPO_ROOT / "assets/css/console.css"
+CSS_FILE   = REPO_ROOT / "assets/css/main.css"
 CSS_FONT_PREFIX = "/theme/font/"
 
 
@@ -105,9 +105,9 @@ def patch_css(css_path: Path, font_dir: Path) -> None:
 
     if changed:
         css_path.write_text(new_text, encoding="utf-8")
-        print(f"[OK]   console.css — {changed} src line(s) updated to woff2+ttf")
+        print(f"[OK]   main.css — {changed} src line(s) updated to woff2+ttf")
     else:
-        print("[SKIP] console.css already fully patched")
+        print("[SKIP] main.css already fully patched")
 
 
 def main():
@@ -124,7 +124,7 @@ def main():
 
     print(f"\nPatching {CSS_FILE.relative_to(REPO_ROOT)}\n")
     patch_css(CSS_FILE, FONT_DIR)
-    print("\nDone. Commit the new .woff2 files and the updated console.css.")
+    print("\nDone. Commit the new .woff2 files and the updated main.css.")
 
 
 if __name__ == "__main__":

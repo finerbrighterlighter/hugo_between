@@ -1,4 +1,12 @@
 const puppeteer = require('puppeteer');
+/* Screenshots are diagnostics, not artefacts of the repository. They go to
+   QC_SHOT_DIR when set (CI points it at an upload path), otherwise to .qc-shots/,
+   which is gitignored. Previously they landed in the working directory and had to
+   be swept up by hand after every run. */
+const shotDir = process.env.QC_SHOT_DIR || '.qc-shots';
+require('node:fs').mkdirSync(shotDir, { recursive: true });
+const shot = (name) => require('node:path').join(shotDir, name);
+
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const B = process.argv[2] || 'http://127.0.0.1:1313';
 
@@ -51,7 +59,7 @@ const ROW_SEL = '#balloon-menu [role=menuitem], #balloon-menu [role=menuitemchec
     await p.screenshot({ path: `f-home-${w}.png`, fullPage: true });
     if (w === 390) {
       await p.evaluate(() => document.querySelector('#writes').scrollIntoView()); await sleep(400);
-      await p.screenshot({ path: 'f-writes-390.png' });
+      await p.screenshot({ path: shot('f-writes-390.png') });
     }
     await p.close();
   }
@@ -63,10 +71,10 @@ const ROW_SEL = '#balloon-menu [role=menuitem], #balloon-menu [role=menuitemchec
   // mm
   { const p = await open(1440, 900, B + '/mm/');
     check('[mm 1440] /mm/ is not lang=my', await p.$eval('html', e => e.lang) === 'my');
-    await p.screenshot({ path: 'f-mm-1440.png', fullPage: true }); await p.close(); }
+    await p.screenshot({ path: shot('f-mm-1440.png'), fullPage: true }); await p.close(); }
   { const p = await open(390, 844, B + '/mm/'); const r = await p.evaluate(() => ({ sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth })); out.push(`[mm 390] overflow ok=${r.sw <= r.cw}`);
     check('[mm 390] horizontal overflow on /mm/', r.sw <= r.cw, `${r.sw}/${r.cw}`);
-    await p.screenshot({ path: 'f-mm-390.png', fullPage: true }); await p.close(); }
+    await p.screenshot({ path: shot('f-mm-390.png'), fullPage: true }); await p.close(); }
   // colorblind light + dark, blood
   let cbLight = '', cbDark = '';
   { const p = await open(1440, 900, B + '/', { cb: true }); cbLight = await p.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--accent').trim());
@@ -75,7 +83,7 @@ const ROW_SEL = '#balloon-menu [role=menuitem], #balloon-menu [role=menuitemchec
     check('cb light: --accent is unset', cbLight.length > 0);
     check('cb light: stored palette not applied to <html>', await p.evaluate(() => document.documentElement.dataset.palette) === 'colorblind');
     check('cb light: palette toggle not aria-pressed', pressed === 'true', String(pressed));
-    await p.screenshot({ path: 'f-cb-light-1440.png' }); await p.close(); }
+    await p.screenshot({ path: shot('f-cb-light-1440.png') }); await p.close(); }
   { const p = await open(390, 844, B + '/', { cb: true, dark: true }); cbDark = await p.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--accent').trim());
     out.push('cb dark accent=' + cbDark);
     check('cb dark: --accent is unset', cbDark.length > 0);
@@ -83,12 +91,12 @@ const ROW_SEL = '#balloon-menu [role=menuitem], #balloon-menu [role=menuitemchec
     check('cb dark: theme is not dark', await p.evaluate(() => document.documentElement.dataset.theme) === 'dark');
     await p.evaluate(() => window.scrollTo(0, 2200)); await sleep(300); await p.$eval('#balloon-button', e => e.click()); await sleep(300);
     check('cb dark: balloon menu did not open', await p.$eval('#balloon-menu', e => e.hidden) === false);
-    await p.screenshot({ path: 'f-cb-dark-balloon-390.png' }); await p.close(); }
+    await p.screenshot({ path: shot('f-cb-dark-balloon-390.png') }); await p.close(); }
   { const p = await open(1024, 900, B + '/blood/', { cb: true }); const bloodVar = await p.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--blood').trim());
     out.push('blood cb blood-var=' + bloodVar);
     check('blood: --blood is unset under the colour-blind palette', bloodVar.length > 0);
-    await p.screenshot({ path: 'f-blood-cb.png' }); await p.close(); }
-  { const p = await open(1024, 900, B + '/blood/', { cb: true, dark: true }); await p.screenshot({ path: 'f-blood-cb-dark.png' }); await p.close(); }
+    await p.screenshot({ path: shot('f-blood-cb.png') }); await p.close(); }
+  { const p = await open(1024, 900, B + '/blood/', { cb: true, dark: true }); await p.screenshot({ path: shot('f-blood-cb-dark.png') }); await p.close(); }
   // toggle from footer persists
   { const p = await open(1440, 900, B + '/');
     const before = await p.evaluate(() => document.documentElement.dataset.palette || 'default');
@@ -106,7 +114,7 @@ const ROW_SEL = '#balloon-menu [role=menuitem], #balloon-menu [role=menuitemchec
     await p.close(); }
   // balloon open at top / middle / bottom (light)
   { const p = await open(390, 844, B + '/');
-    await p.$eval('#balloon-button', e => e.click()); await sleep(300); await p.screenshot({ path: 'f-balloon-top.png' });
+    await p.$eval('#balloon-button', e => e.click()); await sleep(300); await p.screenshot({ path: shot('f-balloon-top.png') });
     const rows = await p.$$eval(ROW_SEL, l => l.filter(e => !e.closest('[hidden]')).map(e => e.textContent.trim().replace(/\s+/g,' ')));
     out.push('balloon rows: ' + rows.join(' | '));
     check('balloon menu did not open at the top of the page', await p.$eval('#balloon-menu', e => e.hidden) === false);
@@ -133,13 +141,13 @@ const ROW_SEL = '#balloon-menu [role=menuitem], #balloon-menu [role=menuitemchec
         last = h;
       }
     });
-    await sleep(300); await p.$eval('#balloon-button', e => e.click()); await sleep(300); await p.screenshot({ path: 'f-balloon-mid.png' });
+    await sleep(300); await p.$eval('#balloon-button', e => e.click()); await sleep(300); await p.screenshot({ path: shot('f-balloon-mid.png') });
     const midActive = await p.evaluate(() => document.activeElement.textContent.trim());
     out.push('mid active=' + midActive);
     check('reopening mid-page did not focus a menu row', (await p.$$eval(ROW_SEL, l => l.map(e => e.textContent.trim().replace(/\s+/g,' ')))).includes(midActive), midActive);
     check('reopening mid-page did not focus the current section', await p.evaluate(() => document.activeElement.classList.contains('is-active')) === true, midActive);
     await p.keyboard.press('Escape'); await sleep(250);
-    await p.evaluate(() => window.scrollTo(0, document.body.scrollHeight)); await sleep(300); await p.$eval('#balloon-button', e => e.click()); await sleep(300); await p.screenshot({ path: 'f-balloon-bottom.png' });
+    await p.evaluate(() => window.scrollTo(0, document.body.scrollHeight)); await sleep(300); await p.$eval('#balloon-button', e => e.click()); await sleep(300); await p.screenshot({ path: shot('f-balloon-bottom.png') });
     check('balloon menu did not open at the bottom of the page', await p.$eval('#balloon-menu', e => e.hidden) === false);
     await p.keyboard.press('End'); await p.keyboard.press('ArrowUp');
     const penultimate = await p.evaluate(() => document.activeElement.textContent.trim());

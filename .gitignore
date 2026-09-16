@@ -52,8 +52,5 @@ node_modules/
 # Puppeteer's downloaded browser cache, when it lands in the project.
 .cache/puppeteer/
 
-# Screenshots written by the browser QC scripts into the working directory.
-f-*.png
-g-*.png
-r3-*.png
-shot-*.png
+# Screenshots written by the browser QC scripts (see QC_SHOT_DIR in scripts/).
+.qc-shots/

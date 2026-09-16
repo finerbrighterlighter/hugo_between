@@ -1,4 +1,12 @@
 const puppeteer = require('puppeteer');
+/* Screenshots are diagnostics, not artefacts of the repository. They go to
+   QC_SHOT_DIR when set (CI points it at an upload path), otherwise to .qc-shots/,
+   which is gitignored. Previously they landed in the working directory and had to
+   be swept up by hand after every run. */
+const shotDir = process.env.QC_SHOT_DIR || '.qc-shots';
+require('node:fs').mkdirSync(shotDir, { recursive: true });
+const shot = (name) => require('node:path').join(shotDir, name);
+
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const B = process.argv[2] || 'http://127.0.0.1:1313';
 
@@ -89,13 +97,13 @@ const parseCount = t => { const m = /(\d+)\s+of\s+(\d+)/.exec(t || ''); return m
     check(`[${tag}] More… revealed no extra method tags`, extra > 0, String(extra));
     check(`[${tag}] More… label did not change`, moreLabel.trim() !== moreLabelBefore, `${moreLabelBefore} → ${moreLabel.trim()}`);
     check(`[${tag}] More… is not aria-expanded`, await page.$eval('.filter-group[data-group="methods"] [data-more]', e => e.getAttribute('aria-expanded')) === 'true');
-    if (tag==='phone') { await page.goto(B + '/works/?search=periodontitis', { waitUntil: 'networkidle2' }); await sleep(400); await page.screenshot({ path: 'r3-works-390.png', fullPage: true }); }
+    if (tag==='phone') { await page.goto(B + '/works/?search=periodontitis', { waitUntil: 'networkidle2' }); await sleep(400); await page.screenshot({ path: shot('r3-works-390.png'), fullPage: true }); }
     else {
       await page.goto(B + '/works/?tags=hypertension,thailand', { waitUntil: 'networkidle2' }); await sleep(400);
       const deep = parseCount(await count());
       check(`[${tag}] ?tags= deep link did not apply`, deep !== null && deep.shown > 0 && deep.shown < deep.total, JSON.stringify(deep));
       check(`[${tag}] ?tags= deep link did not press both tags`, await page.$$eval('.filter-tag[aria-pressed="true"]', l => l.length) === 2);
-      await page.screenshot({ path: 'r3-works-1440.png', fullPage: true });
+      await page.screenshot({ path: shot('r3-works-1440.png'), fullPage: true });
     }
     await page.close();
   }
