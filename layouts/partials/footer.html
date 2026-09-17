@@ -39,7 +39,11 @@
     </div>
   </div>
   <div class="colophon-tech">
-    <p>{{ i18n "privacy_note" }} <button type="button" class="linklike" data-cache-flush>{{ i18n "clear_cache" }}</button> <span data-cache-status role="status"></span></p>
+    {{- /* The counter's dashboard is deliberately public, so the mention of it is a
+             link to the real numbers. Done with replaceRE on the word rather than by
+             putting markup in the i18n strings, so the Burmese copy stays plain text
+             and needs no change. */ -}}
+    <p>{{ i18n "privacy_note" | replaceRE "GoatCounter" `<a href="https://stats.htunteza.com" target="_blank" rel="noreferrer noopener">GoatCounter</a>` | safeHTML }} <button type="button" class="linklike" data-cache-flush>{{ i18n "clear_cache" }}</button> <span data-cache-status role="status"></span></p>
     <p>{{ i18n "licence" }} <a rel="license noreferrer noopener" href="https://creativecommons.org/licenses/by/4.0/" target="_blank">CC BY 4.0</a>. {{ i18n "licence_marks" }}
       {{- /* The credits page exists in English only; on Burmese pages this falls back to
              the English URL and says so, rather than going missing. The label falls back
