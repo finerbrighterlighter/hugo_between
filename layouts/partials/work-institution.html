@@ -3,8 +3,12 @@
        done, so it is opt-in per work via `institution: <key>` in front matter and
        is never inferred from the date. Keys are defined in data/institutions.yml.
 
-       An unknown key is a content mistake worth surfacing, so it warns rather
-       than failing the build; a work with no `institution` renders nothing. */ -}}
+       A work with no `institution` renders nothing, which is the safe default.
+       Everything else here fails the build rather than degrading quietly: an
+       unknown key, a logo that is not under assets/, and an entry missing
+       `source` or `rights`. A mark asserts an affiliation and reproduces someone
+       else's trademark, so a typo must stop the build rather than silently drop
+       the claim. */ -}}
 {{- $key := .Params.institution -}}
 {{- with $key -}}
   {{- $inst := index site.Data.institutions . -}}
