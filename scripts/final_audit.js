@@ -56,7 +56,7 @@ const ROW_SEL = '#balloon-menu [role=menuitem], #balloon-menu [role=menuitemchec
     check(`[${w}] #places first kicker is empty`, r.firstSection.trim().length > 0);
     // Cover art comes from third-party APIs; assert size only when one rendered.
     if (r.hasCover) check(`[${w}] lately cover has no box`, r.coverW > 0 && r.coverH > 0, `${r.coverW}x${r.coverH}`);
-    await p.screenshot({ path: `f-home-${w}.png`, fullPage: true });
+    await p.screenshot({ path: shot(`f-home-${w}.png`), fullPage: true });
     if (w === 390) {
       await p.evaluate(() => document.querySelector('#writes').scrollIntoView()); await sleep(400);
       await p.screenshot({ path: shot('f-writes-390.png') });
@@ -67,7 +67,7 @@ const ROW_SEL = '#balloon-menu [role=menuitem], #balloon-menu [role=menuitemchec
   for (const w of [1440, 820]) { const p = await open(w, 900, B + '/');
     const r = await p.evaluate(() => ({ sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth }));
     check(`[${w}] horizontal overflow on the home page`, r.sw <= r.cw, `${r.sw}/${r.cw}`);
-    await p.screenshot({ path: `f-home-${w}.png`, fullPage: true }); await p.close(); }
+    await p.screenshot({ path: shot(`f-home-${w}.png`), fullPage: true }); await p.close(); }
   // mm
   { const p = await open(1440, 900, B + '/mm/');
     check('[mm 1440] /mm/ is not lang=my', await p.$eval('html', e => e.lang) === 'my');
