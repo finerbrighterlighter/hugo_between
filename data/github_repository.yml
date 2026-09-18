@@ -6,6 +6,12 @@ groups:
         label: Hypertension
       - name: Dementia-Cohort
         label: Dementia
+      # Lab_Harmonization is private as of 2026-09-18: the GitHub API returns 404 for
+      # it, and the org exposes only Hypertension-Cohort, Dementia-Cohort,
+      # AF-Stroke-Dementia-Cohorts and .github. Listing it would put a link on the
+      # public About page that 404s for every visitor. Uncomment when it goes public.
+      # - name: Lab_Harmonization
+      #   label: Lab Harmonization
   - owner: finerbrighterlighter
     label: finerbrighterlighter
     repos:
@@ -13,3 +19,5 @@ groups:
         label: MM-COVID19
       - name: personal_web_hugo
         label: Hugo-TUI
+      - name: hugo_between
+        label: Hugo-Between
