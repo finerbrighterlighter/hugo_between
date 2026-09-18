@@ -171,9 +171,18 @@ The experience row is **Now | Before**, split by whether an entry is ongoing (`c
 ## Pass 13 (2026-09-18, the print colophon)
 
 The site had a print stylesheet that stripped the masthead, the footer and the spine, which is correct and
-which nobody ever saw twice. `layouts/partials/print-colophon.html` fills the space it leaves: an asterism as
-the break mark, one italic line naming the typefaces and who cut them, and a quiet Karla line with the page's
-own address and the date it was last revised.
+which nobody ever saw twice. `layouts/partials/print-colophon.html` fills the space it leaves: the duck as the
+printer's mark, one italic line naming the typefaces and who cut them, and a quiet Karla line identifying the
+page.
+
+The duck rather than a typographic mark because it is already the site's easter egg, hiding on the portrait,
+so it belongs here more than a borrowed asterism would.
+
+The identifying line is deliberately short. A paper's title is long by definition and is already the heading
+at the top of the sheet, so the line names the journal instead, falling back to the institution where a page
+has no venue; the transcripts carry an `institution` key for exactly this. The address is the section rather
+than the deep path, because someone holding the paper wants to know where to start looking, not to retype a
+slug. A private section falls back to the site itself.
 
 It is `display: none` on screen, so it reaches neither sighted readers nor assistive technology. It exists for
 the one person who prints a page and keeps it, which is the only easter egg this design could have that the

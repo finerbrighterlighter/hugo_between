@@ -3,4 +3,5 @@ title: "ကျန်းမာရေးဆိုင်ရာ ဒေတာသိ�
 layout: protected-document
 private: true
 protected_document: msc-transcript
+institution: mahidol
 ---
