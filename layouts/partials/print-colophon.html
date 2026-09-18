@@ -1,0 +1,29 @@
+{{- /* A colophon that exists only on paper.
+
+       The site already had a print stylesheet that stripped the masthead, the
+       footer and the spine, which is correct and which nobody ever sees twice.
+       This fills the space it leaves: the typefaces and who cut them, the page's
+       own address, and when the page was last revised. On screen it is
+       `display: none`, so it is invisible to sighted readers and to assistive
+       technology alike; it exists for the one person who prints a page and keeps
+       it. The asterism is the printer's mark for a break, which is what this is.
+
+       Everything in it is a proper noun except one connective sentence, so it
+       still reads correctly on a Burmese page whose translation has not been
+       written yet. */ -}}
+{{- $lastmod := .Lastmod -}}
+{{- if $lastmod.IsZero -}}{{- $lastmod = .Date -}}{{- end -}}
+<aside class="print-colophon">
+  <p class="print-mark">⁂</p>
+  <p class="print-set">
+    {{- with i18n "print_colophon" (dict "serif" "Newsreader" "sans" "Karla") -}}
+      {{- . | safeHTML -}}
+    {{- else -}}
+      Set in <em>Newsreader</em> by Production Type and <em>Karla</em> by Jonny Pinhorn.
+    {{- end }}
+    {{- if eq .Site.Language.Lang "mm" }}
+    {{ with i18n "print_colophon_burmese" }}{{ . | safeHTML }}{{ else }}Burmese set in <em>Thit Sar Shwe Si</em> by Htun Naung.{{ end }}
+    {{- end }}
+  </p>
+  <p class="print-source">{{ .Permalink | replaceRE "^https?://" "" }}{{ if not $lastmod.IsZero }} · {{ $lastmod.Format "2 January 2006" }}{{ end }}</p>
+</aside>

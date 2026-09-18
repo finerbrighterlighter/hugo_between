@@ -542,10 +542,19 @@ html:lang(my) .balloon-row{font-size:1rem;line-height:1.8}
 /* ---------- motion & print ---------- */
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
 html{scroll-behavior:smooth}
+/* The print colophon is paper-only: `display:none` keeps it from sighted readers
+   and from assistive technology, which is the intent. See partials/print-colophon.html. */
+.print-colophon{display:none}
 @media print{
-  .masthead,.colophon,.filter,details.cite,.covers-block,#now-playing,.skip,.intro{display:none!important}
+  /* .balloon is position:fixed, so without this it prints on every sheet. */
+  .masthead,.colophon,.filter,details.cite,.covers-block,#now-playing,.skip,.intro,.balloon{display:none!important}
   body{font-size:11pt;color:#000;background:#fff}
   .row>.voice-l,.row>.voice-r{border:0}.row::before{display:none}
   .row{grid-template-columns:1fr}
   a{text-decoration:none;color:inherit}
+  .print-colophon{display:block;margin:2.4rem auto 0;padding:0 var(--gutter);text-align:center;break-inside:avoid}
+  .print-mark{font-family:var(--serif);font-size:12pt;letter-spacing:.3em;margin:0 0 .5rem;color:#000}
+  .print-set{font-family:var(--serif);font-size:9pt;font-style:italic;line-height:1.5;margin:0 auto;color:#000;max-width:34em}
+  .print-set em{font-style:normal;font-weight:600}
+  .print-source{font-family:var(--sans);font-size:7.5pt;letter-spacing:.02em;margin:.6rem 0 0;color:#444;overflow-wrap:anywhere}
 }

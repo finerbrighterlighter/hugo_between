@@ -167,3 +167,21 @@ The experience row is **Now | Before**, split by whether an entry is ongoing (`c
   18.9:1 on the light paper and 1.17:1 on the dark one, which is invisible. It is monochrome, so inverting
   loses nothing. The active plate is untouched; it is orange, already reads at 7:1 on dark, and its colour is
   the point.
+
+## Pass 13 (2026-09-18, the print colophon)
+
+The site had a print stylesheet that stripped the masthead, the footer and the spine, which is correct and
+which nobody ever saw twice. `layouts/partials/print-colophon.html` fills the space it leaves: an asterism as
+the break mark, one italic line naming the typefaces and who cut them, and a quiet Karla line with the page's
+own address and the date it was last revised.
+
+It is `display: none` on screen, so it reaches neither sighted readers nor assistive technology. It exists for
+the one person who prints a page and keeps it, which is the only easter egg this design could have that the
+previous terminal-styled site could not.
+
+Everything in it is a proper noun except one connective sentence, so it still reads correctly on a Burmese page
+whose translation has not been written; adding `print_colophon` to `i18n/mm.yaml` is all a translation needs.
+The Burmese typeface line appears only on Burmese pages.
+
+Fixed while building it: `.balloon` is `position: fixed` and was not in the print hide list, so the mobile
+navigation button printed on every sheet.
