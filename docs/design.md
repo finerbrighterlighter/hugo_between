@@ -194,3 +194,27 @@ The Burmese typeface line appears only on Burmese pages.
 
 Fixed while building it: `.balloon` is `position: fixed` and was not in the print hide list, so the mobile
 navigation button printed on every sheet.
+
+## Pass 14 (2026-09-18, three small things hidden in plain sight)
+
+- **`/humans.txt`**, the counterpart to the `llms.txt` the site already emits. One plain text file written for
+  machines, one written for people, side by side at the root, which is the site's own argument in its simplest
+  possible form. Names the typefaces and their designers, what the site is built with, and the thanks. Linked
+  from every page with `rel="author"`, which is how the convention is discovered.
+- **The closing note in `llms.txt` and `llms-full.txt` now addresses its reader**, who is not a person, and
+  points at `humans.txt` as the human half. It is deliberately a courtesy and not an instruction, so that
+  nothing parsing the file is being told what to do.
+- **The last dot on the spine opens.** Every row draws an ochre dot through `.row::before` as decoration; the
+  one closing the last row of the home page is a `<details>` holding a single marginal note, the way a colophon
+  sits at the back of a book. No JavaScript: a disclosure is keyboard-operable and announced correctly on its
+  own. The visible mark stays 9px like every other dot while the hit area is padded to the 24px tap-target
+  floor, and it aligns to the spine, which the asymmetric row moves to 40%.
+
+The note first overlaid the row, which put it on top of the text either side, so it now sits in normal flow and
+pushes the footer down instead. It also has to span the row with `grid-column: 1 / -1` rather than `1 / 3`,
+because the row collapses to a single column on a phone and asking for a second one creates it. The audit
+caught that.
+
+The print colophon's mark now comes from `apple-touch-icon.png` rather than a separate duck file, so changing
+identity means replacing the icon set and nothing else. 180px is what a 600 dpi printer wants for a 22pt mark,
+and it is a third the weight of the 512px icon.

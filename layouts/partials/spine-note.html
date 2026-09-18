@@ -1,0 +1,23 @@
+{{- /* The ochre dot where a row meets the centre spine, made to open.
+
+       Every row draws one of these through `.row::before`, purely as
+       decoration. This turns a single dot — the last content row on the home
+       page — into a disclosure holding one marginal note, the way a colophon
+       sits at the back of a book rather than in the middle of the text.
+
+       A <details> rather than a button and a script: it is keyboard-operable,
+       announced correctly and works with no JavaScript at all. The row that
+       uses this carries `no-dot` so the CSS dot does not draw twice. The visible
+       mark stays 9px to match every other dot while the summary's hit area is
+       padded out to 24px, which is the tap-target floor.
+
+       The note itself lives in i18n so it can be rewritten without touching a
+       template. It is the author's voice, so it should read like him. */ -}}
+<details class="spine-note">
+  <summary>
+    <span class="sr-only">{{ with i18n "spine_note_label" }}{{ . }}{{ else }}A note in the margin{{ end }}</span>
+  </summary>
+  <div class="spine-note-body">
+    <p>{{ with i18n "spine_note" }}{{ . | safeHTML }}{{ else }}Two voices, one line down the middle. The line is the argument: most of what I do is deciding which side a thing belongs on, and being honest when it belongs on neither.{{ end }}</p>
+  </div>
+</details>

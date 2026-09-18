@@ -1,0 +1,60 @@
+
+          __
+        <(o )___
+         ( ._> /
+      ~~~~`---'~~~~
+
+
+/* THE SITE */
+
+    htunteza.com — Htun Teza. Dentist by training, health-data researcher by
+    practice. Bangkok.
+
+    This file is the companion to /llms.txt. That one is written for machines
+    and lists what is here. This one is written for whoever is reading it,
+    which is the harder audience to guess.
+
+
+/* WHO MADE IT */
+
+    Written, built and maintained by Htun Teza.
+    Contact: the address on /about/.
+
+
+/* SET IN */
+
+    Newsreader          Production Type, SIL Open Font License 1.1
+    Karla               Jonny Pinhorn, SIL Open Font License 1.1
+    Thit Sar Shwe Si    Phoenix Digital Art, drawn by Htun Naung — Burmese
+    Z01-Umoe002         ZinBo, drawn by Zin Bo — the plainer Burmese face
+    Architects Daughter Kimberly Geswein — Latin inside Burmese sentences
+
+    Full credits, including software and data sources: /general/credits/
+
+
+/* BUILT WITH */
+
+    Hugo, no theme, no framework. Netlify. KaTeX for the mathematics,
+    Mermaid for the diagrams, GoatCounter for the counting — its dashboard
+    is public, at stats.htunteza.com, because numbers about you should be
+    numbers you can see.
+
+
+/* THANKS */
+
+    To the co-authors and collaborators named on the works pages, who did
+    the parts that were not typing.
+
+    To whoever wrote the first humans.txt, for the idea that a website
+    should be able to say who is behind it in plain words.
+
+
+/* NOTES */
+
+    There is a duck on this site. You have probably found it. If not, the
+    portrait on the front page is waiting.
+
+    Print any page and read what comes after the last paragraph.
+
+    Last revised when the site was, which the footer of any printed page
+    will tell you.

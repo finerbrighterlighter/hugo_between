@@ -151,3 +151,5 @@ affiliation_at_time: "{{ .name }}, the author's affiliation at the time of this 
 licence_marks: "University marks are the trademarks of their institutions and are not covered by that licence."
 credits: "Typefaces and software credited here"
 print_colophon: "The data tells you what it saw. <em>Your job</em> is to remember everything it didn’t."
+spine_note_label: "A note in the margin"
+spine_note: "Two voices, one line down the middle. The line is the argument: most of what I do is deciding which side a thing belongs on, and being honest when it belongs on neither."

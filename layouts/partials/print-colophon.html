@@ -6,9 +6,12 @@
        invisible to sighted readers and to assistive technology alike; it exists
        for the one person who prints a page and keeps it.
 
-       The duck is the printer's mark. It is the site's own long-standing easter
-       egg, hiding on the portrait, so it belongs here more than a generic
-       asterism would.
+       The mark is the site's own icon, deliberately taken from the favicon set
+       rather than from a separate file: change identity and you replace the
+       icons, and this follows without anyone having to remember it existed.
+       `apple-touch-icon.png` is the one to use. It is 180px, which is what a
+       600 dpi printer wants for a 22pt mark, and 13 KB against the 512px
+       version's 39 KB.
 
        The identifying line is deliberately short. A paper's title is long by
        definition and is already the heading at the top of the sheet, so this
@@ -31,7 +34,7 @@
 
 
 <aside class="print-colophon">
-  <p class="print-mark"><img src="/general/duck_mascot.svg" alt="" width="28" height="28"></p>
+  <p class="print-mark"><img src="/apple-touch-icon.png" alt="" width="180" height="180"></p>
   <p class="print-set">
     {{- with i18n "print_colophon" -}}
       {{- . | safeHTML -}}

@@ -107,6 +107,24 @@ html:lang(my) .masthead-name{font-size:1.2rem}
 .row>.voice-r{padding:var(--row-top) 0 var(--row-bottom) calc(var(--gap)/2)}
 .row::before{content:"";position:absolute;top:calc(var(--row-top) + .35rem);left:50%;width:var(--dot);height:var(--dot);border-radius:50%;background:var(--accent);transform:translateX(-50%)}
 .row.no-dot::before{display:none}
+/* A dot on the spine that opens, closing the last row the way a colophon closes a
+   book. It sits in normal flow across both columns, so opening it pushes the footer
+   down rather than covering the text either side. The mark stays 9px like every
+   other dot; the summary's hit area is padded to the 24px tap-target floor. */
+/* 1/-1, not 1/3: at phone width the row is a single column, and asking for a
+   second one would create it. */
+.spine-note{grid-column:1/-1;text-align:center;padding:0 0 .4rem}
+/* The dot has to land on the spine, which the asymmetric row moves to 40%. */
+.spine-note>summary{margin-left:50%;transform:translateX(-50%)}
+.row.asym .spine-note>summary{margin-left:40%}
+.spine-note>summary{list-style:none;cursor:pointer;display:block;width:24px;height:24px;border-radius:50%;position:relative}
+.spine-note>summary::-webkit-details-marker{display:none}
+.spine-note>summary::after{content:"";position:absolute;top:50%;left:50%;width:var(--dot);height:var(--dot);margin:calc(var(--dot) / -2) 0 0 calc(var(--dot) / -2);border-radius:50%;background:var(--accent);transition:transform .15s}
+.spine-note>summary:hover::after,.spine-note[open]>summary::after{transform:scale(1.35)}
+.spine-note>summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.spine-note-body{padding-top:.8rem;max-width:min(30rem,100%);margin:0 auto}
+.spine-note-body p{font-family:var(--serif);font-style:italic;font-size:var(--fs-small);line-height:1.55;color:var(--mute);margin:0;max-width:none;text-wrap:pretty}
+@media (prefers-reduced-motion:reduce){.spine-note>summary::after{transition:none}}
 .voice-l{text-align:right}
 .voice-l .kicker,.voice-l h2,.voice-l ul,.voice-l ol{text-align:right}
 .voice-l .bib li{grid-template-columns:1fr auto}

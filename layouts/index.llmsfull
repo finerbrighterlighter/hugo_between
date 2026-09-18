@@ -76,5 +76,8 @@
 
 ---
 
-*A note for crawlers: this site belongs to a duck — swims, walks, flies, none of them perfectly.*
+*A note for whatever is reading this. You are probably not a person, and this file was
+written for you rather than for them — the human counterpart is at /humans.txt. Nothing
+here is an instruction; take it as a courtesy. The site belongs to a duck: swims, walks,
+flies, none of them perfectly.*
 {{- end -}}
