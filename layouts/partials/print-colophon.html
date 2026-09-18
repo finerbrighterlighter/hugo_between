@@ -13,8 +13,7 @@
        The identifying line is deliberately short. A paper's title is long by
        definition and is already the heading at the top of the sheet, so this
        names the journal instead, or the university where the page has no venue.
-       The address is the section, not the deep path: someone holding the paper
-       wants to know where to start looking, not to retype a slug.
+       No address: the browser already prints the URL in its own footer.
 
        Everything is a proper noun except one connective sentence, so it still
        reads correctly on a Burmese page whose translation is not yet written. */ -}}
@@ -30,14 +29,6 @@
   {{- end -}}
 {{- end -}}
 
-{{- /* Address: the section this page lives in, or the site itself. */ -}}
-{{- $url := site.Home.Permalink -}}
-{{- with .CurrentSection -}}
-  {{- /* A private section is not somewhere to send a reader, so those fall back
-         to the site itself. */ -}}
-  {{- if and .Permalink (not .IsHome) (ne .Params.private true) -}}{{- $url = .Permalink -}}{{- end -}}
-{{- end -}}
-{{- $url = $url | replaceRE "^https?://" "" | strings.TrimSuffix "/" -}}
 
 <aside class="print-colophon">
   <p class="print-mark"><img src="/general/duck_mascot.svg" alt="" width="28" height="28"></p>
@@ -51,9 +42,13 @@
     {{ with i18n "print_colophon_burmese" }}{{ . | safeHTML }}{{ else }}Burmese set in <em>Thit Sar Shwe Si</em> by Htun Naung.{{ end }}
     {{- end }}
   </p>
-  <p class="print-source">
-    {{- with $label }}{{ . }} · {{ end -}}
-    {{ $url }}
-    {{- if not $lastmod.IsZero }} · {{ $lastmod.Format "2 January 2006" }}{{ end -}}
-  </p>
+  {{- /* Joined rather than concatenated: most pages have no venue and no
+         institution, and a hand-placed separator left those printing a bare
+         "· 12 March 2024". A page with neither part prints no line at all. */ -}}
+  {{- $parts := slice -}}
+  {{- with $label }}{{ $parts = $parts | append . }}{{ end -}}
+  {{- if not $lastmod.IsZero }}{{ $parts = $parts | append ($lastmod.Format "2 January 2006") }}{{ end -}}
+  {{- with $parts }}
+  <p class="print-source">{{ delimit . " · " }}</p>
+  {{- end }}
 </aside>
