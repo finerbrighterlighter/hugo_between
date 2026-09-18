@@ -1,57 +1,60 @@
-# Large binary assets: an open decision
+# Large binary assets
 
-Status: **undecided.** This file exists so the choice is made deliberately rather than by accident, while the
-history is still short enough that any of the options is cheap.
+Status: **decided, 2026-09-18.** Repository size is accepted. What is watched is the weight of the pages a
+visitor actually loads.
 
-## Where things stand
+## The decision
 
-| | |
-|---|---|
-| Source tree, excluding `public/` and `node_modules/` | 284 MB |
-| Packed Git objects after the first commit | 268 MB |
-| `content/` | 215 MB |
-| `static/` | 67 MB |
-| Largest single files | two JPEGs near 14 MB, one PDF at 12.7 MB |
+Binaries stay in ordinary Git. No LFS, no external object store, no rewriting of history. The repository is
+about 268 MB packed and will grow as photographs are added, and that is accepted: it costs a one-off clone and
+nothing else. Nobody downloads the repository to read the site.
 
-Every one of those bytes is now in history. Git stores each version of a binary in full, so re-exporting one
-14 MB photograph adds another 14 MB forever. Text files do not behave this way, which is why a repository full
-of source code stays small and this one will not.
+What matters is the deployed page. That is measured below and is in good shape, and it is the number to defend.
 
-GitHub warns above 1 GB and pushes back hard above 5 GB. Nothing is broken today. The question is what the
-tenth year of this site looks like.
+## Measured, 2026-09-18
 
-## The three options
+The deploy directory is 137 MB, of which 46.5 MB is PDFs and 42.7 MB is generated WebP variants. Almost none
+of it is fetched by any one visitor, because Hugo emits a `srcset` ladder and the templates lazy-load
+everything below the fold.
 
-**1. Keep everything in ordinary Git.** Simplest, and nothing to learn. A clone costs 268 MB today and only
-grows. Fine if the photographs are essentially final and will not be re-exported.
+What a visitor actually transfers:
 
-**2. Git LFS for images and PDFs.** The repository keeps pointers; the binaries live in LFS storage. Clones get
-small and re-exports stop compounding. Costs: contributors need `git-lfs` installed, Netlify needs LFS support
-enabled for the build, and GitHub's free LFS quota is 1 GB of storage and 1 GB of bandwidth a month, which this
-site would exceed. Converting existing history means a rewrite, which is why doing it early matters.
+| Page | Requests | Transferred | Largest single item |
+|---|---:|---:|---:|
+| Home | 32 | 0.46 MB | 143 KB |
+| Works | 22 | 0.40 MB | 143 KB |
+| Posts | 18 | 0.23 MB | 129 KB |
+| The heaviest post | 49 | 0.54 MB | 129 KB |
+| Blood | 37 | 0.47 MB | 129 KB |
+| A paper | 23 | 0.45 MB | 143 KB |
 
-**3. Keep archival masters outside the repository entirely.** Commit only what the site actually serves: the
-web-sized derivatives. Full-resolution originals live in object storage or a backup drive. This is the smallest
-repository and the clearest separation, and it is the one the earlier QC pass was pointing at when it suggested
-pre-compressing oversized originals while "retaining archival masters outside the deploy repository".
+No page exceeds 0.6 MB and no single asset exceeds 143 KB, on a site whose source tree holds several 14 MB
+JPEGs. The image pipeline is doing its job.
 
-## Recommendation
+## What to watch
 
-**Option 3, with a size ceiling enforced in CI.** The site never serves a 14 MB JPEG; Hugo resizes everything to
-at most 1600px. The masters are in the repository only because that is where they landed, not because anything
-needs them there. Downscaling the handful of oversized originals to something like 2560px on the long edge would
-cut `content/` substantially while leaving every rendered page pixel-identical, and a CI check rejecting new
-source images above a few megabytes would keep it that way.
+The number that would signal trouble is a page's transferred weight, not the size of the repository or of
+`public/`. Two rules follow:
 
-This was deliberately **not** done as part of QC. Downscaling someone's archival originals is lossy and
-irreversible, and which files count as masters worth keeping is the author's call, not a quality gate's.
+- **Never reference a source image directly.** Everything goes through `layouts/partials/responsive-img.html`
+  or the gallery shortcode, which resize and emit WebP. A raw `<img src>` pointing at a 14 MB original would
+  ship all 14 MB, and nothing in the build would stop it.
+- **PDFs are the exception and are linked, not embedded.** A reader who clicks a 12 MB itinerary has chosen to.
+  They are the largest thing in the deploy and cost nothing until asked for.
 
-## What to do next
+If a page ever crosses about 1 MB transferred, the cause will be either a source image that escaped the
+pipeline or a gallery that outgrew lazy loading. Re-measure with the browser's network panel, or the script
+used above, before changing anything.
 
-1. Decide whether the full-resolution originals in `content/` are masters or merely large copies of files that
-   exist elsewhere.
-2. If they exist elsewhere, downscale the ones over about 4 MB and record the ceiling here.
-3. If they do not, either move them out of the repository first or accept option 1 knowingly and write that
-   down here instead.
-4. Whatever is chosen, add the corresponding check to `scripts/qc.js` so the decision holds without anyone
-   having to remember it.
+## What was rejected, and why
+
+**Git LFS.** Would shrink clones but adds a tool every contributor must install, needs Netlify support enabled
+for builds, and exceeds GitHub's free 1 GB storage and bandwidth allowance for a site this size. The problem it
+solves is not one that hurts here.
+
+**Archival masters outside the repository.** The cleanest repository, but it splits the site's history across
+two places and means the originals can go missing without anything noticing. Keeping them beside the content
+they belong to is worth the bytes.
+
+**Downscaling the oversized originals.** Lossy and irreversible, for no gain on the number that matters: those
+files are never served. They exist so a future export can be larger, not smaller.

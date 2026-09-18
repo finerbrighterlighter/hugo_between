@@ -253,11 +253,10 @@ git push -u origin master
 
 Before you do, three things are worth knowing.
 
-**The history contains large binaries.** About 268 MB packed, mostly photographs in `content/`. Git keeps every
-version of a binary in full, so re-exporting one 14 MB photograph adds another 14 MB permanently.
-`docs/asset-policy.md` lays out the three options and recommends keeping archival masters outside the
-repository. This is cheapest to decide now, while the history is three commits deep, because changing it later
-means a rewrite.
+**The history contains large binaries, and that is accepted.** About 268 MB packed, mostly photographs.
+`docs/asset-policy.md` records the decision and, more usefully, the number that actually matters: no page
+transfers more than 0.6 MB, because everything goes through the image pipeline. Watch that number, not the
+repository size.
 
 **Check what is about to become public.** `.env` is ignored and the transcripts behind the PIN gate are
 intentionally public files, but confirm that is still what you want:

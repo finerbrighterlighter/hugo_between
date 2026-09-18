@@ -51,6 +51,10 @@ The gate makes the reader pause and signals that the document is personal. That 
 
 **What this means in practice.**
 
+- The PDFs are tracked in this repository, so once it is public on a code host they are downloadable from the
+  file list with no PIN at all, and they stay in history even if removed later. That was weighed and accepted
+  on 2026-09-18, on the same grounds as the gate itself: these are transcripts already handed to employers and
+  universities.
 - Never route a genuinely confidential document through this template. It is for documents whose disclosure is
   merely unwelcome, not harmful.
 - Real confidentiality needs the PDFs out of the publish directory and behind a Netlify function, signed
