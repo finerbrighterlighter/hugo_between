@@ -4,7 +4,7 @@ Department of Clinical Epidemiology and Biostatistics, Faculty of Medicine Ramat
 
 kohtunteza@gmail.com · https://htunteza.com/
 
-Generated: 2026-08-23
+Generated: 2026-09-18
 
 ---
 
@@ -74,7 +74,7 @@ _Undergraduate Research Assistant_
 4. Tansawet A, Looareesuwan P, **Teza H**, Boongird S, McKay GJ, Attia J, Pattanaprateep O, Thakkinstian A. Effects of sodium-glucose cotransporter-2 inhibitors on chronic kidney disease progression: A multi-state parametric survival model. _Diabetology & Metabolic Syndrome_. 2024;16(1). doi: [10.1186/s13098-024-01522-6](https://doi.org/10.1186/s13098-024-01522-6)
 5. Tansawet A, Numthavaj P, **Teza H**, Pattanateepapon A, Piebpien P, Poprom N, Techapongsatorn S, McKay G, Attia J, Sumritpradit P, et al. External validation and revision of Penn incisional hernia prediction model: A large-scale retrospective cohort of abdominal operations. _Surgeon_. 2024;22(1):e34–e40. doi: [10.1016/j.surge.2023.07.008](https://doi.org/10.1016/j.surge.2023.07.008)
 6. **Teza H**, Pattanateepapon A, Lertpimonchai A, Vathesatogkit P, J McKay G, Attia J, Thakkinstian A. Development of Risk Prediction Models for Severe Periodontitis in a Thai Population: Statistical and Machine-Learning Approaches. _JMIR Formative Research_. 2023;7:e48351. doi: [10.2196/48351](https://doi.org/10.2196/48351)
-7. **Teza H**, Boonmanunt S, Unwanatham N, Thadanipon K, Limpijankit T, Pattanaprateep O, Pattanateepapon A, McKay GJ, Attia J, Thakkinstian A. Evaluation of transitions from early hypertension to hypertensive chronic kidney disease, coronary artery disease, stroke and mortality: A Thai real-world data cohort. _Frontiers in Cardiovascular Medicine_. 2023;10. doi: [10.3389/fcvm.2023.1170010](http://doi.org/10.3389/fcvm.2023.1170010)
+7. **Teza H**, Boonmanunt S, Unwanatham N, Thadanipon K, Limpijankit T, Pattanaprateep O, Pattanateepapon A, McKay GJ, Attia J, Thakkinstian A. Evaluation of transitions from early hypertension to hypertensive chronic kidney disease, coronary artery disease, stroke and mortality: A Thai real-world data cohort. _Frontiers in Cardiovascular Medicine_. 2023;10. doi: [10.3389/fcvm.2023.1170010](https://doi.org/10.3389/fcvm.2023.1170010)
 
 ### Preprints and Under Review
 
