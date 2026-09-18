@@ -109,7 +109,21 @@ were when you did the work, so it is never inferred from the date.
 To add a new institution:
 
 1. Put the logo under `assets/images/institutions/`.
-2. Add an entry to `data/institutions.yml` with `name`, `short`, `logo`, `link`, **`source`** and **`rights`**.
+2. Add an entry to `data/institutions.yml` with `name`, `short`, `logo`, `link`, **`source`**, **`rights`**
+   and **`fit`**.
+
+`fit` says how the mark sits in the circular frame every mark gets. Aspect ratio cannot decide it, because a
+round seal and a square block are both 1:1.
+
+| `fit` | For | What happens |
+|---|---|---|
+| `fill` | a mark that is itself round | it meets the ring; its empty corners are all the circle clips |
+| `inscribe` | anything square, shield-shaped or rectangular | it sits inside the circle's largest inner square, so no corner is cut |
+
+`inscribe` is the default, because it is the one that never damages a mark. Both current seals are `fill`.
+
+A mark much wider than it is tall fails the build. That is a horizontal lockup, and at 108px it is either
+clipped at both ends or shrunk past reading. Institutions publish an emblem as well; use that.
 
 The build fails without `source` and `rights`, on purpose. These marks are other people's trademarks and are
 excluded from the site's licence in the footer; the fields are you stating where the file came from and on what

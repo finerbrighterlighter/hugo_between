@@ -166,6 +166,11 @@ html:lang(my) .voice-r .word{font-style:normal}
 .work-mark{display:block;width:clamp(72px,9vw,108px);height:clamp(72px,9vw,108px);border-radius:50%;overflow:hidden;position:relative;background:var(--paper);box-shadow:0 0 0 6px var(--paper),0 0 0 7px var(--ink);line-height:0}
 .work-mark:focus-visible{box-shadow:0 0 0 6px var(--paper),0 0 0 8px var(--accent);outline:none}
 .work-mark img{width:100%;height:100%;object-fit:contain;display:block}
+/* A round seal may meet the ring: its corners are empty, so the circle clips
+   nothing. A mark with corners is set inside the circle's largest inner square
+   (a square of side d/√2, so 70.7% inset by 14.65%), which is the only way a
+   square or shield keeps all four of them. */
+.work-mark--inscribe img{width:70.7%;height:70.7%;margin:14.65%}
 /* With a mark present the hairline should leave its edge, the way the spine
    leaves the portrait on the home page, so the head's own top padding goes. */
 .work-mark-row+.page-head{padding-top:0}

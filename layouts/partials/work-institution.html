@@ -22,6 +22,19 @@
     {{- if not $res -}}
       {{- errorf "institution %q points at %q, which is not under assets/" . $inst.logo -}}
     {{- else -}}
+      {{- /* A horizontal lockup cannot work at 108px: inside the ring it is either
+             clipped at both ends or shrunk past reading. Institutions publish an
+             emblem as well; that is the asset for this. */ -}}
+      {{- $ratio := div (float $res.Width) (float $res.Height) -}}
+      {{- if gt $ratio 1.5 -}}
+        {{- errorf "institution %q uses a mark %dx%d, %.1f times wider than tall. That is a horizontal lockup, and it cannot be read at 108px inside the circular frame. Use the institution's emblem or square mark instead." . $res.Width $res.Height $ratio -}}
+      {{- end -}}
+      {{- /* fill = a round seal, which may meet the ring. inscribe = anything with
+             corners, set inside the circle's inner square so none are cut. */ -}}
+      {{- $fit := $inst.fit | default "inscribe" -}}
+      {{- if not (in (slice "fill" "inscribe") $fit) -}}
+        {{- errorf "institution %q has fit %q; it must be \"fill\" or \"inscribe\"." . $fit -}}
+      {{- end -}}
       {{- /* The mark is at most 108 CSS px (the portrait's clamp ceiling), so 2x is 216
              and 3x is 324.
 
@@ -38,7 +51,7 @@
                mark means. Without it a logo at the top of a paper reads as the publisher
                or as a current endorsement, which is not the claim being made. */ -}}
         {{- $label := i18n "affiliation_at_time" (dict "name" $inst.name) -}}
-        <a class="work-mark" href="{{ $inst.link }}" target="_blank" rel="noreferrer noopener" title="{{ $label }}">
+        <a class="work-mark work-mark--{{ $fit }}" href="{{ $inst.link }}" target="_blank" rel="noreferrer noopener" title="{{ $label }}">
           <img src="{{ $logo.RelPermalink }}" srcset="{{ $logo.RelPermalink }} 216w, {{ $logo3x.RelPermalink }} 324w"
                sizes="108px" width="216" height="216" alt="{{ $label }}" loading="eager" decoding="async" fetchpriority="high">
         </a>

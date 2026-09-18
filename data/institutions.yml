@@ -9,6 +9,16 @@
 # usual WebP: Hugo's WebP output is lossy and subsamples chroma, which destroys
 # fine gold-on-blue seal detail. See layouts/partials/work-institution.html.
 #
+# `fit` says how the mark sits in the circular frame the site puts every mark in.
+# Aspect ratio cannot decide this: a round seal and a square block are both 1:1.
+#   fill      the mark is itself round, so let it meet the ring. Its corners are
+#             empty, so the circle clips nothing.
+#   inscribe  anything square, shield-shaped or rectangular. The mark is set inside
+#             the circle's largest inner square, so no corner is cut off.
+# Default is `inscribe`, because that is the one that never damages a mark.
+# A mark much wider than it is tall fails the build: that is a horizontal lockup,
+# and at 108px it would be unreadable. Use the institution's emblem instead.
+#
 # RIGHTS. These marks are third-party institutional identifiers, not part of this
 # site's CC BY 4.0 licence. Each entry records where the file came from and on what
 # basis it is used, and the footer excludes them from the site licence. Do not add
@@ -18,6 +28,7 @@ mahidol:
   name: Mahidol University
   short: Mahidol
   logo: images/institutions/mahidol.png
+  fit: fill
   link: https://mahidol.ac.th/
   source: Mahidol University corporate identity mark
   rights: >-
@@ -29,6 +40,7 @@ udmy:
   name: University of Dental Medicine, Yangon
   short: UDMY
   logo: images/institutions/udmy.png
+  fit: fill
   link: https://www.udmy.edu.mm/
   source: University of Dental Medicine, Yangon institutional seal
   rights: >-
