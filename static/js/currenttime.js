@@ -1,9 +1,11 @@
 /**
  * currenttime.js — local clock for every `<time data-clock>`.
  *
- * `<time data-clock data-tz="Asia/Bangkok" data-city="Bangkok">` becomes
- * "14:32 in Bangkok", refreshed on each minute boundary. The `datetime`
- * attribute carries the ISO local time with its UTC offset.
+ * `<time data-clock data-tz="Asia/Bangkok" data-place="Thailand">` becomes
+ * "14:32 in Thailand", refreshed on each minute boundary. `data-place` is whatever
+ * should be named there, a country or a city; `data-tz` is the IANA zone that
+ * decides the time. The `datetime` attribute carries the ISO local time with its
+ * UTC offset.
  */
 
 const clocks = document.querySelectorAll("[data-clock]");
@@ -47,8 +49,8 @@ if (clocks.length) {
       const formatter = formatterFor(el.dataset.tz || "");
       if (!formatter) continue;
       const time = formatter.time.format(now);
-      const city = el.dataset.city || "";
-      el.textContent = city ? `${time} in ${city}` : time;
+      const place = el.dataset.place || "";
+      el.textContent = place ? `${time} in ${place}` : time;
       try {
         el.setAttribute("datetime", isoIn(formatter.parts, now));
       } catch {

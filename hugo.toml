@@ -36,8 +36,10 @@ buildFuture = true
   recentPostsLimit = 3
   recentWorksLimit = 4
   homeProjectsLimit = 3
+  # The clock reads "14:32 in <place>". `place` is whatever you want named there,
+  # a country or a city; `timezone` is the IANA zone that decides the actual time.
   timezone = "Asia/Bangkok"
-  city = "Bangkok"
+  place = "Thailand"
   lastfmUser = "fibrili"
   goatcounter = "https://stats.htunteza.com/count"
 

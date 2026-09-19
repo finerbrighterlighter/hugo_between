@@ -12,7 +12,7 @@ All files are vanilla ES modules loaded with `type="module"`; each one self-gate
 | `static/js/simkl.js` | `#strip-screen` | Simkl `/sync/all-items`, `/anime/{id}` | 14-day window first, full library when under limit; simkl.in `_c` posters. |
 | `static/js/unsplash.js` | `#strip-photos` | Unsplash `/users/{user}/photos` | Latest uploads; meta = location or upload month. |
 | `static/js/openalex.js` | `#metrics` | OpenAlex `/authors/{id}` | Fills `[data-metric]` spans, unhides. Accepts OpenAlex id or ORCID in `data-openalex-author`. |
-| `static/js/currenttime.js` | `[data-clock]` | `Intl.DateTimeFormat` | `14:32 in Bangkok`, minute-aligned refresh, sets `datetime`. |
+| `static/js/currenttime.js` | `[data-clock]` | `Intl.DateTimeFormat` | `14:32 in Thailand` from `data-place`, minute-aligned refresh, sets `datetime`. |
 | `static/js/works_filter.js` | `#works-filter` | DOM only | Word search over `data-search`, AND tags via `aria-pressed`, `?search=&tags=` mirrored with `replaceState`. |
 | `static/js/work-citation.js` | `[data-citation-count][data-doi]` | OpenAlex `/works/doi:{doi}` | Fills count, links to citing works, unhides when ≥ 1. |
 | `static/js/work-cite.js` | `details.cite[data-doi]` | doi.org (`Accept: application/x-bibtex`) | BibTeX / NLM / APA / AMA, copy, `.bib` and `.ris` download. Cache key `bibtex-<doi>`. |

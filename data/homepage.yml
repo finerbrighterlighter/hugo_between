@@ -21,6 +21,12 @@ sidebar:
   phone: (+66) 0-2201-0833
   area: asia # IANA tz database name, e.g. America/New_York
   location: bangkok # the name after https://time.is/
+  # Where you work. Printed as: group (linked), faculty, university, city — the
+  # group being websitename/website just below. Each part is optional and is
+  # skipped when empty, so moving institution is an edit here and nowhere else.
+  faculty: Faculty of Medicine Ramathibodi Hospital
+  university: Mahidol University
+  city: Bangkok
   website: www.rama.mahidol.ac.th/ceb/
   websitename: CEB-RAMA-MU
   orcid: 0000-0002-1076-9513 # only orcid 16 digits

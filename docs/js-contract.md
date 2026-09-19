@@ -69,7 +69,7 @@ Fill the spans (locale-formatted integers) and remove `hidden`. Author id: use t
 (ORCID from `data-openalex-author` if present, else the old hard-coded value). No chart. Drop the yearly bar chart entirely.
 
 ### `[data-clock]` (currenttime.js)
-`<time data-clock data-tz="Asia/Bangkok" data-city="Bangkok"></time>` → `14:32 in Bangkok`, updated each minute. Also set `datetime`.
+`<time data-clock data-tz="Asia/Bangkok" data-place="Thailand"></time>` → `14:32 in Thailand`, updated each minute. Also set `datetime`. `data-place` names whatever should be shown, country or city; `data-tz` decides the time.
 
 ## Works list page (works_filter.js)
 Server HTML:

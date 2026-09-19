@@ -6,7 +6,7 @@
     <div class="contact-main">
       <p class="colophon-lead">{{ i18n "contact_lead" }}</p>
       <p class="colophon-email"><a href="mailto:{{ $sb.email }}">{{ $sb.email }}</a></p>
-      <p class="colophon-line">{{ $sb.phone }}<br><a href="https://{{ $sb.website }}" target="_blank" rel="noreferrer noopener">{{ $sb.websitename }}</a>, Ramathibodi Hospital, Mahidol University, Bangkok<br><time data-clock data-tz="{{ .Site.Params.timezone }}" data-city="{{ .Site.Params.city }}"></time></p>
+      <p class="colophon-line">{{ $sb.phone }}<br><a href="https://{{ $sb.website }}" target="_blank" rel="noreferrer noopener">{{ $sb.websitename }}</a>{{ with partial "affiliation.html" $hp }}, {{ . }}{{ end }}<br><time data-clock data-tz="{{ .Site.Params.timezone }}" data-place="{{ .Site.Params.place }}"></time></p>
     </div>
     <nav class="contact-col" aria-label="Site">
       <h2 class="colophon-h">{{ i18n "pages" }}</h2>

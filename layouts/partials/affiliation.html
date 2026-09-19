@@ -1,0 +1,13 @@
+{{- /* The affiliation as one line: faculty, university, city.
+
+       Each part is optional and an empty one is skipped, so the commas never
+       dangle. The group that owns these — CEB-RAMA-MU and the like — is the
+       linked `websitename`/`website` pair and is prepended by the caller, since
+       only the colophon shows it. Moving institution is an edit in
+       data/homepage.yml and nowhere else. */ -}}
+{{- $sb := .sidebar -}}
+{{- $parts := slice -}}
+{{- with $sb.faculty }}{{ $parts = $parts | append . }}{{ end -}}
+{{- with $sb.university }}{{ $parts = $parts | append . }}{{ end -}}
+{{- with $sb.city }}{{ $parts = $parts | append . }}{{ end -}}
+{{- return (delimit $parts ", ") -}}
