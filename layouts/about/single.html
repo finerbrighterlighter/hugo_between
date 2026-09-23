@@ -27,6 +27,15 @@
       {{- with hugo.Data.playlists }}
       <p class="meta">{{ i18n "offduty_music" | replaceRE "Last.fm" (printf `<a href="%s" target="_blank" rel="noreferrer noopener">Last.fm</a>` .link) | safeHTML }}</p>
       <ul class="covers square" aria-label="{{ .title }}">
+        {{- /* The year in progress has no playlist yet — Last.fm only gets one in
+               January — so it is a link into the library filtered to this year,
+               which is the same list the playlist will be made from. It drops out
+               of its own accord once data/playlists.yml gains an entry for the
+               year, so January needs no edit here. */ -}}
+        {{- $y := now.Year -}}
+        {{- if not (where .items "year" $y) }}
+        <li class="cover"><a href="https://www.last.fm/user/{{ site.Params.lastfmUser }}/library/tracks?from={{ $y }}-01-01&amp;to={{ $y }}-12-31" target="_blank" rel="noreferrer noopener">{{ partial "playlist-cover.html" (dict "image" "replay_this_year.webp" "title" (i18n "playlist_ongoing" (dict "year" $y))) }}<span class="cover-title">{{ i18n "playlist_ongoing" (dict "year" $y) }}</span></a></li>
+        {{- end }}
         {{- range .items }}
         <li class="cover"><a href="{{ .url }}" target="_blank" rel="noreferrer noopener">{{ partial "playlist-cover.html" (dict "image" .image "title" .title) }}<span class="cover-title">{{ .title }}</span></a></li>
         {{- end }}

@@ -157,6 +157,9 @@ spine_note: "Two voices, one line down the middle. The line is the argument: mos
 evidence_link: "source"
 # The IELTS chart on the About page. The lead is the point of the chart: without it
 # the numbers read as a credential rather than as an observation about measurement.
+# The first cover in the playlist strip: the year in progress, which has no
+# Last.fm playlist yet and links into the library filtered to it instead.
+playlist_ongoing: "Most Played {{ .year }} (so far)"
 ielts_lead: "The same English test, sat {{ .n }} times across {{ .years }} years. Expensive data points, so here they are, on the full nine-band scale rather than cropped to flatter them."
 ielts_listening: "Listening"
 ielts_reading: "Reading"
