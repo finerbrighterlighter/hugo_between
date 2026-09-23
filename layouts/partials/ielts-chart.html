@@ -35,9 +35,43 @@
 {{- $labelW := 72 -}}{{- $plotW := 338 -}}
 {{- $top := 24 -}}{{- $rowH := 46 -}}{{- $spread := 18.0 -}}{{- $gapMax := 6.0 -}}
 {{- $H := add $top (add (mul (len $skills) $rowH) 10) -}}
+{{- /* The spoken version of the figure and the caption are both built from the
+       same data as the drawing, so adding a sitting to data/ielts.yml never
+       leaves them describing an older chart. */ -}}
+{{- $retakes := slice -}}
+{{- range $sit := $sits -}}{{- with $sit.retake -}}{{- $retakes = $retakes | append $sit -}}{{- end -}}{{- end -}}
+{{- $series := slice -}}
+{{- range $s := $skills -}}
+  {{- $vs := slice -}}
+  {{- range $sit := $sits -}}
+    {{- if or (not $sit.retake) (eq $sit.retake $s.key) (eq $s.key "overall") -}}
+      {{- $vs = $vs | append (index $sit $s.key) -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $series = $series | append (printf "%s %s." $s.label (delimit $vs ", ")) -}}
+{{- end -}}
+{{- $aria := i18n "ielts_aria" (dict
+      "from" (time.Format "2006" (index $sits 0).date)
+      "to" (time.Format "2006" (index (last 1 $sits) 0).date)
+      "series" (delimit $series " ")) -}}
+{{- $lead := i18n "ielts_lead" (dict
+      "n" (len $sits)
+      "years" (sub (int (time.Format "2006" (index (last 1 $sits) 0).date)) (int (time.Format "2006" (index $sits 0).date)))) -}}
+{{- $caption := i18n "ielts_caption" -}}
+{{- if eq (len $retakes) 1 -}}
+  {{- $r := index $retakes 0 -}}
+  {{- $rl := $r.retake -}}
+  {{- range $s := $skills -}}{{- if eq $s.key $r.retake -}}{{- $rl = lower $s.label -}}{{- end -}}{{- end -}}
+  {{- $caption = printf "%s %s" $caption (i18n "ielts_caption_retake" (dict
+        "when" (time.Format "January 2006" $r.date) "skill" $rl)) -}}
+{{- else if gt (len $retakes) 1 -}}
+  {{- $caption = printf "%s %s" $caption (i18n "ielts_caption_retakes") -}}
+{{- end -}}
+{{- $caption = printf "%s %s" $caption (i18n "ielts_caption_n") -}}
+<p>{{ $lead }}</p>
 <figure class="ielts">
   <svg viewBox="0 0 {{ $W }} {{ $H }}" width="100%" role="img"
-       aria-label="{{ i18n "ielts_aria" }}" focusable="false">
+       aria-label="{{ $aria }}" focusable="false">
     {{- /* the whole 0–9 scale, uncropped */ -}}
     {{- range $b := seq 0 9 }}
       {{- $x := add $labelW (mul (div (float $b) 9.0) $plotW) }}
@@ -76,8 +110,13 @@
       {{- $n := len $sorted -}}
       {{- $half := div $n 2 -}}
       {{- $med := partial "stat-median.html" $sorted -}}
-      {{- $q1 := partial "stat-median.html" (first $half $sorted) -}}
-      {{- $q3 := partial "stat-median.html" (last $half $sorted) -}}
+      {{- /* one sitting has no halves to take hinges from; the box collapses to
+             the median tick, which is the honest picture of a single point */ -}}
+      {{- $q1 := $med -}}{{- $q3 := $med -}}
+      {{- if ge $n 2 -}}
+        {{- $q1 = partial "stat-median.html" (first $half $sorted) -}}
+        {{- $q3 = partial "stat-median.html" (last $half $sorted) -}}
+      {{- end -}}
       {{- $iqr := sub $q3 $q1 -}}
       {{- $loFence := sub $q1 (mul 1.5 $iqr) -}}{{- $hiFence := add $q3 (mul 1.5 $iqr) -}}
       {{- $wLo := $med -}}{{- $wHi := $med -}}
@@ -125,6 +164,6 @@
       {{- end }}
     {{- end }}
   </svg>
-  <figcaption class="meta">{{ i18n "ielts_caption" }}</figcaption>
+  <figcaption class="meta">{{ $caption }}</figcaption>
 </figure>
 {{- end -}}

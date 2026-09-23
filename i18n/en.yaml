@@ -157,11 +157,18 @@ spine_note: "Two voices, one line down the middle. The line is the argument: mos
 evidence_link: "source"
 # The IELTS chart on the About page. The lead is the point of the chart: without it
 # the numbers read as a credential rather than as an observation about measurement.
-ielts_lead: "Five sittings of the same English test across seven years. Expensive data points, so here they are, on the full nine-band scale rather than cropped to flatter them."
+ielts_lead: "The same English test, sat {{ .n }} times across {{ .years }} years. Expensive data points, so here they are, on the full nine-band scale rather than cropped to flatter them."
 ielts_listening: "Listening"
 ielts_reading: "Reading"
 ielts_writing: "Writing"
 ielts_speaking: "Speaking"
 ielts_overall: "Overall"
-ielts_caption: "Box and whisker per skill, with every sitting drawn on top: a dot for each, stacked where two landed on the same band, and solid for the most recent. The open ring is the September 2026 One Skill Retake — only writing was re-sat, so it is the only skill carrying a mark from it, along with the overall band, which was recomputed from it. Four or five tests is nowhere near enough for a quartile to mean anything, which is why the dots stay."
-ielts_aria: "Box plots of IELTS band scores by skill, 2019 to 2026, on a scale of 0 to 9, with every sitting plotted. Listening 8.5 at all four sittings. Reading 9, 7.5, 8.5, 9. Writing 6.5, 6, 6.5, 6, then 7.5 at a One Skill Retake. Speaking 6, 6, 8, 6.5. Overall 7.5, 7, 8, 7.5, then 8 after the retake."
+# The caption is assembled in partials/ielts-chart.html from these pieces, so the
+# specifics that change with the data — the retake's date and skill, the years
+# covered, every band score read out for a screen reader — come from
+# data/ielts.yml rather than being typed here and going quietly stale.
+ielts_caption: "Box and whisker per skill, with every sitting drawn on top: a dot for each, stacked where two landed on the same band, and solid for the most recent."
+ielts_caption_retake: "The open ring is the {{ .when }} One Skill Retake — only {{ .skill }} was re-sat, so it is the only skill carrying a mark from it, along with the overall band, which was recomputed from it."
+ielts_caption_retakes: "The open rings are One Skill Retakes: a single component re-sat, the other three carried over. Only the re-sat skill and the recomputed overall band carry a mark from one."
+ielts_caption_n: "A handful of tests is nowhere near enough for a quartile to mean anything, which is why the dots stay."
+ielts_aria: "Box plots of IELTS band scores by skill, {{ .from }} to {{ .to }}, on a scale of 0 to 9, with every sitting plotted. {{ .series }}"
