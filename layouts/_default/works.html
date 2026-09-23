@@ -7,6 +7,18 @@
   {{- with .Params.datasource -}}{{- $datasource = $datasource | append . -}}{{- end -}}
   {{- with .Params.methods -}}{{- $methods = $methods | append . -}}{{- end -}}
 {{- end -}}
+{{- /* How many works carry each tag. `uniq` throws this away, and it is worth
+       keeping: it tells the reader which tags are the body of the work and which
+       are one-offs, before they click anything. */ -}}
+{{- $counts := dict -}}
+{{- range $p := $papers -}}
+  {{- range $facet := slice "conditions" "datasource" "methods" -}}
+    {{- range (index $p.Params $facet) -}}
+      {{- $k := printf "%s|%s" $facet . -}}
+      {{- $counts = merge $counts (dict $k (add (index $counts $k | default 0) 1)) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
 {{- $conditions = $conditions | uniq | sort -}}{{- $datasource = $datasource | uniq | sort -}}{{- $methods = $methods | uniq | sort -}}
 {{- $wf := hugo.Data.work_filters -}}
 
@@ -20,9 +32,9 @@
     <label for="works-search" class="sr-only">{{ i18n "works_search_placeholder" }}</label>
     <input id="works-search" type="search" name="search" placeholder="{{ i18n "works_search_placeholder" }}" autocomplete="off" spellcheck="false">
     <div class="filter-groups">
-      {{ partial "filter-group.html" (dict "group" "conditions" "label" (i18n "tags_condition") "values" $conditions "priority" $wf.conditions) }}
-      {{ partial "filter-group.html" (dict "group" "datasource" "label" (i18n "tags_data") "values" $datasource "priority" $wf.datasource) }}
-      {{ partial "filter-group.html" (dict "group" "methods" "label" (i18n "tags_method") "values" $methods "priority" $wf.methods) }}
+      {{ partial "filter-group.html" (dict "group" "conditions" "label" (i18n "tags_condition") "values" $conditions "priority" $wf.conditions "counts" $counts) }}
+      {{ partial "filter-group.html" (dict "group" "datasource" "label" (i18n "tags_data") "values" $datasource "priority" $wf.datasource "counts" $counts) }}
+      {{ partial "filter-group.html" (dict "group" "methods" "label" (i18n "tags_method") "values" $methods "priority" $wf.methods "counts" $counts) }}
     </div>
     <button type="submit" class="sr-only">Search</button>
     <div class="filter-foot">

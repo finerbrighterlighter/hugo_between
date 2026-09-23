@@ -1,17 +1,31 @@
-{{- /* Tag buttons for one facet; priority tags first, the rest behind a "more" toggle. */ -}}
+{{- /* Tag buttons for one facet; priority tags first, the rest behind a "more"
+       toggle.
+
+       Each tag carries how many works it matches, and its underline is filled
+       in proportion to that. The underline was already there as plain rule; it
+       now does a job, so the frequency costs no extra marks on the page. The
+       count is real text so it is announced; the fill is decoration. */ -}}
 {{- $priority := slice -}}{{- with .priority -}}{{- $priority = . -}}{{- end -}}
 {{- $first := slice -}}{{- $rest := slice -}}
 {{- range $priority -}}{{- if in $.values . -}}{{- $first = $first | append . -}}{{- end -}}{{- end -}}
 {{- range .values -}}{{- if not (in $first .) -}}{{- $rest = $rest | append . -}}{{- end -}}{{- end -}}
+{{- $counts := .counts | default dict -}}
+{{- $max := 1 -}}
+{{- range .values -}}
+  {{- $n := index $counts (printf "%s|%s" $.group .) | default 0 -}}
+  {{- if gt $n $max -}}{{- $max = $n -}}{{- end -}}
+{{- end -}}
 {{- if lt (len $first) 6 -}}{{- $need := sub 6 (len $first) -}}{{- $first = $first | append (first $need $rest) -}}{{- $rest = after $need $rest -}}{{- end -}}
 <fieldset class="filter-group" data-group="{{ .group }}">
   <legend>{{ .label }}</legend>
   <div class="tags">
     {{- range $first }}
-    <button type="button" class="filter-tag" data-tag="{{ . | lower }}" aria-pressed="false">{{ . }}</button>
+    {{- $n := index $counts (printf "%s|%s" $.group .) | default 0 }}
+    <button type="button" class="filter-tag" data-tag="{{ . | lower }}" aria-pressed="false" style="--v:{{ printf "%.0f" (mul (div (float $n) (float $max)) 100.0) }}%">{{ . }}<span class="filter-n">{{ partial "localized-number.html" $n }}</span></button>
     {{- end }}
     {{- range $rest }}
-    <button type="button" class="filter-tag is-extra" data-tag="{{ . | lower }}" aria-pressed="false" hidden>{{ . }}</button>
+    {{- $n := index $counts (printf "%s|%s" $.group .) | default 0 }}
+    <button type="button" class="filter-tag is-extra" data-tag="{{ . | lower }}" aria-pressed="false" hidden style="--v:{{ printf "%.0f" (mul (div (float $n) (float $max)) 100.0) }}%">{{ . }}<span class="filter-n">{{ partial "localized-number.html" $n }}</span></button>
     {{- end }}
     {{- if $rest }}
     <button type="button" class="filter-more" data-more aria-expanded="false">{{ len $rest }} more</button>
