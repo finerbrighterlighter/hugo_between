@@ -158,8 +158,9 @@ evidence_link: "source"
 # each column; the aria string is the figure's spoken summary, which the figure
 # it replaced carried and this one had lost.
 authorship_aria: "Research output as author lists: {{ .n }} works from {{ .from }} to {{ .to }}."
-authorship_hint: "{{ .pos }} of {{ .n }}"
-authorship_caption: "A column per work, a slot per author, first at the top. My slot is filled for written output, open for presented."
+authorship_hint: "{{ .pos }} of {{ .n }} authors"
+authorship_hint_sole: "sole author"
+authorship_caption: "A column per work: where my name sat in its author list — first, middle or last. Filled for written output, open for presented."
 
 
 # The IELTS chart on the About page. The lead is the point of the chart: without it

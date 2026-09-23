@@ -5,9 +5,12 @@
        much came out of a year is how many columns it holds — and adds the thing
        a publication list never says: which of them were mine to lead.
 
-       Note that a year is not taller for being more productive: every group is
-       the height of the longest author list in the whole figure, because the
-       year labels have to sit on one line. Volume reads across, not up. One slot per
+       Three rungs, not one slot per author. First, middle, last is what an
+       author list actually encodes: the ends carry the claim and the middle is
+       a crowd. Drawing every author instead made the figure mostly grey, made
+       one consortium paper set the height of the whole thing, and implied that
+       being 27th of 60 differs from being 31st, which it does not. A sole
+       author marks both ends, because that is what it is. One slot per
        author, first at the top, my slot marked. Sole author is a single mark;
        third of eleven is a long column with the mark near the top.
 
@@ -24,10 +27,6 @@
 {{- $presented := slice "conference-speaking" "conference-poster" -}}
 {{- $pages := where (where $enSite.RegularPages "Section" "works") "Params.type" "ne" "under-review" -}}
 {{- $listURL := (partial "lang-link.html" "/works/").href -}}
-{{- /* Above this many authors the column stops counting and starts being a
-       wall of dots, so it is truncated with a final marker slot. The tip and the
-       accessible name always carry the true position and total. */ -}}
-{{- $cap := 20 -}}
 {{- $works := slice -}}
 {{- range (sort $pages "Date" "asc") -}}
   {{- /* `default` cannot rescue this: len runs first and dies on a missing key
@@ -50,22 +49,22 @@
          works list filtered to the year, never to a publisher or a mirror */ -}}
   {{- $href := .RelPermalink -}}
   {{- if not $href -}}{{- $href = printf "%s?search=%d" $listURL .Date.Year -}}{{- end -}}
+  {{- /* first and last are the positions that mean something; everything
+         between them is the middle, however many there are */ -}}
+  {{- $first := eq $pos 1 -}}
+  {{- $last := and (gt $pos 0) (eq $pos $n) -}}
   {{- $works = $works | append (dict
       "title" .Title "year" .Date.Year "pos" $pos "n" $n "href" $href
-      "slots" (cond (gt $n $cap) $cap $n)
-      "mark" (cond (gt $pos $cap) $cap $pos)
-      "clipped" (gt $n $cap)
+      "first" $first "last" $last
+      "middle" (and (gt $pos 0) (not $first) (not $last))
       "open" (in $presented .Params.type)
       "kind" (i18n (printf "type_%s" .Params.type) | default .Params.type)) -}}
 {{- end -}}
 {{- with $works -}}
 {{- $years := slice -}}
 {{- range $works -}}{{- if not (in $years .year) -}}{{- $years = $years | append .year -}}{{- end -}}{{- end -}}
-{{- /* the longest author list sets every year group's height, so the year labels
        sit on one line instead of stepping with each group */ -}}
-{{- $maxN := 1 -}}
-{{- range $works -}}{{- if gt .slots $maxN -}}{{- $maxN = .slots -}}{{- end -}}{{- end -}}
-<figure class="authorship" id="outputs" data-section="{{ i18n "nav_sec_output" }}" style="--rows:{{ $maxN }}">
+<figure class="authorship" id="outputs" data-section="{{ i18n "nav_sec_output" }}">
   <ol class="authorship-years" aria-label="{{ i18n "authorship_aria" (dict
        "n" (partial "localized-number.html" (len $works))
        "from" (partial "localized-number.html" (index $years 0))
@@ -76,10 +75,12 @@
         {{- range $w := $works }}
         {{- if eq $w.year $y }}
         <li class="authorship-work">
+          {{- /* "1 of 1 authors" is not a sentence */ -}}
           {{- $where := i18n "authorship_hint" (dict "pos" (partial "localized-number.html" $w.pos) "n" (partial "localized-number.html" $w.n)) -}}
+          {{- if eq $w.n 1 }}{{ $where = i18n "authorship_hint_sole" }}{{ end -}}
           <a href="{{ $w.href }}" aria-label="{{ $w.title }}. {{ $w.kind }}, {{ partial "localized-number.html" $w.year }}. {{ $where }}">
-            {{- range $i := seq 1 $w.slots }}
-            <span class="authorship-slot{{ if eq $i $w.mark }} is-me{{ if $w.open }} is-open{{ end }}{{ end }}{{ if and $w.clipped (eq $i $w.slots) }} is-clipped{{ end }}"></span>
+            {{- range $rung := slice "first" "middle" "last" }}
+            <span class="authorship-slot{{ if index $w $rung }} is-me{{ if $w.open }} is-open{{ end }}{{ end }}"></span>
             {{- end }}
             <span class="authorship-tip" aria-hidden="true">{{ partial "localized-number.html" $w.year }} · {{ $where }}<span class="authorship-tip-title">{{ $w.title }}</span></span>
           </a>

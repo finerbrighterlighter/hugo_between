@@ -628,9 +628,9 @@ html{scroll-behavior:smooth}
    width, and the next few publications would have pushed past it */
 .authorship-years{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:.8rem;list-style:none;margin:0;padding:0}
 .authorship-year{display:flex;flex-direction:column;gap:.35rem;min-width:0}
-.authorship-works{display:flex;flex-wrap:wrap;align-items:flex-start;gap:clamp(.25rem,.4vw,.5rem);list-style:none;margin:0;padding:0;min-height:calc(var(--rows) * (var(--dot) + 3px) + 1px)}
+.authorship-works{display:flex;flex-wrap:wrap;align-items:flex-start;gap:clamp(.25rem,.4vw,.5rem);list-style:none;margin:0;padding:0}
 .authorship-work{position:relative}
-.authorship-work>a{display:flex;flex-direction:column;align-items:center;gap:3px;padding:2px 5px;margin:0 -4px;border-radius:3px;text-decoration:none;border:0}
+.authorship-work>a{display:flex;flex-direction:column;align-items:center;gap:clamp(9px,1.1vw,15px);padding:2px 5px;margin:0 -4px;border-radius:3px;text-decoration:none;border:0}
 .authorship-work>a:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
 /* The slots carry the reading "third of eleven", so they are graphical objects
    that mean something: --rule sat at 1.37:1 on paper, below the 3:1 WCAG asks
@@ -641,8 +641,6 @@ html{scroll-behavior:smooth}
    into a square at these diameters. */
 .authorship-slot{display:block;width:var(--dot);height:var(--dot);border-radius:50%;background:var(--mute);transform:scale(.62)}
 .authorship-slot.is-me{transform:none}
-/* the last slot of a truncated author list */
-.authorship-slot.is-clipped{border-radius:1px;height:2px;align-self:center;width:calc(var(--dot) + 2px)}
 .authorship-slot.is-me{background:var(--accent)}
 /* Open for presented output, filled for written — the distinction the timeline
    this replaced carried, kept on my slot rather than the whole column. */

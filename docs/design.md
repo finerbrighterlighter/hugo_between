@@ -267,11 +267,16 @@ two is worth keeping.
 
 - **Authorship, replacing the output timeline** (`partials/authorship-chart.html`). The timeline
   plotted one mark per work per year. The new figure plots one column per work, grouped under the
-  year, so the height of a year still reads as how much came out of it — and one slot per author,
-  first at the top, with my slot marked. That is the thing a publication list cannot say: which of
-  them were mine to lead. The old figure's only encoding survives, filled for written output and
-  open for presented, carried by my slot rather than the whole column. Two figures saying the same
-  thing became one saying more.
+  year, so how much came out of a year is how many columns it holds — and marks where my name sat
+  in that work's author list. That is the thing a publication list cannot say: which of them were
+  mine to lead. The old figure's only encoding survives, filled for written output and open for
+  presented. Two figures saying the same thing became one saying more.
+  It began as one slot per author, which was wrong three ways: the figure went mostly grey, a
+  single consortium paper set the height of every year group, and it implied that 27th of 60
+  differs from 31st. It is now three rungs — first, middle, last — because that is what an author
+  list actually encodes: the ends carry the claim and the middle is a crowd. A sole author marks
+  both ends. The exact position is in the hover label and the accessible name, which stopped being
+  a nicety once the dots no longer counted: "2 of 7 authors", or "sole author".
   It is HTML rather than SVG, which is why it exists below 700px where the timeline it replaced was
   hidden: text inside an SVG scales with the viewBox, so the year labels became illegible on a
   phone. The same reasoning applies to any figure here whose labels matter more than its geometry.
