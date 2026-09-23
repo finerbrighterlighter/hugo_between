@@ -591,6 +591,15 @@ html{scroll-behavior:smooth}
 @media (prefers-reduced-motion:reduce){.ielts .ielts-hint{transition:none}}
 @media (max-width:699px){.ielts .ielts-wide{display:none}}
 @media (min-width:700px){.ielts .ielts-narrow{display:none}}
+/* The scrobbling light. Carried over from the old site, where a 10px equaliser
+   appeared beside the "now playing" line only while a track was actually
+   playing — a thing a visitor would see rarely and only by coincidence. It
+   keys off the data-state the module already sets, so no JavaScript changed.
+   Decorative: the sentence itself already ends in ", now", so the mark has no
+   accessible name. An animated GIF cannot be paused, so reduced motion hides
+   it rather than freezing it. */
+#now-playing[data-state="playing"]::after{content:"";display:inline-block;width:10px;height:10px;margin-left:.45em;background:url("/general/scrobbling.gif") no-repeat center/10px 10px}
+@media (prefers-reduced-motion:reduce){#now-playing[data-state="playing"]::after{display:none}}
 @media print{
   /* .balloon is position:fixed, so without this it prints on every sheet. */
   .masthead,.colophon,.filter,details.cite,.covers-block,#now-playing,.skip,.intro,.balloon{display:none!important}
