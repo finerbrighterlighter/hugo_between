@@ -16,10 +16,34 @@
         {{- $desc = $d.description | default "" -}}{{- $stars = $d.stargazers_count | default 0 -}}
       {{- end -}}
     {{- end -}}
+    {{- /* /languages returns bytes per language. Those bytes were being thrown
+           away and the list taken with `first 3`, which over a Hugo map means
+           the first three alphabetically — so the languages shown were not the
+           ones the repository is mostly written in. They are now ordered by
+           share, and each carries it. */ -}}
+    {{- $total := 0 -}}
     {{- with try (resources.GetRemote (printf "https://api.github.com/repos/%s/%s/languages" $owner $name) $opts) -}}
-      {{- with .Value -}}{{- $l := .Content | transform.Unmarshal -}}{{- range $k, $v := $l -}}{{- $langs = $langs | append $k -}}{{- end -}}{{- end -}}
+      {{- with .Err -}}{{- warnf "github: %s/%s languages: %s" $owner $name . -}}
+      {{- else with .Value -}}
+        {{- $l := .Content | transform.Unmarshal -}}
+        {{- range $k, $v := $l -}}
+          {{- $total = add $total $v -}}
+          {{- $langs = $langs | append (dict "name" $k "bytes" $v) -}}
+        {{- end -}}
+      {{- end -}}
     {{- end -}}
-  <li><a href="https://github.com/{{ $owner }}/{{ $name }}" target="_blank" rel="noreferrer noopener">{{ $owner }}/{{ $name }}</a>{{ with $desc }} <span class="desc">{{ . }}</span>{{ end }}{{ if $langs }} <span class="langs">{{ delimit (first 3 $langs) ", " }}</span>{{ end }}</li>
+    {{- /* below one percent a share rounds to "0%", which reads as broken rather
+           than as small, so those are left out entirely */ -}}
+    {{- $keep := slice -}}
+    {{- if gt $total 0 -}}
+      {{- range (sort $langs "bytes" "desc") -}}
+        {{- if ge (mul (div (float .bytes) (float $total)) 100.0) 1.0 -}}{{- $keep = $keep | append . -}}{{- end -}}
+      {{- end -}}
+    {{- end -}}
+    {{- $langs = first 3 $keep -}}
+  <li><a href="https://github.com/{{ $owner }}/{{ $name }}" target="_blank" rel="noreferrer noopener">{{ $owner }}/{{ $name }}</a>{{ with $desc }} <span class="desc">{{ . }}</span>{{ end }}{{ if $langs }} <span class="langs">
+    {{- range $langs }}<span class="lang" style="--v:{{ printf "%.0f" (mul (div (float .bytes) (float $total)) 100.0) }}%">{{ .name }}<span class="lang-n">{{ printf "%.0f" (mul (div (float .bytes) (float $total)) 100.0) }}%</span></span>{{ end -}}
+  </span>{{ end }}</li>
   {{- end -}}
 {{- end -}}
 </ul>

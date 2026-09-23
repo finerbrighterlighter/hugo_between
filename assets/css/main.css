@@ -662,3 +662,11 @@ html{scroll-behavior:smooth}
 .authorship figcaption{margin-top:.9rem;max-width:var(--measure)}
 @media (max-width:519px){.authorship{--dot:5px}.authorship-years{gap:.6rem}.authorship-works{gap:.2rem}}
 
+/* Language share per repository, using the same underline the works filter tags
+   use: the rule under the name is filled in proportion to the bytes GitHub
+   reports. One accent colour cannot label four languages, so each stands on its
+   own rather than being stacked into one bar. */
+.langs{display:inline-flex;flex-wrap:wrap;gap:.1rem .8rem}
+.lang{position:relative;white-space:nowrap;border-bottom:1px solid var(--rule-soft);line-height:1.6}
+.lang::after{content:"";position:absolute;left:0;bottom:-1px;width:var(--v,0);height:1px;background:var(--accent);opacity:.5}
+.lang-n{margin-left:.3em;color:var(--mute);font-variant-numeric:tabular-nums;font-size:.85em}
