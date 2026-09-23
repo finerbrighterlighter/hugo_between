@@ -18,7 +18,7 @@
   <h1 class="paper-title" itemprop="name">{{ .Title }}</h1>
 
   <p class="authors" itemprop="author">
-    {{- $authors := .Params.authors -}}{{- $count := len $authors -}}
+    {{- $authors := .Params.authors | default slice -}}{{- $count := len $authors -}}
     {{- range $i, $a := $authors -}}
       {{- $given := $a.given -}}{{- $family := $a.family -}}{{- $affNums := slice -}}{{- $orcid := "" -}}
       {{- with $a.id -}}{{- with index $rm . -}}

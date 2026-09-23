@@ -615,7 +615,8 @@ html{scroll-behavior:smooth}
   .print-source{font-family:var(--sans);font-size:7.5pt;letter-spacing:.02em;margin:.6rem 0 0;color:#444;overflow-wrap:anywhere}
 }
 
-/* Research output as author lists: one column per work, one slot per author.
+/* Research output as author lists: one column per work, three rungs — first,
+   middle, last.
    Flex rows rather than an SVG, so the year labels stay prose-sized text and the
    columns reflow — the timeline this replaced had to be hidden below 700px.
    Columns hang from a common top, because the top slot is first author and that
@@ -632,20 +633,19 @@ html{scroll-behavior:smooth}
 .authorship-work{position:relative}
 .authorship-work>a{display:flex;flex-direction:column;align-items:center;gap:clamp(9px,1.1vw,15px);padding:2px 5px;margin:0 -4px;border-radius:3px;text-decoration:none;border:0}
 .authorship-work>a:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
-/* The slots carry the reading "third of eleven", so they are graphical objects
-   that mean something: --rule sat at 1.37:1 on paper, below the 3:1 WCAG asks
-   for, and --mute clears it in all four palettes. Painting a smaller disc inside
+/* An unmarked rung still says which of the three positions was not mine, so the
+   slots are graphical objects that mean something: --rule sat at 1.37:1 on
+   paper, below the 3:1 WCAG asks for, and --mute clears it in all four palettes. Painting a smaller disc inside
    the same layout box keeps that contrast while returning the ink to the accent
    mark, which is the slot the reader is actually looking for. Scaled rather than
    sized down, so the circle stays a circle: a small radial-gradient disc aliases
    into a square at these diameters. */
 .authorship-slot{display:block;width:var(--dot);height:var(--dot);border-radius:50%;background:var(--mute);transform:scale(.62)}
-.authorship-slot.is-me{transform:none}
-.authorship-slot.is-me{background:var(--accent)}
+.authorship-slot.is-me{background:var(--accent);transform:none}
 /* Open for presented output, filled for written — the distinction the timeline
    this replaced carried, kept on my slot rather than the whole column. */
 .authorship-slot.is-me.is-open{background:var(--paper);box-shadow:inset 0 0 0 1.5px var(--accent)}
-.authorship-y{display:block;text-align:center;font-family:var(--sans);font-size:var(--fs-tiny,.72rem);color:var(--mute)}
+.authorship-y{display:block;text-align:center;font-family:var(--sans);font-size:var(--fs-meta);color:var(--mute)}
 /* Drawn hover label, like the marks on the IELTS chart, rather than the
    browser's own tooltip. */
 /* display:none, not opacity:0 — an absolutely positioned label is still laid
@@ -654,14 +654,14 @@ html{scroll-behavior:smooth}
    their label inward so showing one cannot do the same. */
 .authorship-tip{position:absolute;left:50%;bottom:calc(100% + 6px);transform:translateX(-50%);z-index:2;
   display:none;width:max-content;max-width:min(22rem,60vw);padding:.3rem .5rem;border:1px solid var(--rule);border-radius:3px;
-  background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:var(--fs-tiny,.72rem);line-height:1.35;
+  background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:var(--fs-meta);line-height:1.35;
   pointer-events:none}
 .authorship-year:first-child .authorship-tip{left:0;transform:none}
 .authorship-year:last-child .authorship-tip{left:auto;right:0;transform:none}
 .authorship-tip-title{display:block;color:var(--mute)}
 .authorship-work:hover .authorship-tip,.authorship-work:focus-within .authorship-tip{display:block}
 .authorship-work:hover .authorship-slot,.authorship-work:focus-within .authorship-slot{background:var(--mute)}
-.authorship-work:hover .authorship-slot.is-me,.authorship-work:focus-within .authorship-slot.is-me{background:var(--accent)}
+.authorship-work:hover .authorship-slot.is-me,.authorship-work:focus-within .authorship-slot.is-me{background:var(--accent);transform:none}
 .authorship-work:hover .authorship-slot.is-me.is-open,.authorship-work:focus-within .authorship-slot.is-me.is-open{background:var(--paper)}
 .authorship figcaption{margin-top:.9rem;max-width:var(--measure)}
 /* Backgrounds are not printed and are stripped in forced-colors, which left the

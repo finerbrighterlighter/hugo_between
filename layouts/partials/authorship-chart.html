@@ -11,9 +11,7 @@
        one consortium paper set the height of the whole thing, and implied that
        being 27th of 60 differs from being 31st, which it does not. A sole
        author is a first author and nothing else; marking the last rung too
-       would claim a seniority position that a one-name paper does not have. One slot per
-       author, first at the top, my slot marked. Sole author is a single mark;
-       third of eleven is a long column with the mark near the top.
+       would claim a seniority position that a one-name paper does not have.
 
        The old figure's one encoding is kept: filled for written output, open for
        presented. It is carried by my slot rather than the whole column.
@@ -39,10 +37,11 @@
   {{- range $i, $a := $authors -}}
     {{- if and (reflect.IsMap $a) $a.highlight -}}{{- $pos = add $i 1 -}}{{- end -}}
   {{- end -}}
-  {{- /* No author list at all: one slot, and it is mine. An author list with
-         nobody flagged is a different thing — the work is not sole-authored, so
-         the column is drawn with no mark rather than inventing one. */ -}}
-  {{- if eq $n 0 -}}{{- $n = 1 -}}{{- $pos = 1 -}}
+  {{- /* A missing author list and a one-name author list are different facts,
+         and only the second is sole authorship. Neither is invented here: a work
+         with nothing to go on is drawn with no mark and says so. */ -}}
+  {{- if eq $n 0 -}}
+    {{- warnf "authorship: %q has no `authors`; drawn without a mark" .Title -}}
   {{- else if eq $pos 0 -}}
     {{- warnf "authorship: %q has %d authors and none flagged `highlight: true`; drawn without a mark" .Title $n -}}
   {{- end -}}
@@ -67,9 +66,7 @@
 {{- range $works -}}{{- if not (in $years .year) -}}{{- $years = $years | append .year -}}{{- end -}}{{- end -}}
 <figure class="authorship" id="outputs" data-section="{{ i18n "nav_sec_output" }}">
   <ol class="authorship-years" aria-label="{{ i18n "authorship_aria" (dict
-       "n" (partial "localized-number.html" (len $works))
-       "from" (partial "localized-number.html" (index $years 0))
-       "to" (partial "localized-number.html" (index (last 1 $years) 0))) }}">
+       "n" (len $works) "from" (index $years 0) "to" (index (last 1 $years) 0)) }}">
     {{- range $y := $years }}
     <li class="authorship-year">
       <ol class="authorship-works">
@@ -77,13 +74,19 @@
         {{- if eq $w.year $y }}
         <li class="authorship-work">
           {{- /* "1 of 1 authors" is not a sentence */ -}}
-          {{- $where := i18n "authorship_hint" (dict "pos" (partial "localized-number.html" $w.pos) "n" (partial "localized-number.html" $w.n)) -}}
-          {{- if eq $w.n 1 }}{{ $where = i18n "authorship_hint_sole" }}{{ end -}}
-          <a href="{{ $w.href }}" aria-label="{{ $w.title }}. {{ $w.kind }}, {{ partial "localized-number.html" $w.year }}. {{ $where }}">
+          {{- /* These strings have no Burmese yet, and Hugo falls back to the
+                 English one. Localising the digits inside an English sentence
+                 produced "၂ of ၇ authors", which is worse than either language:
+                 the figure falls back whole until mm.yaml carries the keys. */ -}}
+          {{- $where := i18n "authorship_hint" (dict "pos" $w.pos "n" $w.n) -}}
+          {{- if eq $w.n 1 }}{{ $where = i18n "authorship_hint_sole" }}
+          {{- else if eq $w.n 0 }}{{ $where = i18n "authorship_hint_none" }}
+          {{- else if eq $w.pos 0 }}{{ $where = i18n "authorship_hint_unmarked" (dict "n" $w.n) }}{{ end -}}
+          <a href="{{ $w.href }}" aria-label="{{ $w.title }}. {{ $w.kind }}, {{ $w.year }}. {{ $where }}">
             {{- range $rung := slice "first" "middle" "last" }}
             <span class="authorship-slot{{ if index $w $rung }} is-me{{ if $w.open }} is-open{{ end }}{{ end }}"></span>
             {{- end }}
-            <span class="authorship-tip" aria-hidden="true">{{ partial "localized-number.html" $w.year }} · {{ $where }}<span class="authorship-tip-title">{{ $w.title }}</span></span>
+            <span class="authorship-tip" aria-hidden="true">{{ $w.year }} · {{ $where }}<span class="authorship-tip-title">{{ $w.title }}</span></span>
           </a>
         </li>
         {{- end }}

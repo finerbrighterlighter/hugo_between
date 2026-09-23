@@ -26,7 +26,7 @@
       {{- $authorNames = $authorNames | append (printf "%s %s" $family (substr $given 0 1)) -}}
     {{- end -}}
     {{- $authorText := delimit $authorNames ", " -}}
-    {{- if gt (len .Params.authors) $maxAuthors -}}
+    {{- if gt (len (.Params.authors | default slice)) $maxAuthors -}}
       {{- $authorText = printf "%s, et al." $authorText -}}
     {{- end -}}
     {{- $desc = printf "%s %s. %s." $authorText .Params.venue (.Date.Format "2006") -}}

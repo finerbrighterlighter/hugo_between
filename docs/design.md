@@ -280,14 +280,17 @@ two is worth keeping.
   hidden: text inside an SVG scales with the viewBox, so the year labels became illegible on a
   phone. The same reasoning applies to any figure here whose labels matter more than its geometry.
 - **Filter tags carry their own frequency** (`partials/filter-group.html`). Each tag on the works
-  page says how many works it matches, and the rule that was already under it is filled in
-  proportion. The distribution therefore costs no new marks on the page. A tag cloud would have
-  encoded the same thing as type size, which is the wrong channel and would have fought the
-  typography. `uniq | sort` had been throwing the counts away.
-- **Repository languages by share** (`partials/github-repos.html`). Same underline. This fixed a
-  quiet inaccuracy rather than adding a decoration: the partial fetched bytes per language, dropped
-  them, and took `first 3` of the keys, which over a Hugo map is alphabetical — so the languages
-  shown were not the ones a repository is mostly written in.
+  page says how many works it matches, as a number. `uniq | sort` had been throwing the counts
+  away. The count was also drawn as a proportional fill of the rule already under each tag, and
+  that was removed: the fill was a percentage of the label's own width, so a long name at five
+  works drew a longer bar than a short name at seven, and the scale was set by tags folded behind
+  "more", so nothing visible in Methods ever reached full. It also contradicted the system recorded
+  at the top of this document — there are no meters here. A tag cloud fails the same way through
+  type size.
+- **Repository languages by share** (`partials/github-repos.html`). The percentage, as a number,
+  for the same reason. This fixed a quiet inaccuracy rather than adding a decoration: the partial
+  fetched bytes per language, dropped them, and took `first 3` of the keys, which over a Hugo map
+  is alphabetical — so the languages shown were not the ones a repository is mostly written in.
 
 Two were built and removed:
 

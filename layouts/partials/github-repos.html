@@ -42,7 +42,7 @@
     {{- end -}}
     {{- $langs = first 3 $keep -}}
   <li><a href="https://github.com/{{ $owner }}/{{ $name }}" target="_blank" rel="noreferrer noopener">{{ $owner }}/{{ $name }}</a>{{ with $desc }} <span class="desc">{{ . }}</span>{{ end }}{{ if $langs }} <span class="langs">
-    {{- range $langs }}<span class="lang">{{ .name }}<span class="lang-n"><span class="sr-only">, </span>{{ partial "localized-number.html" (int (mul (div (float .bytes) (float $total)) 100.0)) }}%</span></span>{{ end -}}
+    {{- range $i, $l := $langs }}{{ if $i }}<span class="sr-only">; </span>{{ end }}<span class="lang">{{ $l.name }}<span class="lang-n"><span class="sr-only">, </span>{{ partial "localized-number.html" (int (mul (div (float $l.bytes) (float $total)) 100.0)) }}%</span></span>{{ end -}}
   </span>{{ end }}</li>
   {{- end -}}
 {{- end -}}

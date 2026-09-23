@@ -160,6 +160,8 @@ evidence_link: "source"
 authorship_aria: "Research output as author lists: {{ .n }} works from {{ .from }} to {{ .to }}."
 authorship_hint: "{{ .pos }} of {{ .n }} authors"
 authorship_hint_sole: "sole author"
+authorship_hint_unmarked: "{{ .n }} authors"
+authorship_hint_none: "authors not recorded"
 authorship_caption: "A column per work: where my name sat in its author list — first, middle or last. Filled for written output, open for presented."
 
 
