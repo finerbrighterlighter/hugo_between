@@ -3,6 +3,12 @@
        reading. Talks, posters and reports are list-only pages with no body, so
        a feed entry for them would be a bare title.
 
+       The entry body is the page body, so a work that grows a full text grows
+       one here too without this file changing. Bringing talks and posters in
+       is not just a matter of listing their type below: the cascade in
+       content/works/_index.md sets `build.render: never` for those paths, so
+       there is no page for an item to point at until that changes as well.
+
        Written for what a reader actually renders. RSS 2.0, because every reader
        supports it. Each item carries the whole abstract in content:encoded and a
        short plain-text <description> as the fallback for the readers that only
