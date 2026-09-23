@@ -1,0 +1,14 @@
+{{- /* Median of a slice of numbers. Takes the slice, returns a float.
+
+       Split out because the box plot in ielts-chart.html needs it three times:
+       once for the median itself and once for each half, which is how Tukey's
+       hinges are defined. For an odd count the halves exclude the median. */ -}}
+{{- $s := sort . -}}
+{{- $n := len $s -}}
+{{- $m := 0.0 -}}
+{{- if eq (mod $n 2) 1 -}}
+  {{- $m = float (index $s (div $n 2)) -}}
+{{- else -}}
+  {{- $m = div (add (float (index $s (sub (div $n 2) 1))) (float (index $s (div $n 2)))) 2.0 -}}
+{{- end -}}
+{{- return $m -}}

@@ -22,6 +22,8 @@
       {{ partial "github-repos.html" . }}
 
       <h2 id="off-duty">{{ i18n "k_offduty" }}</h2>
+      {{ with i18n "ielts_lead" }}<p>{{ . }}</p>{{ end }}
+      {{ partial "ielts-chart.html" . }}
       <p>{{ i18n "offduty_blood" | replaceRE "(blood page|သွေးစာမျက်နှာ)" (printf `<a href="%s">$1</a>` ("/blood/" | relLangURL)) | safeHTML }} {{ i18n "offduty_photos" | replaceRE "Unsplash" `<a href="https://unsplash.com/@finerbrighterlighter" target="_blank" rel="noreferrer noopener">Unsplash</a>` | safeHTML }} {{ i18n "offduty_reading" | replaceRE "AniList" `<a href="https://anilist.co/user/finer" target="_blank" rel="noreferrer noopener">AniList</a>` | replaceRE "Simkl" `<a href="https://simkl.com/" target="_blank" rel="noreferrer noopener">Simkl</a>` | safeHTML }}</p>
       {{- with hugo.Data.playlists }}
       <p class="meta">{{ i18n "offduty_music" | replaceRE "Last.fm" (printf `<a href="%s" target="_blank" rel="noreferrer noopener">Last.fm</a>` .link) | safeHTML }}</p>

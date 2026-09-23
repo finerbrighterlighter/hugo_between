@@ -1,0 +1,130 @@
+{{- /* IELTS band scores across every sitting, drawn from data/ielts.yml.
+
+       One row per skill, band along the bottom. Every sitting is a dot; dots
+       that landed on the same band stack into a small cluster rather than
+       hiding behind each other, so the height of a pile is how often that band
+       came back. The row is a fixed height whatever the number of sittings —
+       the cluster tightens instead of the figure growing — so another test
+       costs nothing.
+
+       The band scale is not cropped to the range of the data. The marks bunch
+       in the right-hand third and the left two-thirds sit empty, which is what
+       these numbers actually look like against the scale they are scored on.
+
+       A One Skill Retake re-tests one component and carries the other three
+       over from the sitting before it. A carried score is not a new
+       measurement, so only the re-sat component has a mark from it — plus the
+       overall band, which is recomputed. The skills with no ring are the
+       explanation.
+
+       Plain SVG, no JavaScript, same approach as the output timeline. The
+       figure carries one accessible label; a screen reader wants the numbers,
+       not thirty-odd circles. */ -}}
+{{- $d := hugo.Data.ielts -}}
+{{- with $d.sittings -}}
+{{- $sits := . -}}
+{{- $skills := slice
+      (dict "key" "listening" "label" (i18n "ielts_listening" | default "Listening"))
+      (dict "key" "reading"   "label" (i18n "ielts_reading"   | default "Reading"))
+      (dict "key" "writing"   "label" (i18n "ielts_writing"   | default "Writing"))
+      (dict "key" "speaking"  "label" (i18n "ielts_speaking"  | default "Speaking"))
+      (dict "key" "overall"   "label" (i18n "ielts_overall"   | default "Overall") "rule" true)
+-}}
+{{- /* geometry: fixed row height, clusters compress to fit it */ -}}
+{{- $W := 420 -}}
+{{- $labelW := 72 -}}{{- $plotW := 338 -}}
+{{- $top := 24 -}}{{- $rowH := 46 -}}{{- $spread := 18.0 -}}{{- $gapMax := 6.0 -}}
+{{- $H := add $top (add (mul (len $skills) $rowH) 10) -}}
+<figure class="ielts">
+  <svg viewBox="0 0 {{ $W }} {{ $H }}" width="100%" role="img"
+       aria-label="{{ i18n "ielts_aria" }}" focusable="false">
+    {{- /* the whole 0–9 scale, uncropped */ -}}
+    {{- range $b := seq 0 9 }}
+      {{- $x := add $labelW (mul (div (float $b) 9.0) $plotW) }}
+    <line x1="{{ $x }}" y1="16" x2="{{ $x }}" y2="{{ sub $H 8 }}" stroke="var(--rule-soft)" stroke-width="1" />
+    <text x="{{ $x }}" y="11" text-anchor="middle" font-size="10" fill="var(--mute)">{{ $b }}</text>
+    {{- end }}
+    {{- range $i, $s := $skills }}
+      {{- $cy := add $top (add (mul $i $rowH) 23) -}}
+      {{- /* a retake measures one component; the rest are carried over, and a
+             carried number is not a sitting of its own. The overall band is
+             recomputed, so it is the one other row that gets a mark. */ -}}
+      {{- $pts := slice -}}
+      {{- range $sit := $sits -}}
+        {{- if or (not $sit.retake) (eq $sit.retake $s.key) (eq $s.key "overall") -}}
+          {{- $pts = $pts | append (dict "v" (index $sit $s.key) "retake" (ne (default "" $sit.retake) "")) -}}
+        {{- end -}}
+      {{- end -}}
+      {{- $lastIdx := sub (len $pts) 1 -}}
+      {{- /* stack the repeats: one bucket per band, drawn centred on the row */ -}}
+      {{- $groups := dict -}}
+      {{- range $k, $p := $pts -}}
+        {{- $key := printf "%v" $p.v -}}
+        {{- $bucket := index $groups $key -}}
+        {{- if not $bucket -}}{{- $bucket = slice -}}{{- end -}}
+        {{- $groups = merge $groups (dict $key ($bucket | append (merge $p (dict "last" (eq $k $lastIdx))))) -}}
+      {{- end -}}
+      {{- $tallest := 1 -}}
+      {{- range $g := $groups -}}{{- if gt (len $g) $tallest -}}{{- $tallest = len $g -}}{{- end -}}{{- end -}}
+      {{- $sp := $gapMax -}}
+      {{- if gt $tallest 1 -}}{{- $sp = math.Min $gapMax (div $spread (float (sub $tallest 1))) -}}{{- end -}}
+      {{- /* five-number summary, Tukey's hinges. Four or five sittings is far too
+             few for a quartile to mean much, which is exactly why every point
+             stays drawn on top of the box rather than being summarised away. */ -}}
+      {{- $vals := slice -}}{{- range $p := $pts -}}{{- $vals = $vals | append (float $p.v) -}}{{- end -}}
+      {{- $sorted := sort $vals -}}
+      {{- $n := len $sorted -}}
+      {{- $half := div $n 2 -}}
+      {{- $med := partial "stat-median.html" $sorted -}}
+      {{- $q1 := partial "stat-median.html" (first $half $sorted) -}}
+      {{- $q3 := partial "stat-median.html" (last $half $sorted) -}}
+      {{- $iqr := sub $q3 $q1 -}}
+      {{- $loFence := sub $q1 (mul 1.5 $iqr) -}}{{- $hiFence := add $q3 (mul 1.5 $iqr) -}}
+      {{- $wLo := $med -}}{{- $wHi := $med -}}
+      {{- range $v := $sorted -}}
+        {{- if and (ge $v $loFence) (le $v $hiFence) -}}
+          {{- if lt $v $wLo -}}{{- $wLo = $v -}}{{- end -}}
+          {{- if gt $v $wHi -}}{{- $wHi = $v -}}{{- end -}}
+        {{- end -}}
+      {{- end -}}
+      {{- $X := $plotW -}}
+      {{- $xMed := add $labelW (mul (div $med 9.0) $X) -}}
+      {{- $xQ1 := add $labelW (mul (div $q1 9.0) $X) -}}
+      {{- $xQ3 := add $labelW (mul (div $q3 9.0) $X) -}}
+      {{- $xLo := add $labelW (mul (div $wLo 9.0) $X) -}}
+      {{- $xHi := add $labelW (mul (div $wHi 9.0) $X) -}}
+      {{- if $s.rule }}
+    <line x1="0" y1="{{ sub $cy 23 }}" x2="{{ $W }}" y2="{{ sub $cy 23 }}" stroke="var(--rule)" stroke-width="1" />
+      {{- end }}
+    <text x="{{ sub $labelW 12 }}" y="{{ add $cy 4 }}" text-anchor="end" font-size="12" fill="var(--ink)">{{ $s.label }}</text>
+      {{- /* whiskers, then the box, then the median; the dots go on top */ -}}
+      {{- if gt $xHi $xLo }}
+    <line x1="{{ $xLo }}" y1="{{ $cy }}" x2="{{ $xHi }}" y2="{{ $cy }}" stroke="var(--rule)" stroke-width="1" />
+    <line x1="{{ $xLo }}" y1="{{ sub $cy 5 }}" x2="{{ $xLo }}" y2="{{ add $cy 5 }}" stroke="var(--rule)" stroke-width="1" />
+    <line x1="{{ $xHi }}" y1="{{ sub $cy 5 }}" x2="{{ $xHi }}" y2="{{ add $cy 5 }}" stroke="var(--rule)" stroke-width="1" />
+      {{- end }}
+      {{- if gt (sub $xQ3 $xQ1) 0.5 }}
+    <rect x="{{ $xQ1 }}" y="{{ sub $cy 8 }}" width="{{ sub $xQ3 $xQ1 }}" height="16" rx="1"
+          fill="var(--accent)" fill-opacity="0.10" stroke="var(--rule)" stroke-width="1" />
+      {{- end }}
+    <line x1="{{ $xMed }}" y1="{{ sub $cy 8 }}" x2="{{ $xMed }}" y2="{{ add $cy 8 }}"
+          stroke="var(--ink)" stroke-width="1.5" />
+      {{- range $g := $groups }}
+        {{- $c := len $g }}
+        {{- range $m, $p := $g }}
+          {{- $x := add $labelW (mul (div (float $p.v) 9.0) $plotW) -}}
+          {{- $y := add $cy (mul (sub (float $m) (div (float (sub $c 1)) 2.0)) $sp) -}}
+          {{- if $p.retake }}
+    <circle cx="{{ $x }}" cy="{{ $y }}" r="5.5" fill="var(--paper)" stroke="var(--accent)" stroke-width="2.5" />
+          {{- else if $p.last }}
+    <circle cx="{{ $x }}" cy="{{ $y }}" r="5" fill="var(--accent)" />
+          {{- else }}
+    <circle cx="{{ $x }}" cy="{{ $y }}" r="3.5" fill="var(--accent)" opacity="0.4" />
+          {{- end }}
+        {{- end }}
+      {{- end }}
+    {{- end }}
+  </svg>
+  <figcaption class="meta">{{ i18n "ielts_caption" }}</figcaption>
+</figure>
+{{- end -}}

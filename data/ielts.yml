@@ -1,0 +1,49 @@
+# IELTS Academic band scores, read off the test report forms.
+#
+# Only the numbers live here. The forms themselves are not published and are not
+# in this repository: they carry a candidate ID, a date of birth and a nationality,
+# none of which the chart needs.
+#
+# `retake: true` marks a One Skill Retake — one component re-sat on its own, with
+# the other three carried over from the sitting immediately before it. It is shown
+# rather than hidden: the point of the chart is how much a measurement moves, and
+# a retake is part of that story.
+#
+# Bands run 0 to 9 in half steps.
+
+sittings:
+  - date: 2019-01-19
+    listening: 8.5
+    reading: 9.0
+    writing: 6.5
+    speaking: 6.0
+    overall: 7.5
+
+  - date: 2020-10-15
+    listening: 8.5
+    reading: 7.5
+    writing: 6.0
+    speaking: 6.0
+    overall: 7.0
+
+  - date: 2023-06-30
+    listening: 8.5
+    reading: 8.5
+    writing: 6.5
+    speaking: 8.0
+    overall: 8.0
+
+  - date: 2026-09-03
+    listening: 8.5
+    reading: 9.0
+    writing: 6.0
+    speaking: 6.5
+    overall: 7.5
+
+  - date: 2026-09-06
+    retake: writing
+    listening: 8.5
+    reading: 9.0
+    writing: 7.5
+    speaking: 6.5
+    overall: 8.0

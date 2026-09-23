@@ -155,3 +155,13 @@ spine_note_label: "A note in the margin"
 spine_note: "Two voices, one line down the middle. The line is the argument: most of what I do is deciding which side a thing belongs on, and being honest when it belongs on neither."
 # The little link beside a role or degree that opens the document evidencing it.
 evidence_link: "source"
+# The IELTS chart on the About page. The lead is the point of the chart: without it
+# the numbers read as a credential rather than as an observation about measurement.
+ielts_lead: "Five sittings of the same English test across seven years. Expensive data points, so here they are, on the full nine-band scale rather than cropped to flatter them."
+ielts_listening: "Listening"
+ielts_reading: "Reading"
+ielts_writing: "Writing"
+ielts_speaking: "Speaking"
+ielts_overall: "Overall"
+ielts_caption: "Box and whisker per skill, with every sitting drawn on top: a dot for each, stacked where two landed on the same band, and solid for the most recent. The open ring is the September 2026 One Skill Retake — only writing was re-sat, so it is the only skill carrying a mark from it, along with the overall band, which was recomputed from it. Four or five tests is nowhere near enough for a quartile to mean anything, which is why the dots stay."
+ielts_aria: "Box plots of IELTS band scores by skill, 2019 to 2026, on a scale of 0 to 9, with every sitting plotted. Listening 8.5 at all four sittings. Reading 9, 7.5, 8.5, 9. Writing 6.5, 6, 6.5, 6, then 7.5 at a One Skill Retake. Speaking 6, 6, 8, 6.5. Overall 7.5, 7, 8, 7.5, then 8 after the retake."

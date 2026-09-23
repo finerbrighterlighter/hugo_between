@@ -568,6 +568,13 @@ html{scroll-behavior:smooth}
 /* The print colophon is paper-only: `display:none` keeps it from sighted readers
    and from assistive technology, which is the intent. See partials/print-colophon.html. */
 .print-colophon{display:none}
+/* The IELTS figure. The SVG is drawn at a 420-unit viewBox; letting it stretch
+   past that scales the type inside it larger than the prose around it, so it is
+   capped and left where the text starts. Below that width it scales down with
+   the column, which is what keeps it usable on a phone. */
+.prose figure.ielts{margin:1.4rem 0 1.8rem;max-width:420px}
+.ielts svg{display:block;width:100%;height:auto}
+.ielts figcaption{margin-top:.5rem}
 @media print{
   /* .balloon is position:fixed, so without this it prints on every sheet. */
   .masthead,.colophon,.filter,details.cite,.covers-block,#now-playing,.skip,.intro,.balloon{display:none!important}
