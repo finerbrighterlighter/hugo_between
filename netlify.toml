@@ -5,6 +5,22 @@ publish = "public"
 [build.environment]
 HUGO_VERSION = "0.157.0"
 
+# Hugo was giving every section an RSS output by default, so /posts/index.xml
+# and /works/index.xml briefly existed alongside the real feed. They are off
+# now; a feed that moves should redirect rather than 404, which is what a
+# reader knows how to follow.
+[[redirects]]
+  from = "/posts/index.xml"
+  to = "/index.xml"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/works/index.xml"
+  to = "/index.xml"
+  status = 301
+  force = true
+
 [[redirects]]
   from = "/general/msc_transcript_htunteza.pdf"
   to = "/general/msc-transcript/"

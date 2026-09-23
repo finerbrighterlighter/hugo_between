@@ -1,22 +1,85 @@
-{{- /* Works-only feed: journal articles, preprints, proceedings, dissertations (rendered pages). */ -}}
-{{- $works := where (where .Site.RegularPages "Section" "works") "Params.type" "in" (slice "journal" "preprint" "conference-proceeding" "dissertation" "under-review") -}}
+{{- /* Works feed: journal articles, preprints, proceedings, dissertations and
+       items under review — the rendered types, the ones with an abstract worth
+       reading. Talks, posters and reports are list-only pages with no body, so
+       a feed entry for them would be a bare title.
+
+       Written for what a reader actually renders. RSS 2.0, because every reader
+       supports it. Each item carries the whole abstract in content:encoded and a
+       short plain-text <description> as the fallback for the readers that only
+       look at that. The links block is inside the HTML rather than in namespaced
+       elements no reader displays: a DOI is only useful if the person can click
+       it, and every source URL is made absolute because a feed is read somewhere
+       other than this site. */ -}}
+{{- $types := slice "journal" "preprint" "conference-proceeding" "dissertation" "under-review" -}}
+{{- $works := where (where .Site.RegularPages "Section" "works") "Params.type" "in" $types -}}
+{{- $works = sort $works "Date" "desc" -}}
+{{- $self := "" -}}{{- with .OutputFormats.Get "RSS" -}}{{- $self = .Permalink -}}{{- end -}}
 {{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0"
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/">
   <channel>
     <title>{{ .Site.Title }}: works</title>
     <link>{{ "/works/" | absURL }}</link>
     <description>Publications by {{ .Site.Params.author }}</description>
     <language>{{ .Site.Language.Lang }}</language>
-    {{ with (index (sort $works "Date" "desc") 0) }}<lastBuildDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</lastBuildDate>{{ end }}
-    <atom:link href="{{ .Permalink }}" rel="self" type="application/rss+xml" />
-    {{- range sort $works "Date" "desc" }}
+    <copyright>CC BY 4.0</copyright>
+    <generator>Hugo</generator>
+    <docs>https://www.rssboard.org/rss-specification</docs>
+    {{- with (index $works 0) }}
+    <lastBuildDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</lastBuildDate>
+    {{- end }}
+    <atom:link href="{{ $self }}" rel="self" type="application/rss+xml" />
+    {{- range $works }}
     {{- if .RelPermalink }}
+    {{- /* the DOI, which lives inside sources rather than in a field of its own */ -}}
+    {{- $doi := "" -}}
+    {{- range .Params.sources -}}
+      {{- if strings.HasPrefix .url "https://doi.org/" -}}
+        {{- $doi = strings.TrimPrefix "https://doi.org/" .url -}}
+      {{- end -}}
+    {{- end -}}
+    {{- $authors := partial "bib-authors.html" . -}}
+    {{- /* the rendered entry: where and when, who, the abstract, then the links */ -}}
+    {{- $head := slice -}}
+    {{- with .Params.venue }}{{ $head = $head | append (printf "<em>%s</em>" .) }}{{ end -}}
+    {{- $head = $head | append (.Date.Format "2006") -}}
+    {{- $body := printf "<p>%s</p>" (delimit $head ", ") -}}
+    {{- with $authors }}{{ $body = printf "%s<p>%s</p>" $body . }}{{ end -}}
+    {{- with .Content }}{{ $body = printf "%s%s" $body . }}{{ end -}}
+    {{- $links := slice -}}
+    {{- with $doi }}{{ $links = $links | append (printf "<a href=\"https://doi.org/%s\">doi:%s</a>" . .) }}{{ end -}}
+    {{- range .Params.sources -}}
+      {{- if not (strings.HasPrefix .url "https://doi.org/") -}}
+        {{- /* a relative source is a file on this site; a feed is read elsewhere,
+               so it has to leave here absolute, and these filenames have spaces */ -}}
+        {{- $u := .url -}}
+        {{- if strings.HasPrefix $u "/" -}}{{- $u = $u | absURL -}}{{- end -}}
+        {{- $u = replace $u " " "%20" -}}
+        {{- $links = $links | append (printf "<a href=\"%s\">%s</a>" $u (.text | humanize | lower)) -}}
+      {{- end -}}
+    {{- end -}}
+    {{- with $links }}{{ $body = printf "%s<p>%s</p>" $body (delimit . " &middot; ") }}{{ end -}}
+    {{- /* plain-text fallback for readers that ignore content:encoded */ -}}
+    {{- $plain := printf "%s%s." (cond (ne .Params.venue nil) (printf "%s, " .Params.venue) "") (.Date.Format "2006") -}}
+    {{- with .Summary }}{{ $plain = printf "%s %s" $plain (. | plainify | strings.TrimSpace) }}{{ end -}}
     <item>
       <title>{{ .Title }}</title>
       <link>{{ .Permalink }}</link>
+      <guid isPermaLink="true">{{ .Permalink }}</guid>
       <pubDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</pubDate>
-      <guid>{{ .Permalink }}</guid>
-      <description>{{ with .Params.venue }}{{ . }}, {{ end }}{{ .Date.Format "2006" }}.{{ with .Summary }} {{ . | plainify | truncate 400 }}{{ end }}</description>
+      {{- with $authors }}
+      <dc:creator>{{ . | plainify }}</dc:creator>
+      {{- end }}
+      {{- with .Params.type }}
+      <category>{{ i18n (printf "type_%s" .) | default . }}</category>
+      {{- end }}
+      {{- with $doi }}
+      <dc:identifier>doi:{{ . }}</dc:identifier>
+      {{- end }}
+      <description>{{ $plain | truncate 400 }}</description>
+      <content:encoded>{{ $body | transform.XMLEscape | safeHTML }}</content:encoded>
     </item>
     {{- end }}
     {{- end }}
