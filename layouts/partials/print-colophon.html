@@ -39,7 +39,7 @@
     {{- with i18n "print_colophon" -}}
       {{- . | safeHTML -}}
     {{- else -}}
-      Set in <em>Newsreader</em> by Production Type and <em>Karla</em> by Jonny Pinhorn.
+      The data tells you what it saw. <em>Your job</em> is to remember everything it didn’t.
     {{- end }}
     {{- if eq .Site.Language.Lang "mm" }}
     {{ with i18n "print_colophon_burmese" }}{{ . | safeHTML }}{{ else }}Burmese set in <em>Thit Sar Shwe Si</em> by Htun Naung.{{ end }}
