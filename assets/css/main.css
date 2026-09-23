@@ -124,6 +124,13 @@ html:lang(my) .masthead-name{font-size:1.2rem}
 .spine-note>summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .spine-note-body{padding-top:.8rem;max-width:min(30rem,100%);margin:0 auto}
 .spine-note-body p{font-family:var(--serif);font-style:italic;font-size:var(--fs-small);line-height:1.55;color:var(--mute);margin:0;max-width:none;text-wrap:pretty}
+/* Below 960px the rows collapse to one column and the spine moves to the left
+   edge, so there is no line down the middle for the note to be about — the dot
+   would sit at the centre of a layout that no longer has a centre, and the note
+   would describe a page the reader is not looking at. It is removed rather than
+   visually hidden, so it leaves the accessibility tree with it. #writes keeps
+   `no-dot` either way, like the four other rows that carry it. */
+@media (max-width:959px){.spine-note{display:none}}
 @media (prefers-reduced-motion:reduce){.spine-note>summary::after{transition:none}}
 .voice-l{text-align:right}
 .voice-l .kicker,.voice-l h2,.voice-l ul,.voice-l ol{text-align:right}

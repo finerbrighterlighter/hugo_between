@@ -208,7 +208,10 @@ navigation button printed on every sheet.
   one closing the last row of the home page is a `<details>` holding a single marginal note, the way a colophon
   sits at the back of a book. No JavaScript: a disclosure is keyboard-operable and announced correctly on its
   own. The visible mark stays 9px like every other dot while the hit area is padded to the 24px tap-target
-  floor, and it aligns to the spine, which the asymmetric row moves to 40%.
+  floor, and it aligns to the spine, which the asymmetric row moves to 40%. Below 960px it is not shown at all:
+  the rows collapse to one column and the spine moves to the left edge, so there is no line down the middle for
+  the note to be about. `display: none` rather than a visual hide, so it leaves the accessibility tree and the
+  tab order with it.
 
 The note first overlaid the row, which put it on top of the text either side, so it now sits in normal flow and
 pushes the footer down instead. It also has to span the row with `grid-column: 1 / -1` rather than `1 / 3`,
