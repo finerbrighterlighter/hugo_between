@@ -1,0 +1,20 @@
+{{- /* One entry in the Now / Before chronology.
+
+       Factored out because the same markup is rendered three times — the Now
+       column, the first few of Before, and the tail behind the disclosure — and
+       was drifting between them.
+
+       Expects: e (the entry) and collapse — Before folds an entry's detail into
+       a disclosure, Now shows it outright. */ -}}
+{{- $e := .e -}}
+<li>
+  <span class="when">{{ $e.when }}</span>
+  <span class="what">{{ $e.what }}
+    {{- with $e.doc }}{{ $ev := partial "lang-link.html" . }} <a href="{{ $ev.href }}"{{ with $ev.hreflang }} hreflang="{{ . }}"{{ end }} class="meta">{{ with i18n "evidence_link" }}{{ . }}{{ else }}source{{ end }}</a>{{ end -}}
+  </span>
+  <span class="where"><a href="{{ $e.link }}" target="_blank" rel="noreferrer noopener">{{ $e.where }}</a></span>
+  {{- with $e.details }}
+  {{- if $.collapse }}<details><summary>{{ i18n "show_more" }}</summary>{{ . | markdownify }}</details>
+  {{- else }}<div class="chron-details">{{ . | markdownify }}</div>{{ end }}
+  {{- end }}
+</li>

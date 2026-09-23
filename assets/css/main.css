@@ -267,14 +267,7 @@ html:lang(my) .voice-r .word{font-style:normal}
 .lately-item .cover img{aspect-ratio:2/3;object-fit:cover;object-position:center 30%}
 .lately-item .covers-empty{margin:.3rem 0 0;font-family:var(--sans);font-size:.72rem}
 
-/* research-output timeline: a small figure, spine interrupted */
-.row>.fig-rug{grid-column:1/3;max-width:52rem;width:100%;margin:0 auto;padding:var(--row-top) 0 var(--row-bottom);text-align:left}
-.fig-rug svg{display:block;width:100%;height:auto;font-family:var(--sans);overflow:visible}
-.fig-rug a{text-decoration:none;outline:none}
-.fig-rug a:hover circle,.fig-rug a:focus-visible circle{fill:var(--accent);stroke:var(--accent)}
-.fig-rug a:focus-visible circle{stroke-width:3}
-.fig-rug figcaption{margin-top:.6rem;max-width:var(--measure)}
-@media (max-width:699px){.rug-row{display:none}}
+@media (max-width:699px){}
 
 /* asymmetric pair: Writes | Lately, spine jogs to 40% for this row */
 .row.asym{grid-template-columns:2fr 3fr}
@@ -621,3 +614,44 @@ html{scroll-behavior:smooth}
   .print-set em{font-style:normal;font-weight:600}
   .print-source{font-family:var(--sans);font-size:7.5pt;letter-spacing:.02em;margin:.6rem 0 0;color:#444;overflow-wrap:anywhere}
 }
+
+/* Research output as author lists: one column per work, one slot per author.
+   Flex rows rather than an SVG, so the year labels stay prose-sized text and the
+   columns reflow — the timeline this replaced had to be hidden below 700px.
+   Columns hang from a common top, because the top slot is first author and that
+   is the line the eye should be able to run along. */
+/* The dot grows a little with the viewport and the year groups spread across
+   the full width, so the figure uses the column it is given instead of
+   huddling at the left of it. Bigger dots alone would just look coarse. */
+.authorship{--dot:clamp(6px,.72vw,10px);grid-column:1/-1;max-width:52rem;width:100%;margin:0 auto;padding:0 0 .4rem}
+.authorship-years{display:flex;align-items:flex-start;justify-content:space-between;gap:.8rem;list-style:none;margin:0;padding:0}
+.authorship-year{display:flex;flex-direction:column;gap:.35rem;min-width:0}
+.authorship-works{display:flex;align-items:flex-start;gap:clamp(.25rem,.4vw,.5rem);list-style:none;margin:0;padding:0;min-height:calc(var(--rows) * (var(--dot) + 3px))}
+.authorship-work{position:relative}
+.authorship-work>a{display:flex;flex-direction:column;gap:3px;padding:2px 1px;border-radius:3px;text-decoration:none;border:0}
+.authorship-work>a:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.authorship-slot{display:block;width:var(--dot);height:var(--dot);border-radius:50%;background:var(--rule)}
+.authorship-slot.is-me{background:var(--accent)}
+/* Open for presented output, filled for written — the distinction the timeline
+   this replaced carried, kept on my slot rather than the whole column. */
+.authorship-slot.is-me.is-open{background:var(--paper);box-shadow:inset 0 0 0 1.5px var(--accent)}
+.authorship-y{display:block;text-align:center;font-family:var(--sans);font-size:var(--fs-tiny,.72rem);color:var(--mute)}
+/* Drawn hover label, like the marks on the IELTS chart, rather than the
+   browser's own tooltip. */
+/* display:none, not opacity:0 — an absolutely positioned label is still laid
+   out when transparent, and sixteen of them sticking out past the columns grew
+   the document wider than the viewport at every size. The end groups anchor
+   their label inward so showing one cannot do the same. */
+.authorship-tip{position:absolute;left:50%;bottom:calc(100% + 6px);transform:translateX(-50%);z-index:2;
+  display:none;width:max-content;max-width:min(22rem,60vw);padding:.3rem .5rem;border:1px solid var(--rule);border-radius:3px;
+  background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:var(--fs-tiny,.72rem);line-height:1.35;
+  pointer-events:none}
+.authorship-year:first-child .authorship-tip{left:0;transform:none}
+.authorship-year:last-child .authorship-tip{left:auto;right:0;transform:none}
+.authorship-tip-title{display:block;color:var(--mute)}
+.authorship-work:hover .authorship-tip,.authorship-work:focus-within .authorship-tip{display:block}
+.authorship-work:hover .authorship-slot,.authorship-work:focus-within .authorship-slot{background:var(--mute)}
+.authorship-work:hover .authorship-slot.is-me,.authorship-work:focus-within .authorship-slot.is-me{background:var(--accent)}
+.authorship-work:hover .authorship-slot.is-me.is-open,.authorship-work:focus-within .authorship-slot.is-me.is-open{background:var(--paper)}
+.authorship figcaption{margin-top:.9rem;max-width:var(--measure)}
+@media (max-width:519px){.authorship{--dot:5px}.authorship-years{gap:.6rem}.authorship-works{gap:.2rem}}

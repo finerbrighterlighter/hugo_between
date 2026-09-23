@@ -49,14 +49,14 @@
   {{- $now := slice -}}{{- $before := slice -}}
   {{- $seq := 0 -}}
   {{- range $hp.experiences.info -}}
-    {{- $e := dict "when" .time "what" .role "where" .company.name "link" .company.link "details" .details "doc" .evidence -}}
+    {{- $e := (dict "when" .time "what" .role "where" .company.name "link" .company.link "details" .details "doc" .evidence) -}}
     {{- $e = merge $e (dict "sortkey" (printf "%04d%03d" (partial "chron-year.html" .time) (sub 999 $seq))) -}}
     {{- $seq = add $seq 1 -}}
     {{- $t := lower (printf "%v" .time) -}}
     {{- if or .current (strings.Contains $t "present") (strings.Contains $t "လက်ရှိ") (strings.Contains $t "ယခု") -}}{{- $now = $now | append $e -}}{{- else -}}{{- $before = $before | append $e -}}{{- end -}}
   {{- end -}}
   {{- range $hp.education.info -}}
-    {{- $e := dict "when" .time "what" .degree "where" .university.name "link" .university.link "doc" .diploma -}}
+    {{- $e := (dict "when" .time "what" .degree "where" .university.name "link" .university.link "doc" .diploma) -}}
     {{- $e = merge $e (dict "sortkey" (printf "%04d%03d" (partial "chron-year.html" .time) (sub 999 $seq))) -}}
     {{- $seq = add $seq 1 -}}
     {{- $t := lower (printf "%v" .time) -}}
@@ -70,9 +70,10 @@
   <section class="row" id="places" data-section="{{ i18n "nav_sec_experience" }}">
     <div class="voice voice-l">
       <p class="kicker">{{ i18n "k_now" }}</p>
+      {{- $collapse := false -}}
       <ul class="chron">
         {{- range $now }}
-        <li><span class="when">{{ .when }}</span><span class="what">{{ .what }}{{ with .doc }}{{ $ev := partial "lang-link.html" . }} <a href="{{ $ev.href }}"{{ with $ev.hreflang }} hreflang="{{ . }}"{{ end }} class="meta">{{ with i18n "evidence_link" }}{{ . }}{{ else }}source{{ end }}</a>{{ end }}</span><span class="where"><a href="{{ .link }}" target="_blank" rel="noreferrer noopener">{{ .where }}</a></span>{{ with .details }}<div class="chron-details">{{ . | markdownify }}</div>{{ end }}</li>
+        {{ partial "chron-item.html" (dict "e" . "collapse" $collapse) }}
         {{- end }}
       </ul>
     </div>
@@ -82,17 +83,19 @@
       {{- if gt (len $before) $limit -}}
         {{- $head = first $limit $before -}}{{- $tail = after $limit $before -}}
       {{- end -}}
+      {{- $collapse := true -}}
       <ul class="chron">
         {{- range $head }}
-        <li><span class="when">{{ .when }}</span><span class="what">{{ .what }}{{ with .doc }}{{ $ev := partial "lang-link.html" . }} <a href="{{ $ev.href }}"{{ with $ev.hreflang }} hreflang="{{ . }}"{{ end }} class="meta">{{ with i18n "evidence_link" }}{{ . }}{{ else }}source{{ end }}</a>{{ end }}</span><span class="where"><a href="{{ .link }}" target="_blank" rel="noreferrer noopener">{{ .where }}</a></span>{{ with .details }}<details><summary>{{ i18n "show_more" }}</summary>{{ . | markdownify }}</details>{{ end }}</li>
+        {{ partial "chron-item.html" (dict "e" . "collapse" $collapse) }}
         {{- end }}
       </ul>
       {{- with $tail }}
       <details class="chron-more">
-        <summary>{{ i18n "chron_earlier" (dict "n" (partial "localized-number.html" (len .))) }}</summary>
+        <summary>{{ i18n "chron_earlier" (dict "n" (partial "localized-number.html" (len .))) }}
+        </summary>
         <ul class="chron">
           {{- range . }}
-          <li><span class="when">{{ .when }}</span><span class="what">{{ .what }}{{ with .doc }}{{ $ev := partial "lang-link.html" . }} <a href="{{ $ev.href }}"{{ with $ev.hreflang }} hreflang="{{ . }}"{{ end }} class="meta">{{ with i18n "evidence_link" }}{{ . }}{{ else }}source{{ end }}</a>{{ end }}</span><span class="where"><a href="{{ .link }}" target="_blank" rel="noreferrer noopener">{{ .where }}</a></span>{{ with .details }}<details><summary>{{ i18n "show_more" }}</summary>{{ . | markdownify }}</details>{{ end }}</li>
+        {{ partial "chron-item.html" (dict "e" . "collapse" $collapse) }}
           {{- end }}
         </ul>
       </details>
@@ -120,9 +123,11 @@
     </div>
   </section>
 
-  {{- /* Output timeline: a full-width interruption, built at build time */ -}}
-  <section class="row no-dot rug-row">
-    {{ partial "output-timeline.html" . }}
+  {{- /* Research output: a full-width interruption, built at build time. One
+         figure, not two — the old timeline plotted a mark per work by year, and
+         this says the same thing with the author list added. */ -}}
+  <section class="row no-dot">
+    {{ partial "authorship-chart.html" . }}
   </section>
 
   {{- /* Working on | Published */ -}}

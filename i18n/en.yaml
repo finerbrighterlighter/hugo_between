@@ -130,8 +130,6 @@ cited_n: "Cited {{ .n }} times"
 cited_one: "Cited once"
 cited_zero: "Not yet cited"
 k_outputs: "Output"
-fig_outputs_aria: "Research output timeline: {{ .n }} works from {{ .first }} to {{ .last }}, one mark each; the list of works follows on the Works page."
-fig_outputs_caption: "Each mark is one output, stacked by year: filled for articles, preprints, proceedings, theses and reports; open for talks and posters. Hover or focus a mark for its title; select it to open the work."
 colorblind_label: "Colour-blind-safe palette"
 colorblind_short: "Colour-blind palette"
 nav_sec_intro: "Intro"
@@ -155,6 +153,12 @@ spine_note_label: "A note in the margin"
 spine_note: "Two voices, one line down the middle. The line is the argument: most of what I do is deciding which side a thing belongs on, and being honest when it belongs on neither."
 # The little link beside a role or degree that opens the document evidencing it.
 evidence_link: "source"
+# The authorship chart beside the output timeline on the home page. The hint is
+# the drawn hover label on each column.
+authorship_hint: "{{ .pos }} of {{ .n }}"
+authorship_caption: "A column per work, a slot per author, first at the top. My slot is filled for written output, open for presented."
+
+
 # The IELTS chart on the About page. The lead is the point of the chart: without it
 # the numbers read as a credential rather than as an observation about measurement.
 # The first cover in the playlist strip: the year in progress, which has no
@@ -170,10 +174,10 @@ ielts_overall: "Overall"
 # specifics that change with the data — the retake's date and skill, the years
 # covered, every band score read out for a screen reader — come from
 # data/ielts.yml rather than being typed here and going quietly stale.
-ielts_caption: "Box and whisker per skill, with every sitting drawn on top: a dot for each, stacked where two landed on the same band, and solid for the most recent."
-ielts_caption_retake: "Thes open ring is the {{ .when }} One Skill Retake — only {{ .skill }} was re-sat, so it is the only skill carrying a mark from it, along with the overall band, which was recomputed from it."
-ielts_caption_retakes: "The open rings are One Skill Retakes: a single component re-sat, the other three carried over. Only the re-sat skill and the recomputed overall band carry a mark from one."
-ielts_caption_n: "A handful of tests is nowhere near enough for a quartile to mean anything, which is why the dots stay."
+ielts_caption: "One box per skill, every sitting drawn on top; the solid dot is the most recent."
+ielts_caption_retake: "The open ring is the {{ .when }} One Skill Retake: only {{ .skill }} was re-sat, so only it and the overall band carry a mark from it."
+ielts_caption_retakes: "Open rings are One Skill Retakes: one component re-sat, the rest carried over."
+ielts_caption_n: "Too few tests for a quartile to mean much, which is why the dots stay."
 ielts_aria: "Box plots of IELTS band scores by skill, {{ .from }} to {{ .to }}, on a scale of 0 to 9, with every sitting plotted. {{ .series }}"
 # The hover label on each mark and each box. Kept short: the box is drawn inside
 # the figure and its width is estimated from the character count, so a long
