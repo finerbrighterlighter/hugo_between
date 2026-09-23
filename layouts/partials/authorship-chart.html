@@ -10,7 +10,8 @@
        a crowd. Drawing every author instead made the figure mostly grey, made
        one consortium paper set the height of the whole thing, and implied that
        being 27th of 60 differs from being 31st, which it does not. A sole
-       author marks both ends, because that is what it is. One slot per
+       author is a first author and nothing else; marking the last rung too
+       would claim a seniority position that a one-name paper does not have. One slot per
        author, first at the top, my slot marked. Sole author is a single mark;
        third of eleven is a long column with the mark near the top.
 
@@ -52,7 +53,8 @@
   {{- /* first and last are the positions that mean something; everything
          between them is the middle, however many there are */ -}}
   {{- $first := eq $pos 1 -}}
-  {{- $last := and (gt $pos 0) (eq $pos $n) -}}
+  {{- /* sole author is first author; last means someone else came before */ -}}
+  {{- $last := and (gt $n 1) (eq $pos $n) -}}
   {{- $works = $works | append (dict
       "title" .Title "year" .Date.Year "pos" $pos "n" $n "href" $href
       "first" $first "last" $last
@@ -63,7 +65,6 @@
 {{- with $works -}}
 {{- $years := slice -}}
 {{- range $works -}}{{- if not (in $years .year) -}}{{- $years = $years | append .year -}}{{- end -}}{{- end -}}
-       sit on one line instead of stepping with each group */ -}}
 <figure class="authorship" id="outputs" data-section="{{ i18n "nav_sec_output" }}">
   <ol class="authorship-years" aria-label="{{ i18n "authorship_aria" (dict
        "n" (partial "localized-number.html" (len $works))

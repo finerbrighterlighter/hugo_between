@@ -274,8 +274,7 @@ two is worth keeping.
   It began as one slot per author, which was wrong three ways: the figure went mostly grey, a
   single consortium paper set the height of every year group, and it implied that 27th of 60
   differs from 31st. It is now three rungs — first, middle, last — because that is what an author
-  list actually encodes: the ends carry the claim and the middle is a crowd. A sole author marks
-  both ends. The exact position is in the hover label and the accessible name, which stopped being
+  list actually encodes: the ends carry the claim and the middle is a crowd. A sole author is simply a first author. The exact position is in the hover label and the accessible name, which stopped being
   a nicety once the dots no longer counted: "2 of 7 authors", or "sole author".
   It is HTML rather than SVG, which is why it exists below 700px where the timeline it replaced was
   hidden: text inside an SVG scales with the viewBox, so the year labels became illegible on a

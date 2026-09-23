@@ -15,6 +15,7 @@
 {{- $orgs := slice -}}
 {{- $countMap := dict -}}
 {{- $seenPairs := slice -}}
+{{- $seenPersonCountry := slice -}}
 
 {{- range where $enSite.RegularPages "Section" "works" -}}
   {{- range .Params.authors -}}
@@ -52,6 +53,15 @@
             {{- $pair := printf "%s|%s" $org $country -}}
             {{- if and $org $country (not (in $seenPairs $pair)) -}}
               {{- $seenPairs = $seenPairs | append $pair -}}
+            {{- end -}}
+            {{- /* Countries are ordered by how many collaborators are there, not
+                   by how many institutions: the sentence leads with the number of
+                   researchers, so the list after it should rank the same way. A
+                   person with two affiliations in one country still counts once
+                   for that country, and counts in each country they list. */ -}}
+            {{- $pc := printf "%s|%s" $key $country -}}
+            {{- if and $country (not (in $seenPersonCountry $pc)) -}}
+              {{- $seenPersonCountry = $seenPersonCountry | append $pc -}}
               {{- $cur := index $countMap $country | default 0 -}}
               {{- $countMap = merge $countMap (dict $country (add $cur 1)) -}}
             {{- end -}}
