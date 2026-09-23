@@ -1,0 +1,20 @@
+{{- /* One hover label for the IELTS chart: a small box drawn above the thing it
+       describes, hidden until its group is hovered.
+
+       SVG offers no way to measure text at build time, so the box width is
+       estimated from the character count at a per-size ratio and then clamped
+       inside the viewBox, which is why a long label near the right-hand edge
+       slides left rather than being cut off. The estimate is deliberately
+       generous: a box slightly too wide reads as padding, one too narrow reads
+       as a bug.
+
+       Expects: text, x (what it points at), y (its bottom edge), W (viewBox
+       width), fs (font size), ch (width per character), h (box height). */ -}}
+{{- $w := add (mul (strings.RuneCount .text) .ch) 14 -}}
+{{- $x := math.Max 2 (math.Min (sub .W (add $w 2)) (sub .x (div $w 2))) -}}
+{{- $y := sub .y .h -}}
+<g class="ielts-hint" pointer-events="none">
+  <rect x="{{ $x }}" y="{{ $y }}" width="{{ $w }}" height="{{ .h }}" rx="2"
+        fill="var(--paper)" stroke="var(--rule)" stroke-width="1" />
+  <text x="{{ add $x 7 }}" y="{{ add $y (sub .h 5) }}" font-size="{{ .fs }}" fill="var(--ink)">{{ .text }}</text>
+</g>

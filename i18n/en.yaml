@@ -172,3 +172,9 @@ ielts_caption_retake: "The open ring is the {{ .when }} One Skill Retake — onl
 ielts_caption_retakes: "The open rings are One Skill Retakes: a single component re-sat, the other three carried over. Only the re-sat skill and the recomputed overall band carry a mark from one."
 ielts_caption_n: "A handful of tests is nowhere near enough for a quartile to mean anything, which is why the dots stay."
 ielts_aria: "Box plots of IELTS band scores by skill, {{ .from }} to {{ .to }}, on a scale of 0 to 9, with every sitting plotted. {{ .series }}"
+# The hover label on each mark and each box. Kept short: the box is drawn inside
+# the figure and its width is estimated from the character count, so a long
+# string is a wide box. The row already names the skill, so the label does not.
+ielts_mark_hint: "{{ .when }} · band {{ .band }}"
+ielts_mark_hint_retake: "{{ .when }} · band {{ .band }} · retake"
+ielts_box_hint: "median {{ .med }} · middle half {{ .q1 }}–{{ .q3 }} · range {{ .lo }}–{{ .hi }}"

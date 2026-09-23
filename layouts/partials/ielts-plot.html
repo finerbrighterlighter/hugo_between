@@ -1,0 +1,137 @@
+{{- /* One drawing of the IELTS box plot at a given size.
+
+       Split out from ielts-chart.html so the same data can be drawn twice, once
+       at desktop proportions and once compact, with CSS showing whichever fits.
+       Text inside an SVG scales with the viewBox, so a single drawing cannot be
+       legible across a 277px phone column and a 640px essay column — the type
+       would have to differ by more than a factor of two. Two drawings is the
+       cheap, no-JavaScript way out; the hidden one costs a few KB and is taken
+       out of the accessibility tree by `display:none`.
+
+       Expects a dict: sits, skills, aria, class, and the geometry. */ -}}
+{{- $sits := .sits -}}{{- $skills := .skills -}}
+{{- $W := .W -}}{{- $labelW := .labelW -}}{{- $plotW := .plotW -}}
+{{- $top := .top -}}{{- $rowH := .rowH -}}
+{{- $spread := .spread -}}{{- $gapMax := .gapMax -}}
+{{- $fLabel := .fLabel -}}{{- $fAxis := .fAxis -}}
+{{- $boxH := .boxH -}}
+{{- $compact := .compact -}}
+{{- /* Hint boxes are drawn above their mark, which means they overlap the row
+       above — drawn earlier, so the hint paints over it correctly. The top row
+       has nothing above it, hence the padding in `top`. Box widths are estimated
+       from the character count because SVG cannot measure text at build time;
+       the estimate is generous and the result is clamped inside the viewBox. */ -}}
+{{- $fHint := cond $compact 10 11 -}}
+{{- $hintCh := cond $compact 5.2 5.7 -}}
+{{- $hintH := cond $compact 16 18 -}}
+{{- $H := add $top (add (mul (len $skills) $rowH) 10) -}}
+<svg class="{{ .class }}" viewBox="0 0 {{ $W }} {{ $H }}" width="100%" role="img"
+     aria-label="{{ .aria }}" focusable="false">
+  {{- /* the whole 0–9 scale, uncropped */ -}}
+  {{- range $b := seq 0 9 }}
+    {{- $x := add $labelW (mul (div (float $b) 9.0) $plotW) }}
+  <line x1="{{ $x }}" y1="{{ sub $top 8 }}" x2="{{ $x }}" y2="{{ sub $H 8 }}" stroke="var(--rule-soft)" stroke-width="1" />
+  <text x="{{ $x }}" y="{{ sub $top 13 }}" text-anchor="middle" font-size="{{ $fAxis }}" fill="var(--mute)">{{ $b }}</text>
+  {{- end }}
+  {{- range $i, $s := $skills }}
+    {{- $cy := add $top (add (mul $i $rowH) (div $rowH 2)) -}}
+    {{- /* a retake measures one component; the rest are carried over, and a
+           carried number is not a sitting of its own. The overall band is
+           recomputed, so it is the one other row that gets a mark. */ -}}
+    {{- $pts := slice -}}
+    {{- range $sit := $sits -}}
+      {{- if or (not $sit.retake) (eq $sit.retake $s.key) (eq $s.key "overall") -}}
+        {{- $pts = $pts | append (dict
+              "v" (index $sit $s.key)
+              "date" $sit.date
+              "retake" (ne (default "" $sit.retake) "")) -}}
+      {{- end -}}
+    {{- end -}}
+    {{- $lastIdx := sub (len $pts) 1 -}}
+    {{- /* stack the repeats: one bucket per band, drawn centred on the row */ -}}
+    {{- $groups := dict -}}
+    {{- range $k, $p := $pts -}}
+      {{- $key := printf "%v" $p.v -}}
+      {{- $bucket := index $groups $key -}}
+      {{- if not $bucket -}}{{- $bucket = slice -}}{{- end -}}
+      {{- $groups = merge $groups (dict $key ($bucket | append (merge $p (dict "last" (eq $k $lastIdx))))) -}}
+    {{- end -}}
+    {{- $tallest := 1 -}}
+    {{- range $g := $groups -}}{{- if gt (len $g) $tallest -}}{{- $tallest = len $g -}}{{- end -}}{{- end -}}
+    {{- $sp := $gapMax -}}
+    {{- if gt $tallest 1 -}}{{- $sp = math.Min $gapMax (div $spread (float (sub $tallest 1))) -}}{{- end -}}
+    {{- /* five-number summary, Tukey's hinges. Four or five sittings is far too
+           few for a quartile to mean much, which is exactly why every point
+           stays drawn on top of the box rather than being summarised away. */ -}}
+    {{- $vals := slice -}}{{- range $p := $pts -}}{{- $vals = $vals | append (float $p.v) -}}{{- end -}}
+    {{- $sorted := sort $vals -}}
+    {{- $n := len $sorted -}}
+    {{- $half := div $n 2 -}}
+    {{- $med := partial "stat-median.html" $sorted -}}
+    {{- /* one sitting has no halves to take hinges from; the box collapses to
+           the median tick, which is the honest picture of a single point */ -}}
+    {{- $q1 := $med -}}{{- $q3 := $med -}}
+    {{- if ge $n 2 -}}
+      {{- $q1 = partial "stat-median.html" (first $half $sorted) -}}
+      {{- $q3 = partial "stat-median.html" (last $half $sorted) -}}
+    {{- end -}}
+    {{- $iqr := sub $q3 $q1 -}}
+    {{- $loFence := sub $q1 (mul 1.5 $iqr) -}}{{- $hiFence := add $q3 (mul 1.5 $iqr) -}}
+    {{- $wLo := $med -}}{{- $wHi := $med -}}
+    {{- range $v := $sorted -}}
+      {{- if and (ge $v $loFence) (le $v $hiFence) -}}
+        {{- if lt $v $wLo -}}{{- $wLo = $v -}}{{- end -}}
+        {{- if gt $v $wHi -}}{{- $wHi = $v -}}{{- end -}}
+      {{- end -}}
+    {{- end -}}
+    {{- $xMed := add $labelW (mul (div $med 9.0) $plotW) -}}
+    {{- $xQ1 := add $labelW (mul (div $q1 9.0) $plotW) -}}
+    {{- $xQ3 := add $labelW (mul (div $q3 9.0) $plotW) -}}
+    {{- $xLo := add $labelW (mul (div $wLo 9.0) $plotW) -}}
+    {{- $xHi := add $labelW (mul (div $wHi 9.0) $plotW) -}}
+    {{- $cap := div $boxH 2 -}}
+    {{- if $s.rule }}
+  <line x1="0" y1="{{ sub $cy (div $rowH 2) }}" x2="{{ $W }}" y2="{{ sub $cy (div $rowH 2) }}" stroke="var(--rule)" stroke-width="1" />
+    {{- end }}
+  <text x="{{ sub $labelW 12 }}" y="{{ add $cy 4 }}" text-anchor="end" font-size="{{ $fLabel }}" fill="var(--ink)">{{ $s.label }}</text>
+    {{- /* whiskers, then the box, then the median; the dots go on top. The box
+           carries the summary as a native tooltip, the same way each mark on
+           the homepage timeline does. */ -}}
+    {{- if gt $xHi $xLo }}
+  <line x1="{{ $xLo }}" y1="{{ $cy }}" x2="{{ $xHi }}" y2="{{ $cy }}" stroke="var(--rule)" stroke-width="1" />
+  <line x1="{{ $xLo }}" y1="{{ sub $cy $cap }}" x2="{{ $xLo }}" y2="{{ add $cy $cap }}" stroke="var(--rule)" stroke-width="1" />
+  <line x1="{{ $xHi }}" y1="{{ sub $cy $cap }}" x2="{{ $xHi }}" y2="{{ add $cy $cap }}" stroke="var(--rule)" stroke-width="1" />
+    {{- end }}
+    {{- if gt (sub $xQ3 $xQ1) 0.5 }}
+  <g class="ielts-hot">
+    <rect x="{{ $xQ1 }}" y="{{ sub $cy (div $boxH 2) }}" width="{{ sub $xQ3 $xQ1 }}" height="{{ $boxH }}" rx="1"
+          fill="var(--accent)" fill-opacity="0.10" stroke="var(--rule)" stroke-width="1" />
+    {{ partial "ielts-hint.html" (dict
+         "text" (i18n "ielts_box_hint" (dict "med" $med "q1" $q1 "q3" $q3 "lo" $wLo "hi" $wHi))
+         "x" (div (add $xQ1 $xQ3) 2) "y" (sub $cy (add (div $boxH 2) 4)) "W" $W "fs" $fHint "ch" $hintCh "h" $hintH) }}
+  </g>
+    {{- end }}
+  <line x1="{{ $xMed }}" y1="{{ sub $cy (div $boxH 2) }}" x2="{{ $xMed }}" y2="{{ add $cy (div $boxH 2) }}"
+        stroke="var(--ink)" stroke-width="1.5" />
+    {{- range $g := $groups }}
+      {{- $c := len $g }}
+      {{- range $m, $p := $g }}
+        {{- $x := add $labelW (mul (div (float $p.v) 9.0) $plotW) -}}
+        {{- $y := add $cy (mul (sub (float $m) (div (float (sub $c 1)) 2.0)) $sp) -}}
+        {{- $hint := i18n (cond $p.retake "ielts_mark_hint_retake" "ielts_mark_hint") (dict
+              "when" (time.Format (cond $compact "2 Jan 2006" "2 January 2006") $p.date) "band" $p.v) -}}
+  <g class="ielts-hot">
+    <circle cx="{{ $x }}" cy="{{ $y }}" r="9" fill="none" pointer-events="all" />
+        {{- if $p.retake }}
+    <circle cx="{{ $x }}" cy="{{ $y }}" r="5.5" fill="var(--paper)" stroke="var(--accent)" stroke-width="2.5" />
+        {{- else if $p.last }}
+    <circle cx="{{ $x }}" cy="{{ $y }}" r="5" fill="var(--accent)" />
+        {{- else }}
+    <circle cx="{{ $x }}" cy="{{ $y }}" r="3.5" fill="var(--accent)" opacity="0.4" />
+        {{- end }}
+    {{ partial "ielts-hint.html" (dict "text" $hint "x" $x "y" (sub $y 11) "W" $W "fs" $fHint "ch" $hintCh "h" $hintH) }}
+  </g>
+      {{- end }}
+    {{- end }}
+  {{- end }}
+</svg>

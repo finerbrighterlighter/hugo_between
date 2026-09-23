@@ -568,13 +568,29 @@ html{scroll-behavior:smooth}
 /* The print colophon is paper-only: `display:none` keeps it from sighted readers
    and from assistive technology, which is the intent. See partials/print-colophon.html. */
 .print-colophon{display:none}
-/* The IELTS figure. The SVG is drawn at a 420-unit viewBox; letting it stretch
-   past that scales the type inside it larger than the prose around it, so it is
-   capped and left where the text starts. Below that width it scales down with
-   the column, which is what keeps it usable on a phone. */
-.prose figure.ielts{margin:1.4rem 0 1.8rem;max-width:420px}
+/* The IELTS figure. Text in an SVG scales with the viewBox, so one drawing
+   cannot hold legible type across a phone column and an essay column — the
+   sizes differ by more than a factor of two. The figure therefore carries two
+   drawings at two geometries and shows whichever fits; `display:none` keeps the
+   other out of the accessibility tree, so only one aria-label is ever live.
+   Each is capped so it never scales past the size it was drawn for, which would
+   blow its type up larger than the prose. */
+.prose figure.ielts{margin:1.4rem 0 1.8rem;max-width:660px}
 .ielts svg{display:block;width:100%;height:auto}
+.ielts .ielts-narrow{max-width:400px}
 .ielts figcaption{margin-top:.5rem}
+/* Hover labels. Each mark and box sits in a group with an oversized invisible
+   hit area and its own label, hidden until the group is hovered; the label is
+   drawn inside the SVG rather than handed to the browser as a native tooltip,
+   so it is styled, instant, and matches the figure. Touch devices have no
+   hover, which is why the caption and the accessible label carry the same
+   information in prose. */
+.ielts .ielts-hint{opacity:0;transition:opacity .12s ease}
+.ielts .ielts-hot:hover .ielts-hint{opacity:1}
+.ielts .ielts-hint text{font-family:var(--sans)}
+@media (prefers-reduced-motion:reduce){.ielts .ielts-hint{transition:none}}
+@media (max-width:699px){.ielts .ielts-wide{display:none}}
+@media (min-width:700px){.ielts .ielts-narrow{display:none}}
 @media print{
   /* .balloon is position:fixed, so without this it prints on every sheet. */
   .masthead,.colophon,.filter,details.cite,.covers-block,#now-playing,.skip,.intro,.balloon{display:none!important}

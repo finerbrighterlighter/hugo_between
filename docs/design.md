@@ -218,3 +218,41 @@ caught that.
 The print colophon's mark now comes from `apple-touch-icon.png` rather than a separate duck file, so changing
 identity means replacing the icon set and nothing else. 180px is what a 600 dpi printer wants for a 22pt mark,
 and it is a third the weight of the 512px icon.
+
+## Pass 15 — the IELTS figure
+
+Five sittings of the same English test across seven years, sitting unused. The About page draws them rather
+than listing them, because the interesting thing is not any one number but how far each skill moved and how
+little the reader should trust a quartile drawn from four points.
+
+- **A box plot with every point still on it.** One row per skill plus the overall band, Tukey's hinges, and
+  whiskers to the furthest sitting inside 1.5 IQR. Every sitting stays drawn on top as a dot; marks that
+  landed on the same band stack into a small pile, and the most recent is solid. With n of four or five, a box
+  that hid its points would be a claim the data cannot support, so it never hides them.
+- **The band axis is not cropped.** It runs the whole 0–9. The marks bunch in the right-hand third and the
+  left two-thirds sit empty, which is what these numbers look like against the scale they are scored on. An
+  axis starting at 6 made them look better than they are.
+- **The One Skill Retake is shown, not smoothed.** A retake re-tests one component and carries the other
+  three over. A carried score is not a measurement, so only the re-sat skill gets a mark from it, plus the
+  recomputed overall band. The rows with no open ring are the explanation, and the caption names it.
+- **Sittings cluster, they do not stack.** An earlier version gave each sitting its own slot down the row,
+  which grew the figure every time a test was added. The pile now compresses inside a fixed row height, so
+  another sitting costs nothing.
+- **Two drawings, one figure.** Text in an SVG scales with the viewBox, so a single drawing cannot hold
+  legible type across a 277px phone column and a 660px essay column — the sizes differ by more than a factor
+  of two. `ielts-plot.html` is called twice at two geometries and CSS shows whichever fits; `display:none`
+  keeps the other out of the accessibility tree, so only one `aria-label` is ever live.
+- **Hover labels are drawn, not delegated.** Each mark and box sits in a group with an oversized invisible hit
+  area and its own small label, revealed on hover. A native SVG `<title>` was tried first and rejected: it
+  gives the operating system's tooltip, on the operating system's delay, in the operating system's styling.
+  The width of a drawn label has to be estimated from its character count, since SVG cannot measure text at
+  build time, and is clamped inside the viewBox so a label near the right edge slides left instead of
+  clipping. Still no JavaScript.
+
+The words are assembled from the data too. The lead counts the sittings and the years between the first and
+last; the caption takes the retake's month and skill from the entry that declares it; the accessible
+description reads every band out of `data/ielts.yml`. All three had been typed by hand first, and the
+accessible one is exactly the sort that goes stale without anyone noticing. Adding a sitting is now one entry.
+
+The forms themselves are not published and are not in the repository: they carry a candidate ID, a date of
+birth and a nationality, none of which the chart needs.
