@@ -151,6 +151,9 @@ credits: "Typefaces and software credited here"
 print_colophon: "The data tells you what it saw. <em>Your job</em> is to remember everything it didn’t."
 spine_note_label: "A note in the margin"
 spine_note: "Two voices, one line down the middle. The line is the argument: most of what I do is deciding which side a thing belongs on, and being honest when it belongs on neither."
+# The folded tail of the collaborator chart on the home page.
+collab_tail: "{{ .n }} more"
+
 # The little link beside a role or degree that opens the document evidencing it.
 evidence_link: "source"
 # The authorship chart beside the output timeline on the home page. The hint is

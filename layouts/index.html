@@ -149,6 +149,9 @@
              the fallback still lands on the right page if the id is ever missing. */ -}}
       <p id="metrics" data-openalex-author="{{ $hp.sidebar.orcid }}" hidden>Cited <span data-metric="cited_by_count">—</span> times across <span data-metric="works_count">—</span> indexed works, h-index <span data-metric="h_index">—</span> (<a data-openalex-link href="https://openalex.org/orcid:{{ $hp.sidebar.orcid }}" target="_blank" rel="noreferrer noopener">OpenAlex</a>).</p>
       <p>{{ partial "collab-summary.html" . }}</p>
+      {{- /* The shape behind that count. The sentence above is its caption, so
+             the figure carries none of its own. */ -}}
+      {{ partial "collaborators-chart.html" . }}
       <ol class="bib">
         {{- range first (.Site.Params.recentWorksLimit | default 4) (sort $works "Date" "desc") }}
         {{ partial "bib-entry.html" (dict "page" . "authors" false "sources" false "search" false) }}

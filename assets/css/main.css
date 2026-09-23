@@ -655,3 +655,21 @@ html{scroll-behavior:smooth}
 .authorship-work:hover .authorship-slot.is-me.is-open,.authorship-work:focus-within .authorship-slot.is-me.is-open{background:var(--paper)}
 .authorship figcaption{margin-top:.9rem;max-width:var(--measure)}
 @media (max-width:519px){.authorship{--dot:5px}.authorship-years{gap:.6rem}.authorship-works{gap:.2rem}}
+
+/* Collaborators by how often. Sits under the sentence that counts them, which
+   serves as its caption. Grid rather than flex so the bars share one column and
+   line up however long a name is; the count is text, so the bar is decoration. */
+.collab{margin:.6rem 0 0}
+.collab-rows{list-style:none;margin:0;padding:0}
+.collab-row{display:grid;grid-template-columns:minmax(0,7.5rem) minmax(0,1fr) auto;align-items:center;gap:.5rem;margin:0 0 .3rem}
+.collab-name{font-size:var(--fs-small);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.collab-track{display:block;height:6px;border-radius:3px;background:var(--rule-soft)}
+.collab-bar{display:block;height:100%;border-radius:3px;background:var(--accent)}
+.collab-n{font-variant-numeric:tabular-nums}
+.collab-more{margin-top:.5rem}
+.collab-more>summary{cursor:pointer;font-family:var(--sans);font-size:var(--fs-meta);color:var(--mute);list-style:none}
+.collab-more>summary::-webkit-details-marker{display:none}
+.collab-more>summary::after{content:" +";color:var(--accent)}
+.collab-more[open]>summary::after{content:" \2013"}
+.collab-more>summary:hover,.collab-more>summary:focus-visible{color:var(--ink)}
+.collab-more .collab-rows{margin-top:.4rem}
