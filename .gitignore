@@ -55,5 +55,8 @@ node_modules/
 # Screenshots written by the browser QC scripts (see QC_SHOT_DIR in scripts/).
 .qc-shots/
 
-# dump files
+# Handoff folder. The author drops files here for an agent to read — scans,
+# certificates, exports. Never committed: the contents are often personal, and
+# whatever is worth publishing gets processed into static/ or data/ instead.
+# Empty it once a file has been used or judged irrelevant, but keep the folder.
 dump/

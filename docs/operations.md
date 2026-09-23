@@ -271,6 +271,15 @@ outstanding item before calling the site's quality gate proven.
 
 ---
 
+## Handing me a file
+
+`dump/` is the drop box. Put a scan, a certificate or an export there and it can be read without going
+anywhere near the repository proper. It is gitignored, so nothing in it is ever committed.
+
+Whatever is worth keeping gets processed out of it first: merged, stripped of PDF metadata, and placed under
+`static/` or `data/` with identifiers considered. The originals are then deleted and the folder left empty,
+because they are usually personal and the repository is public.
+
 ## Where things are written down
 
 | File | What it settles |
