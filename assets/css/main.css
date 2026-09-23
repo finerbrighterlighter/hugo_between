@@ -267,7 +267,6 @@ html:lang(my) .voice-r .word{font-style:normal}
 .lately-item .cover img{aspect-ratio:2/3;object-fit:cover;object-position:center 30%}
 .lately-item .covers-empty{margin:.3rem 0 0;font-family:var(--sans);font-size:.72rem}
 
-@media (max-width:699px){}
 
 /* asymmetric pair: Writes | Lately, spine jogs to 40% for this row */
 .row.asym{grid-template-columns:2fr 3fr}
@@ -361,12 +360,7 @@ html:lang(my) .pullquote{font-style:normal;font-size:1.15rem;line-height:1.9}
 .filter-group{border:0;padding:0;margin:0;min-width:0}
 .filter-group legend{font-weight:600;color:var(--mute);font-size:var(--fs-meta);padding:0;margin-bottom:.3rem}
 .filter-group .tags{display:flex;flex-wrap:wrap;gap:.15rem .8rem}
-.filter-tag{all:unset;position:relative;cursor:pointer;color:var(--ink);border-bottom:1px solid var(--rule);line-height:1.6}
-/* The underline the tag already had, filled in proportion to how many works
-   carry it: the common tags read as the body of the work, the one-offs as a
-   hairline. No extra marks on the page for it. */
-.filter-tag::after{content:"";position:absolute;left:0;bottom:-1px;width:var(--v,0);height:1px;background:var(--accent);opacity:.5}
-.filter-tag[aria-pressed="true"]::after{display:none}
+.filter-tag{all:unset;cursor:pointer;color:var(--ink);border-bottom:1px solid var(--rule);line-height:1.6}
 .filter-n{margin-left:.3em;font-size:.82em;color:var(--mute);font-variant-numeric:tabular-nums}
 .filter-tag:hover{border-color:var(--accent)}
 .filter-tag[aria-pressed="true"]{color:var(--accent);border-bottom:2px solid var(--accent);font-weight:600}
@@ -630,13 +624,25 @@ html{scroll-behavior:smooth}
    the full width, so the figure uses the column it is given instead of
    huddling at the left of it. Bigger dots alone would just look coarse. */
 .authorship{--dot:clamp(6px,.72vw,10px);grid-column:1/-1;max-width:52rem;width:100%;margin:0 auto;padding:0 0 .4rem}
-.authorship-years{display:flex;align-items:flex-start;justify-content:space-between;gap:.8rem;list-style:none;margin:0;padding:0}
+/* wrap rather than overflow: at 320px the columns already use most of the
+   width, and the next few publications would have pushed past it */
+.authorship-years{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:.8rem;list-style:none;margin:0;padding:0}
 .authorship-year{display:flex;flex-direction:column;gap:.35rem;min-width:0}
-.authorship-works{display:flex;align-items:flex-start;gap:clamp(.25rem,.4vw,.5rem);list-style:none;margin:0;padding:0;min-height:calc(var(--rows) * (var(--dot) + 3px))}
+.authorship-works{display:flex;flex-wrap:wrap;align-items:flex-start;gap:clamp(.25rem,.4vw,.5rem);list-style:none;margin:0;padding:0;min-height:calc(var(--rows) * (var(--dot) + 3px) + 1px)}
 .authorship-work{position:relative}
-.authorship-work>a{display:flex;flex-direction:column;gap:3px;padding:2px 1px;border-radius:3px;text-decoration:none;border:0}
+.authorship-work>a{display:flex;flex-direction:column;align-items:center;gap:3px;padding:2px 5px;margin:0 -4px;border-radius:3px;text-decoration:none;border:0}
 .authorship-work>a:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
-.authorship-slot{display:block;width:var(--dot);height:var(--dot);border-radius:50%;background:var(--rule)}
+/* The slots carry the reading "third of eleven", so they are graphical objects
+   that mean something: --rule sat at 1.37:1 on paper, below the 3:1 WCAG asks
+   for, and --mute clears it in all four palettes. Painting a smaller disc inside
+   the same layout box keeps that contrast while returning the ink to the accent
+   mark, which is the slot the reader is actually looking for. Scaled rather than
+   sized down, so the circle stays a circle: a small radial-gradient disc aliases
+   into a square at these diameters. */
+.authorship-slot{display:block;width:var(--dot);height:var(--dot);border-radius:50%;background:var(--mute);transform:scale(.62)}
+.authorship-slot.is-me{transform:none}
+/* the last slot of a truncated author list */
+.authorship-slot.is-clipped{border-radius:1px;height:2px;align-self:center;width:calc(var(--dot) + 2px)}
 .authorship-slot.is-me{background:var(--accent)}
 /* Open for presented output, filled for written — the distinction the timeline
    this replaced carried, kept on my slot rather than the whole column. */
@@ -660,13 +666,23 @@ html{scroll-behavior:smooth}
 .authorship-work:hover .authorship-slot.is-me,.authorship-work:focus-within .authorship-slot.is-me{background:var(--accent)}
 .authorship-work:hover .authorship-slot.is-me.is-open,.authorship-work:focus-within .authorship-slot.is-me.is-open{background:var(--paper)}
 .authorship figcaption{margin-top:.9rem;max-width:var(--measure)}
-@media (max-width:519px){.authorship{--dot:5px}.authorship-years{gap:.6rem}.authorship-works{gap:.2rem}}
+/* Backgrounds are not printed and are stripped in forced-colors, which left the
+   figure as a row of year labels in both. */
+.authorship-slot{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+@media (forced-colors:active){
+  .authorship-slot{background:CanvasText;forced-color-adjust:none}
+  .authorship-slot.is-me{background:Highlight}
+  .authorship-slot.is-me.is-open{background:Canvas;box-shadow:inset 0 0 0 1.5px Highlight}
+}
+/* Below 520px the open ring needs a dot big enough to have a hole: at 5px the
+   written/presented distinction stopped being legible, which is the one thing
+   the caption promises. */
+@media (max-width:519px){.authorship{--dot:6px}.authorship-years{gap:.5rem}.authorship-works{gap:.2rem}}
 
-/* Language share per repository, using the same underline the works filter tags
-   use: the rule under the name is filled in proportion to the bytes GitHub
-   reports. One accent colour cannot label four languages, so each stands on its
-   own rather than being stacked into one bar. */
+/* Repository languages, ordered by byte share, each carrying its percentage.
+   The share was also drawn as a proportional fill of the name's own underline,
+   which encoded share multiplied by word length: "Jupyter Notebook 100%" drew
+   twice the bar of "Python 100%". The number says it correctly. */
 .langs{display:inline-flex;flex-wrap:wrap;gap:.1rem .8rem}
-.lang{position:relative;white-space:nowrap;border-bottom:1px solid var(--rule-soft);line-height:1.6}
-.lang::after{content:"";position:absolute;left:0;bottom:-1px;width:var(--v,0);height:1px;background:var(--accent);opacity:.5}
+.lang{white-space:nowrap}
 .lang-n{margin-left:.3em;color:var(--mute);font-variant-numeric:tabular-nums;font-size:.85em}

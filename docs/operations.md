@@ -60,7 +60,7 @@ page. Copy `content/works/<type>/example.md`, which carries the full commented f
 | `journal`, `preprint`, `dissertation` | matching directory | yes |
 | `conference-speaking`, `conference-proceeding`, `conference-poster` | `conference/` | no, list only |
 | `report` | `report/` | no, list only |
-| `under-review` | `review/` | listed, excluded from the output timeline |
+| `under-review` | `review/` | listed, excluded from the authorship chart and the feed |
 
 Authors are `id:` references into `data/researchers.yml`, which is where names, ORCIDs and affiliations live.
 Your own entries are at the top of that file. Use `highlight: true` on yourself. If a co-author is not in the

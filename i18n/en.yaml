@@ -154,8 +154,10 @@ spine_note: "Two voices, one line down the middle. The line is the argument: mos
 
 # The little link beside a role or degree that opens the document evidencing it.
 evidence_link: "source"
-# The authorship chart beside the output timeline on the home page. The hint is
-# the drawn hover label on each column.
+# The authorship chart on the home page. The hint is the drawn hover label on
+# each column; the aria string is the figure's spoken summary, which the figure
+# it replaced carried and this one had lost.
+authorship_aria: "Research output as author lists: {{ .n }} works from {{ .from }} to {{ .to }}."
 authorship_hint: "{{ .pos }} of {{ .n }}"
 authorship_caption: "A column per work, a slot per author, first at the top. My slot is filled for written output, open for presented."
 

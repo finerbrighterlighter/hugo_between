@@ -105,7 +105,7 @@ pa11y --config scripts/pa11y.json <url>      # axe + htmlcs, WCAG 2 AA
 
 ## Pass 5 (2026-09-16, output timeline + light spine variation)
 
-- **Research-output timeline** (`partials/output-timeline.html`): one mark per work, stacked by year, built from Hugo data at build time (no API). Two mark styles only: filled for written outputs (journal, preprint, proceedings, dissertation, report), open for presented ones (talks, posters). Each mark is a link to the work (external source or a year search when the work has no page) with an `aria-label` and `<title>` giving title, kind, year and venue. Placed as a full-width spine interruption between What I study and Working on | Published; hidden below 700px where marks would be illegible. Caption states the encoding only, no interpretation.
+- **Research-output timeline** (`partials/output-timeline.html`, replaced in pass 16 by the authorship chart): one mark per work, stacked by year, built from Hugo data at build time (no API). Two mark styles only: filled for written outputs (journal, preprint, proceedings, dissertation, report), open for presented ones (talks, posters). Each mark is a link to the work (external source or a year search when the work has no page) with an `aria-label` and `<title>` giving title, kind, year and venue. Placed as a full-width spine interruption between What I study and Working on | Published; hidden below 700px where marks would be illegible. Caption states the encoding only, no interpretation.
 - **Writes | Lately** is 2:3 (`.row.asym`); the spine jogs to 40% for that row and its dot follows. All other pairs unchanged; Working on | Published stays paired.
 
 ## Pass 6 (2026-09-16, final refinements)
@@ -259,3 +259,42 @@ accessible one is exactly the sort that goes stale without anyone noticing. Addi
 
 The forms themselves are not published and are not in the repository: they carry a candidate ID, a date of
 birth and a nationality, none of which the chart needs.
+
+## Pass 16 — graphs from data already in the repository
+
+Four figures were proposed from data the site already held; two survived, and what killed the other
+two is worth keeping.
+
+- **Authorship, replacing the output timeline** (`partials/authorship-chart.html`). The timeline
+  plotted one mark per work per year. The new figure plots one column per work, grouped under the
+  year, so the height of a year still reads as how much came out of it — and one slot per author,
+  first at the top, with my slot marked. That is the thing a publication list cannot say: which of
+  them were mine to lead. The old figure's only encoding survives, filled for written output and
+  open for presented, carried by my slot rather than the whole column. Two figures saying the same
+  thing became one saying more.
+  It is HTML rather than SVG, which is why it exists below 700px where the timeline it replaced was
+  hidden: text inside an SVG scales with the viewBox, so the year labels became illegible on a
+  phone. The same reasoning applies to any figure here whose labels matter more than its geometry.
+- **Filter tags carry their own frequency** (`partials/filter-group.html`). Each tag on the works
+  page says how many works it matches, and the rule that was already under it is filled in
+  proportion. The distribution therefore costs no new marks on the page. A tag cloud would have
+  encoded the same thing as type size, which is the wrong channel and would have fought the
+  typography. `uniq | sort` had been throwing the counts away.
+- **Repository languages by share** (`partials/github-repos.html`). Same underline. This fixed a
+  quiet inaccuracy rather than adding a decoration: the partial fetched bytes per language, dropped
+  them, and took `first 3` of the keys, which over a Hugo map is alphabetical — so the languages
+  shown were not the ones a repository is mostly written in.
+
+Two were built and removed:
+
+- **A career timeline** beside the Now/Before columns. It reprinted every entry those columns
+  already carry. Trimming the duplication left bars with no axis, and a bar with nothing to measure
+  against says only that something is longer than something else. What survives is
+  `partials/chron-item.html`: the entry markup had been written out three times — Now, the head of
+  Before, and the tail behind the disclosure — and had drifted between the copies.
+- **A collaborator distribution** under the sentence that counts the collaborators. Correct, and
+  not wanted.
+
+The rule the removals suggest: a figure earns its place by saying something the prose beside it
+cannot. Restating the prose in ink is not a second view of the data, and an encoding with no scale
+is not a chart.

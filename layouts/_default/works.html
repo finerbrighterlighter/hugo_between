@@ -13,7 +13,12 @@
 {{- $counts := dict -}}
 {{- range $p := $papers -}}
   {{- range $facet := slice "conditions" "datasource" "methods" -}}
-    {{- range (index $p.Params $facet) -}}
+    {{- /* front matter may carry a single value rather than a list; `append`
+           tolerated that, `range` does not, and breaking /works/ over one
+           unbracketed string is not a trade worth making */ -}}
+    {{- $vals := index $p.Params $facet -}}
+    {{- if and $vals (not (reflect.IsSlice $vals)) -}}{{- $vals = slice $vals -}}{{- end -}}
+    {{- range $vals -}}
       {{- $k := printf "%s|%s" $facet . -}}
       {{- $counts = merge $counts (dict $k (add (index $counts $k | default 0) 1)) -}}
     {{- end -}}
