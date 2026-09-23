@@ -22,3 +22,17 @@ bds-transcript:
   salt: Pyinmana-
   password_hash: 5ac8f514e5ab509ea915cb1aebd34335f29c06a4e35b68221fb2aaa9f0d37c0c
   accepted_public_disclosure: true
+
+udmy-service:
+  document_id: udmy-service
+  document_path: /general/documents/f352169ae815889e3481d279c88d2f66.pdf
+  salt: Pyinmana-
+  password_hash: 5ac8f514e5ab509ea915cb1aebd34335f29c06a4e35b68221fb2aaa9f0d37c0c
+  accepted_public_disclosure: true
+
+mahidol-employment:
+  document_id: mahidol-employment
+  document_path: /general/documents/4ad88c41e7c43a11d646f51448fbe218.pdf
+  salt: Pyinmana-
+  password_hash: 5ac8f514e5ab509ea915cb1aebd34335f29c06a4e35b68221fb2aaa9f0d37c0c
+  accepted_public_disclosure: true

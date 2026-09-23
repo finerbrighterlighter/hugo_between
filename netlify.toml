@@ -107,3 +107,15 @@ HUGO_VERSION = "0.157.0"
   [headers.values]
     Cache-Control = "private, no-store"
     X-Robots-Tag = "noindex, noarchive, nosnippet"
+
+[[headers]]
+  for = "/general/documents/f352169ae815889e3481d279c88d2f66.pdf"
+  [headers.values]
+    Cache-Control = "private, no-store"
+    X-Robots-Tag = "noindex, noarchive, nosnippet"
+
+[[headers]]
+  for = "/general/documents/4ad88c41e7c43a11d646f51448fbe218.pdf"
+  [headers.values]
+    Cache-Control = "private, no-store"
+    X-Robots-Tag = "noindex, noarchive, nosnippet"

@@ -73,6 +73,8 @@ experiences:
     - role: Graduate Research Assistant
       role_lan: ผู้ช่วยวิจัย
       time: 2021 - Present
+      # The document that evidences this role, gated like the transcripts.
+      evidence: /general/mahidol-employment/
       company: *mahidol
       details: |
         Affiliated with the Data Science and Clinical Informatics division, Department of Clinical Epidemiology and Biostatistics, Faculty of Medicine Ramathibodi Hospital. 
@@ -83,6 +85,7 @@ experiences:
     - role: Graduate Student Researcher
       role_lan: นักศึกษาปริญญาโท
       time: 2019 - 2021
+      evidence: /general/msc-transcript/
       company: *mahidol
       details: |
         Conducted postgraduate research on severe periodontitis in the Thai population under the supervision of [Ammarin Thakkinstian](https://www.scopus.com/authid/detail.uri?authorId=6602111727) and [Anuchate Pattanateepapon](https://www.scopus.com/authid/detail.uri?authorId=57193164364). 
@@ -93,6 +96,7 @@ experiences:
     - role: House Officer
       role_lan: အလုပ်သင်သွားဆရာဝန်
       time: 2018
+      evidence: /general/udmy-service/
       company: *udmy
       details: |
         Completed a one-year clinical training program at the university-affiliated hospital.

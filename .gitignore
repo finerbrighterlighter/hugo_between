@@ -54,3 +54,6 @@ node_modules/
 
 # Screenshots written by the browser QC scripts (see QC_SHOT_DIR in scripts/).
 .qc-shots/
+
+# dump files
+dump/

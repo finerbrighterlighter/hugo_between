@@ -49,7 +49,7 @@
   {{- $now := slice -}}{{- $before := slice -}}
   {{- $seq := 0 -}}
   {{- range $hp.experiences.info -}}
-    {{- $e := dict "when" .time "what" .role "where" .company.name "link" .company.link "details" .details -}}
+    {{- $e := dict "when" .time "what" .role "where" .company.name "link" .company.link "details" .details "doc" .evidence -}}
     {{- $e = merge $e (dict "sortkey" (printf "%04d%03d" (partial "chron-year.html" .time) (sub 999 $seq))) -}}
     {{- $seq = add $seq 1 -}}
     {{- $t := lower (printf "%v" .time) -}}
@@ -72,7 +72,7 @@
       <p class="kicker">{{ i18n "k_now" }}</p>
       <ul class="chron">
         {{- range $now }}
-        <li><span class="when">{{ .when }}</span><span class="what">{{ .what }}{{ with .doc }} <a href="{{ . | relLangURL }}" class="meta">transcript</a>{{ end }}</span><span class="where"><a href="{{ .link }}" target="_blank" rel="noreferrer noopener">{{ .where }}</a></span>{{ with .details }}<div class="chron-details">{{ . | markdownify }}</div>{{ end }}</li>
+        <li><span class="when">{{ .when }}</span><span class="what">{{ .what }}{{ with .doc }}{{ $ev := partial "lang-link.html" . }} <a href="{{ $ev.href }}"{{ with $ev.hreflang }} hreflang="{{ . }}"{{ end }} class="meta">{{ with i18n "evidence_link" }}{{ . }}{{ else }}source{{ end }}</a>{{ end }}</span><span class="where"><a href="{{ .link }}" target="_blank" rel="noreferrer noopener">{{ .where }}</a></span>{{ with .details }}<div class="chron-details">{{ . | markdownify }}</div>{{ end }}</li>
         {{- end }}
       </ul>
     </div>
@@ -84,7 +84,7 @@
       {{- end -}}
       <ul class="chron">
         {{- range $head }}
-        <li><span class="when">{{ .when }}</span><span class="what">{{ .what }}{{ with .doc }} <a href="{{ . | relLangURL }}" class="meta">transcript</a>{{ end }}</span><span class="where"><a href="{{ .link }}" target="_blank" rel="noreferrer noopener">{{ .where }}</a></span>{{ with .details }}<details><summary>{{ i18n "show_more" }}</summary>{{ . | markdownify }}</details>{{ end }}</li>
+        <li><span class="when">{{ .when }}</span><span class="what">{{ .what }}{{ with .doc }}{{ $ev := partial "lang-link.html" . }} <a href="{{ $ev.href }}"{{ with $ev.hreflang }} hreflang="{{ . }}"{{ end }} class="meta">{{ with i18n "evidence_link" }}{{ . }}{{ else }}source{{ end }}</a>{{ end }}</span><span class="where"><a href="{{ .link }}" target="_blank" rel="noreferrer noopener">{{ .where }}</a></span>{{ with .details }}<details><summary>{{ i18n "show_more" }}</summary>{{ . | markdownify }}</details>{{ end }}</li>
         {{- end }}
       </ul>
       {{- with $tail }}
@@ -92,7 +92,7 @@
         <summary>{{ i18n "chron_earlier" (dict "n" (partial "localized-number.html" (len .))) }}</summary>
         <ul class="chron">
           {{- range . }}
-          <li><span class="when">{{ .when }}</span><span class="what">{{ .what }}{{ with .doc }} <a href="{{ . | relLangURL }}" class="meta">transcript</a>{{ end }}</span><span class="where"><a href="{{ .link }}" target="_blank" rel="noreferrer noopener">{{ .where }}</a></span>{{ with .details }}<details><summary>{{ i18n "show_more" }}</summary>{{ . | markdownify }}</details>{{ end }}</li>
+          <li><span class="when">{{ .when }}</span><span class="what">{{ .what }}{{ with .doc }}{{ $ev := partial "lang-link.html" . }} <a href="{{ $ev.href }}"{{ with $ev.hreflang }} hreflang="{{ . }}"{{ end }} class="meta">{{ with i18n "evidence_link" }}{{ . }}{{ else }}source{{ end }}</a>{{ end }}</span><span class="where"><a href="{{ .link }}" target="_blank" rel="noreferrer noopener">{{ .where }}</a></span>{{ with .details }}<details><summary>{{ i18n "show_more" }}</summary>{{ . | markdownify }}</details>{{ end }}</li>
           {{- end }}
         </ul>
       </details>
