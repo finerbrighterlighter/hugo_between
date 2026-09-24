@@ -4,5 +4,5 @@
 {{- if $target -}}
 <a class="lang-switch" href="{{ $target.RelPermalink }}" lang="{{ if eq $want "mm" }}my{{ else }}en{{ end }}" hreflang="{{ if eq $want "mm" }}my{{ else }}en{{ end }}" aria-label="{{ i18n "lang_switch_label" }}">{{ i18n "lang_switch" }}</a>
 {{- else -}}
-<span class="lang-switch is-missing" lang="{{ if eq $want "mm" }}my{{ else }}en{{ end }}" title="{{ i18n "lang_missing" }}"><span aria-hidden="true">{{ i18n "lang_switch" }}</span><span class="sr-only">{{ i18n "lang_missing" }}</span></span>
+<span class="lang-switch is-missing" title="{{ i18n "lang_missing" }}"><span lang="{{ if eq $want "mm" }}my{{ else }}en{{ end }}" aria-hidden="true">{{ i18n "lang_switch" }}</span> <span class="lang-missing-note" aria-hidden="true">{{ i18n "lang_missing_short" }}</span><span class="sr-only">{{ i18n "lang_missing" }}</span></span>
 {{- end -}}

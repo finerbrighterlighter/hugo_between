@@ -1,0 +1,13 @@
+{{- /* The first-screen route to About, the CV, ORCID and the email. The colophon
+       still carries all of these; this line exists because a visitor arriving
+       from a citation should not have to scroll the whole page to find out who
+       this is. Rendered twice on the home page: inside the hero (desktop and
+       tablet) and inside the intro (phone), so exactly one is visible. */ -}}
+{{- $hp := hugo.Data.homepage -}}{{- if eq .Site.Language.Lang "mm" -}}{{- $hp = hugo.Data.homepage_mm -}}{{- end -}}
+{{- $sb := $hp.sidebar -}}
+<nav class="quick" aria-label="{{ i18n "quick_links_label" }}">
+  <a href="{{ "/about/" | relLangURL }}">{{ i18n "quick_about" }}</a><span aria-hidden="true"> · </span>
+  <a href="{{ $sb.cv | relURL }}">{{ i18n "quick_cv" }}</a><span aria-hidden="true"> · </span>
+  <a href="https://orcid.org/{{ $sb.orcid }}" rel="noreferrer noopener">ORCID</a><span aria-hidden="true"> · </span>
+  <a href="mailto:{{ $sb.email }}">{{ i18n "quick_write" }}</a>
+</nav>

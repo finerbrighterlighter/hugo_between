@@ -1,0 +1,17 @@
+{{- /* One line in a list of posts: home "Writes" and the posts list page.
+       An archived Facebook post shows the era it was written in rather than
+       the date it was published here, and is marked as Burmese so the title
+       is read and set as Burmese even inside the English tree, unless its front
+       matter names another language (`title_lang: en`). `era: false`
+       drops the era line when the surrounding group already states it. */ -}}
+{{- $p := .page -}}
+{{- $tl := $p.Params.title_lang | default (cond (eq $p.Params.archive true) "my" "") -}}
+<li{{ with $tl }} lang="{{ . }}"{{ end }}>
+  {{- if $p.Params.archive -}}
+  {{- if ne .era false }}<span class="when">{{ i18n "archive_when" }}</span>{{ end -}}
+  {{- else -}}
+  <time datetime="{{ $p.Date.Format "2006-01-02" }}">{{ if .year }}{{ $p.Date.Format "2 January 2006" }}{{ else }}{{ $p.Date.Format "2 January" }}{{ end }}</time>
+  {{- end -}}
+  <a href="{{ $p.RelPermalink }}">{{ $p.Title }}</a>
+  {{- with $p.Params.company }}<span class="sub">{{ . }}</span>{{ end -}}
+</li>

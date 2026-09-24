@@ -10,7 +10,14 @@
 <li>
   <span class="when">{{ $e.when }}</span>
   <span class="what">{{ $e.what }}
-    {{- with $e.doc }}{{ $ev := partial "lang-link.html" . }} <a href="{{ $ev.href }}"{{ with $ev.hreflang }} hreflang="{{ . }}"{{ end }} class="meta">{{ with i18n "evidence_link" }}{{ . }}{{ else }}source{{ end }}</a>{{ end -}}
+    {{- /* The label says what the document is and that a PIN stands in front
+           of it, so nobody follows "source" into a bare PIN wall. */ -}}
+    {{- with $e.doc }}{{ $ev := partial "lang-link.html" . }}
+      {{- $key := "evidence_link" -}}
+      {{- if strings.Contains . "transcript" }}{{ $key = "evidence_transcript" }}
+      {{- else if strings.Contains . "employment" }}{{ $key = "evidence_employment" }}
+      {{- else if strings.Contains . "service" }}{{ $key = "evidence_service" }}{{ end -}}
+      <a href="{{ $ev.href }}"{{ with $ev.hreflang }} hreflang="{{ . }}"{{ end }} class="meta evidence">{{ with i18n $key }}{{ . }}{{ else }}source{{ end }}</a>{{ end -}}
   </span>
   <span class="where"><a href="{{ $e.link }}" target="_blank" rel="noreferrer noopener">{{ $e.where }}</a></span>
   {{- with $e.details }}

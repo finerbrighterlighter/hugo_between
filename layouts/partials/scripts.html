@@ -9,6 +9,17 @@
 <script type="module" src="/js/privacy.js"></script>
 <script type="module" src="/js/currenttime.js"></script>
 <script type="module" src="/js/nav_balloon.js"></script>
+{{- /* English-only pages carry the Burmese addresses of the navigation targets,
+       so lang-return.js can point a Burmese reader back into the /mm/ tree. */ -}}
+{{- $mm := false -}}{{- range hugo.Sites -}}{{- if eq .Language.Lang "mm" -}}{{- $mm = . -}}{{- end -}}{{- end -}}
+{{- if and $mm (eq .Site.Language.Lang "en") (not .IsTranslated) -}}
+{{- $m := dict -}}
+{{- range $k := slice "/" "/works/" "/posts/" "/about/" "/blood/" -}}
+  {{- with $mm.GetPage $k -}}{{- $m = merge $m (dict $k .RelPermalink) -}}{{- end -}}
+{{- end }}
+<script type="application/json" id="lang-return-map">{{ $m | jsonify | safeJS }}</script>
+{{- end }}
+<script type="module" src="/js/lang-return.js"></script>
 {{ if eq .Site.Language.Lang "mm" }}<script type="module" src="/js/mm_font_toggle.js"></script>{{ end }}
 {{ if .IsHome }}
 <script type="module" src="/js/lastFM.js"></script>

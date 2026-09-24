@@ -12,8 +12,8 @@ protected_document_privacy: "For privacy, enter the PIN to view this document."
 protected_document_password_label: "PIN"
 protected_document_view: "VIEW"
 protected_document_exit: "EXIT"
-protected_document_unlock: "UNLOCK"
-protected_document_open: "OPEN PDF"
+protected_document_unlock: "Unlock"
+protected_document_open: "Open PDF"
 protected_document_mobile_hint: "Open the PDF in your browser for full-page navigation."
 protected_document_prompt: "Enter PIN to continue."
 protected_document_checking: "Verifying..."
@@ -154,6 +154,32 @@ spine_note: "Two voices, one line down the middle. The line is the argument: mos
 
 # The little link beside a role or degree that opens the document evidencing it.
 evidence_link: "source"
+# Named by what the document is; each is behind the PIN gate, and the label says so.
+evidence_transcript: "transcript, PIN"
+evidence_employment: "employment letter, PIN"
+evidence_service: "service record, PIN"
+# The line on a gate page that says what the gate is and where to ask.
+protected_document_explain: "For privacy this document is shown on request: enter the PIN, or if you do not have one, {{ .link }}."
+# Shown in place of the form when scripting is off; the gate cannot verify a PIN without it.
+protected_document_noscript: "Unlocking needs JavaScript. Without it, {{ .link }} for the file."
+works_filter_noscript: "Filtering needs JavaScript; the full list follows."
+cite_noscript: "Formatted citations need JavaScript; the DOI link above resolves the record."
+# Short visible note beside the struck-out language switch.
+lang_missing_short: "not translated"
+# Only the Burmese frame around the works list needs this sentence.
+works_entries_english: ""
+protected_document_ask: "write to me"
+# The quiet line of first-screen links under the hero (desktop) and the intro (phone).
+quick_links_label: "About, CV and contact"
+quick_about: "About me"
+quick_cv: "CV (PDF)"
+quick_write: "Write to me"
+# Lists of posts: archived Facebook writing carries this instead of its publish date.
+archive_label: "Archive"
+archive_source: "Facebook"
+archive_when: "c. 2018–2021"
+# Appended to a navigation label when the target exists only in English.
+in_english: "(English)"
 # The authorship chart on the home page. The hint is the drawn hover label on
 # each column; the aria string is the figure's spoken summary, which the figure
 # it replaced carried and this one had lost.

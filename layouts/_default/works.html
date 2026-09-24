@@ -29,14 +29,14 @@
 
 <header class="page-head">
   <h1>{{ .Title }}</h1>
-  <p class="intro">{{ i18n "works_intro" }}</p>
+  <p class="intro">{{ i18n "works_intro" }}{{ with i18n "works_entries_english" }} {{ . }}{{ end }}</p>
 </header>
 
 <div class="page-body">
   <form id="works-filter" class="filter" role="search" action="{{ .RelPermalink }}" method="get" data-openalex-author="{{ hugo.Data.homepage.sidebar.orcid }}" data-cited-n="{{ i18n "cited_n" (dict "n" "N") }}" data-cited-one="{{ i18n "cited_one" }}" data-cited-zero="{{ i18n "cited_zero" }}">
     <label for="works-search" class="sr-only">{{ i18n "works_search_placeholder" }}</label>
     <input id="works-search" type="search" name="search" placeholder="{{ i18n "works_search_placeholder" }}" autocomplete="off" spellcheck="false">
-    <div class="filter-groups">
+    <div class="filter-groups" lang="en">
       {{ partial "filter-group.html" (dict "group" "conditions" "label" (i18n "tags_condition") "values" $conditions "priority" $wf.conditions "counts" $counts) }}
       {{ partial "filter-group.html" (dict "group" "datasource" "label" (i18n "tags_data") "values" $datasource "priority" $wf.datasource "counts" $counts) }}
       {{ partial "filter-group.html" (dict "group" "methods" "label" (i18n "tags_method") "values" $methods "priority" $wf.methods "counts" $counts) }}
@@ -44,6 +44,7 @@
     <button type="submit" class="sr-only">Search</button>
     <div class="filter-foot">
       <p id="works-count" aria-live="polite" aria-atomic="true"></p>
+  <noscript><p class="meta">{{ i18n "works_filter_noscript" }}</p></noscript>
       <button type="button" id="works-clear" hidden>{{ i18n "works_clear" }}</button>
     </div>
   </form>
@@ -56,7 +57,7 @@
     {{- $cat := . -}}
     {{- $filtered := sort (where $papers "Params.type" $cat) "Date" "desc" -}}
     {{- if $filtered }}
-  <section class="works-group" data-group="{{ $cat }}">
+  <section class="works-group" data-group="{{ $cat }}" lang="en">
     <h2 id="{{ $cat }}">{{ i18n (printf "type_%s" $cat) | default (replace ($cat | title) "-" " ") }}<small>{{ len $filtered }}</small></h2>
     <ol class="bib">
       {{- range $filtered }}

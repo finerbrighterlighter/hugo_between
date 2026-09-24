@@ -12,8 +12,8 @@
       <h2 class="colophon-h">{{ i18n "pages" }}</h2>
       <ul class="plain">
         <li><a href="{{ "/" | relLangURL }}">{{ i18n "nav_home" }}</a></li>
-        <li>{{ $l := partial "lang-link.html" "/works/" }}<a href="{{ $l.href }}"{{ with $l.hreflang }} hreflang="{{ . }}"{{ end }}>{{ i18n "nav_works" }}</a></li>
-        <li>{{ $l := partial "lang-link.html" "/posts/" }}<a href="{{ $l.href }}"{{ with $l.hreflang }} hreflang="{{ . }}"{{ end }}>{{ i18n "nav_posts" }}</a></li>
+        <li>{{ $l := partial "lang-link.html" "/works/" }}<a href="{{ $l.href }}"{{ with $l.hreflang }} hreflang="{{ . }}"{{ end }}>{{ i18n "nav_works" }}{{ with $l.hreflang }} {{ i18n "in_english" }}{{ end }}</a></li>
+        <li>{{ $l := partial "lang-link.html" "/posts/" }}<a href="{{ $l.href }}"{{ with $l.hreflang }} hreflang="{{ . }}"{{ end }}>{{ i18n "nav_posts" }}{{ with $l.hreflang }} {{ i18n "in_english" }}{{ end }}</a></li>
         <li><a href="{{ "/about/" | relLangURL }}">{{ i18n "nav_about" }}</a></li>
         <li><a href="{{ "/blood/" | relLangURL }}">{{ i18n "nav_blood" }}</a></li>
       </ul>
@@ -48,9 +48,9 @@
       {{- /* The credits page exists in English only; on Burmese pages this falls back to
              the English URL and says so, rather than going missing. The label falls back
              too, so adding `credits:` to i18n/mm.yaml is all a translation needs. */ -}}
-      {{- $c := partial "lang-link.html" "/general/credits/" }} <a href="{{ $c.href }}"{{ with $c.hreflang }} hreflang="{{ . }}"{{ end }}>{{ with i18n "credits" }}{{ . }}{{ else }}Credits{{ end }}</a>. {{ i18n "built_with" }}</p>
+      {{- $c := partial "lang-link.html" "/general/credits/" }} <a href="{{ $c.href }}"{{ with $c.hreflang }} hreflang="{{ . }}"{{ end }}>{{ with i18n "credits" }}{{ . }}{{ else }}Credits{{ end }}{{ with $c.hreflang }} {{ i18n "in_english" }}{{ end }}</a>. {{ i18n "built_with" }}</p>
     <p class="colophon-tools">
-      <button type="button" class="linklike" data-theme-toggle aria-label="{{ i18n "theme_toggle_dark" }}" data-label-dark="{{ i18n "theme_toggle_dark" }}" data-label-light="{{ i18n "theme_toggle_light" }}"><span class="theme-dot" aria-hidden="true"></span><span class="sr-only">{{ i18n "theme_toggle_dark" }}</span></button>
+      <button type="button" class="linklike" data-theme-toggle aria-label="{{ i18n "theme_toggle_dark" }}" data-label-dark="{{ i18n "dark_mode" }}" data-label-light="{{ i18n "light_mode" }}"><span class="theme-dot" aria-hidden="true"></span><span data-theme-toggle-text>{{ i18n "dark_mode" }}</span></button>
       <button type="button" class="linklike palette-toggle" data-palette-toggle aria-pressed="false" aria-label="{{ i18n "colorblind_label" }}"><img class="ishihara ishihara-off" src="/images/icons/ishihara-off.webp" alt="" width="18" height="18"><img class="ishihara ishihara-on" src="/images/icons/ishihara-on.webp" alt="" width="18" height="18"><span>{{ i18n "colorblind_label" }}</span></button>
       {{ if eq .Site.Language.Lang "mm" }}<button type="button" class="linklike" data-mm-font-toggle aria-pressed="false" data-label-neat="{{ i18n "mm_font_neat" }}" data-label-messy="{{ i18n "mm_font_messy" }}">{{ i18n "mm_font_neat" }}</button>{{ end }}
       {{ partial "lang-switch.html" . }}

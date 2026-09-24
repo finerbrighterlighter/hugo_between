@@ -64,7 +64,7 @@
 {{- with $works -}}
 {{- $years := slice -}}
 {{- range $works -}}{{- if not (in $years .year) -}}{{- $years = $years | append .year -}}{{- end -}}{{- end -}}
-<figure class="authorship" id="outputs" data-section="{{ i18n "nav_sec_output" }}">
+<figure class="authorship" id="outputs" data-section="{{ i18n "nav_sec_output" }}" aria-labelledby="authorship-caption">
   <ol class="authorship-years" aria-label="{{ i18n "authorship_aria" (dict
        "n" (len $works) "from" (index $years 0) "to" (index (last 1 $years) 0)) }}">
     {{- range $y := $years }}
@@ -96,6 +96,6 @@
     </li>
     {{- end }}
   </ol>
-  <figcaption class="meta">{{ i18n "authorship_caption" }}</figcaption>
+  <figcaption class="meta" id="authorship-caption">{{ i18n "authorship_caption" }}</figcaption>
 </figure>
 {{- end -}}

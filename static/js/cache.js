@@ -8,7 +8,7 @@
  */
 const TTL = (window.CONFIG?.cacheTTLMinutes ?? 60) * 60 * 1000;
 const CACHE_PREFIX = "cache:";
-const SITE_PREFERENCE_KEYS = ["theme"];
+const SITE_PREFERENCE_KEYS = ["theme", "lang"];
 const EXTRA_CLEAR_PREFIXES = ["bibtex-"];
 
 function storageKey(key) {

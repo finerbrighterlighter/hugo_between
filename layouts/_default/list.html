@@ -6,12 +6,26 @@
 </header>
 <div class="page-body narrow" style="max-width:56rem">
   {{ .Content }}
-  {{- range $pages.GroupByDate "2006" }}
+  {{- /* Archived Facebook posts are grouped by era at the end, not under the
+         year they were published here. */ -}}
+  {{- $archive := where $pages "Params.archive" true -}}
+  {{- $dated := where $pages "Params.archive" "ne" true -}}
+  {{- range $dated.GroupByDate "2006" }}
   <section class="yeargroup">
     <h2>{{ .Key }}</h2>
     <ul class="datelist">
       {{- range .Pages }}
-      <li><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January" }}</time><a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ with .Params.company }}<span class="sub">{{ . }}</span>{{ end }}</li>
+      {{ partial "post-row.html" (dict "page" . "year" false) }}
+      {{- end }}
+    </ul>
+  </section>
+  {{- end }}
+  {{- with $archive }}
+  <section class="yeargroup">
+    <div><h2>{{ i18n "archive_label" }}</h2><p class="meta">{{ i18n "archive_source" }}<br>{{ i18n "archive_when" }}</p></div>
+    <ul class="datelist">
+      {{- range . }}
+      {{ partial "post-row.html" (dict "page" . "year" false "era" false) }}
       {{- end }}
     </ul>
   </section>

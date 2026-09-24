@@ -20,10 +20,10 @@
 <li class="bib-entry"{{ if .search }} data-search="{{ $hay }}" data-tags="{{ delimit $tags "|" | lower }}" data-year="{{ $p.Date.Format "2006" }}"{{ end }}{{ with $doi }} data-doi="{{ . | lower }}"{{ end }}>
   <span class="year">{{ $p.Date.Format "2006" }}</span>
   <span>
-    {{ if $href }}<a class="title" href="{{ $href }}"{{ if not $rendered }} target="_blank" rel="noreferrer noopener"{{ end }}>{{ $p.Title }}</a>{{ else }}<span class="title">{{ $p.Title }}</span>{{ end }}
+    {{ if $href }}<a class="title" href="{{ $href }}"{{ if not $rendered }} target="_blank" rel="noreferrer noopener"{{ else if ne site.Language.Lang "en" }} hreflang="en"{{ end }}>{{ $p.Title }}</a>{{ else }}<span class="title">{{ $p.Title }}</span>{{ end }}
     {{ with $p.Params.venue }}<span class="venue">{{ . }}</span>{{ end }}
     {{ if .authors }}<span class="authors">{{ partial "bib-authors.html" $p }}</span>{{ end }}
-    {{ if and .sources $doi }}<span class="cites" data-cites hidden></span>{{ end }}
+    {{ if and .sources $doi }}<span class="cites" data-cites hidden{{ if ne site.Language.Lang "en" }} lang="my"{{ end }}></span>{{ end }}
     {{ if and .sources $src }}<span class="sources">{{ range $src }}{{ $int := strings.HasPrefix .url "/" }}<a href="{{ if $int }}{{ .url | relURL }}{{ else }}{{ .url }}{{ end }}"{{ if not $int }} target="_blank" rel="noreferrer noopener"{{ end }}>{{ .text | humanize | lower }}</a>{{ end }}{{ with $p.Params.scholar }}<a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user={{ hugo.Data.homepage.sidebar.scholar_profile }}&citation_for_view={{ hugo.Data.homepage.sidebar.scholar_profile }}:{{ . }}" target="_blank" rel="noreferrer noopener">scholar</a>{{ end }}</span>{{ end }}
   </span>
 </li>

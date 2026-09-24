@@ -68,6 +68,7 @@
       {{- if $doi }}<li><a href="https://doi.org/{{ $doi }}" target="_blank" rel="noreferrer noopener">DOI {{ $doi }}</a></li>{{ end }}
     </ul>
     {{- if $doi }}
+    <noscript><p class="meta">{{ i18n "cite_noscript" }}</p></noscript>
     <details class="cite" data-doi="{{ $doi }}">
       <summary>{{ i18n "cite_summary" }}</summary>
       <div class="cite-body">

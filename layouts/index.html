@@ -5,6 +5,10 @@
 {{- $enSite := .Site -}}{{- range hugo.Sites -}}{{- if eq .Language.Lang "en" -}}{{- $enSite = . -}}{{- end -}}{{- end -}}
 {{- $works := where (where $enSite.RegularPages "Section" "works") "Params.type" "ne" "under-review" -}}
 {{- $posts := where (where .Site.RegularPages "Section" "posts") "Params.private" "ne" true -}}
+{{- /* The archived Facebook posts are Burmese writing dated by when they were
+       published here. They are left out of the English "Writes" column, where
+       they would sit above the English posts under a 2026 date. */ -}}
+{{- if ne $lang "mm" -}}{{- $posts = where $posts "Params.archive" "ne" true -}}{{- end -}}
 {{- if not $posts -}}{{- $posts = where (where $enSite.RegularPages "Section" "posts") "Params.private" "ne" true -}}{{- end -}}
 {{- $about := .Site.GetPage "/about" -}}
 
@@ -24,7 +28,7 @@
       <h1 class="intro-name">{{ .Site.Title }}</h1>
       <p class="intro-tagline">{{ i18n "intro_tagline" }}</p>
       <p class="intro-text">{{ if eq $lang "mm" }}{{ .Site.Params.description }}{{ else }}{{ i18n "intro_body" }}{{ end }}</p>
-      {{ with $about }}<a class="more" href="{{ .RelPermalink }}">{{ i18n "intro_more" }}</a>{{ end }}
+      {{ partial "quick-links.html" . }}
     </div>
   </section>
 
@@ -37,6 +41,7 @@
       <h2 class="word">{{ i18n "voice_right" }}</h2>
       <p>{{ i18n "hero_right" }}</p>
     </div>
+    {{ partial "quick-links.html" . }}
   </section>
 
   {{- /* Now | Before: split by whether the entry is ongoing, not by place, so a future role or
@@ -69,7 +74,7 @@
   {{- $limit := site.Params.chronVisibleLimit | default 5 -}}
   <section class="row" id="places" data-section="{{ i18n "nav_sec_experience" }}">
     <div class="voice voice-l">
-      <p class="kicker">{{ i18n "k_now" }}</p>
+      <h2 class="kicker">{{ i18n "k_now" }}</h2>
       {{- $collapse := false -}}
       <ul class="chron">
         {{- range $now }}
@@ -78,7 +83,7 @@
       </ul>
     </div>
     <div class="voice voice-r">
-      <p class="kicker">{{ i18n "k_before" }}</p>
+      <h2 class="kicker">{{ i18n "k_before" }}</h2>
       {{- $head := $before -}}{{- $tail := slice -}}
       {{- if gt (len $before) $limit -}}
         {{- $head = first $limit $before -}}{{- $tail = after $limit $before -}}
@@ -106,7 +111,7 @@
   {{- /* Neutral, full width: what I study */ -}}
   <section class="row no-dot" id="study" data-section="{{ i18n "nav_sec_research" }}">
     <div class="wide">
-      <p class="kicker">{{ i18n "k_study" }}</p>
+      <h2 class="kicker">{{ i18n "k_study" }}</h2>
       {{- with $hp.career_profile.summary }}
       {{ . | markdownify }}
       {{- else }}
@@ -133,7 +138,7 @@
   {{- /* Working on | Published */ -}}
   <section class="row" id="working" data-section="{{ i18n "nav_sec_current" }}">
     <div class="voice voice-l">
-      <p class="kicker">{{ i18n "k_working" }}</p>
+      <h2 class="kicker">{{ i18n "k_working" }}</h2>
       <ul class="projects">
         {{- range first (.Site.Params.homeProjectsLimit | default 3) $hp.projects.assignments }}
         <li>{{ if .link }}<a href="{{ .link }}" target="_blank" rel="noreferrer noopener">{{ .title }}</a>{{ else }}{{ .title }}{{ end }}<span class="role">{{ .role }}</span></li>
@@ -142,7 +147,7 @@
       {{ with $about }}<a class="more" href="{{ .RelPermalink }}#projects">{{ i18n "k_projects" }}</a>{{ end }}
     </div>
     <div class="voice voice-r">
-      <p class="kicker">{{ i18n "k_published" }}</p>
+      <h2 class="kicker">{{ i18n "k_published" }}</h2>
       {{- /* The paragraph stays hidden until openalex.js has an answer, so the href below
              is only a fallback: the module replaces it with the canonical author URL that
              the API returns (`id`). OpenAlex resolves an `orcid:` prefixed identifier, so
@@ -161,16 +166,16 @@
   {{- /* Writing | Lately */ -}}
   <section class="row asym no-dot" id="writes" data-section="{{ i18n "nav_sec_writing" }}">
     <div class="voice voice-l">
-      <p class="kicker">{{ i18n "k_writes" }}</p>
+      <h2 class="kicker">{{ i18n "k_writes" }}</h2>
       <ul class="datelist">
         {{- range first (.Site.Params.recentPostsLimit | default 3) (sort $posts "Date" "desc") }}
-        <li><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+        {{ partial "post-row.html" (dict "page" . "year" true) }}
         {{- end }}
       </ul>
       {{ $l := partial "lang-link.html" "/posts/" }}<a class="more" href="{{ $l.href }}"{{ with $l.hreflang }} hreflang="{{ . }}"{{ end }}>{{ i18n "all_posts" }}</a>
     </div>
     <div class="voice voice-r">
-      <p class="kicker">{{ i18n "k_lately" }}</p>
+      <h2 class="kicker">{{ i18n "k_lately" }}</h2>
       <p id="now-playing" data-fallback="{{ i18n "now_playing_fallback" }}">{{ i18n "now_playing_fallback" }}</p>
       <p class="meta"><a href="{{ hugo.Data.playlists.link }}" target="_blank" rel="noreferrer noopener">{{ i18n "listening_archive" }}</a></p>
       <div class="lately-row">

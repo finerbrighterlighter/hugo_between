@@ -4,8 +4,11 @@
 {{ define "body-class" }}page post{{ end }}
 {{ define "main" }}
 <header class="page-head">
-  <h1>{{ .Title }}</h1>
-  <span class="meta"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time>{{ with .Params.company }}, {{ . }}{{ end }}, {{ i18n "minutes_read" (dict "n" .ReadingTime) }}</span>
+  {{- /* An archived post is Burmese unless its front matter says otherwise (`title_lang: en`),
+         and is dated by the era it was written in, not the day it was published here. */ -}}
+  {{- $tl := .Params.title_lang | default (cond (eq .Params.archive true) "my" "") -}}
+  <h1{{ with $tl }} lang="{{ . }}"{{ end }}>{{ .Title }}</h1>
+  <span class="meta">{{ if .Params.archive }}{{ i18n "archive_source" }}, {{ i18n "archive_when" }}{{ else }}<time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time>{{ end }}{{ with .Params.company }}, {{ . }}{{ end }}, {{ i18n "minutes_read" (dict "n" .ReadingTime) }}</span>
 </header>
 <div class="page-body">
   <div class="essay">

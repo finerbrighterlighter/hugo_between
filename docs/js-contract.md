@@ -152,8 +152,17 @@ Head has an inline pre-paint script (written by the templates, not you) that set
 or `prefers-color-scheme`. `theme.js` handles `[data-theme-toggle]` buttons: cycle light → dark → light, persist to localStorage `theme`,
 update `aria-label` (`Switch to dark mode` / `Switch to light mode`), dispatch `theme-changed` on `document`. Keep it ~40 lines.
 
+## Language return (lang-return.js)
+Works and credits exist only in English. `scripts.html` renders, on any English page with no translation,
+`<script type="application/json" id="lang-return-map">{"/":"/mm/","/works/":"/mm/works/",…}</script>`: the
+English navigation hrefs and their Burmese counterparts that exist. The module runs on every page: `<html lang="my">`
+stores `mm` in localStorage `lang`; `<html lang="en">` with a live `.lang-switch` link stores `en`; an English-only
+page (`.lang-switch.is-missing` present) changes nothing in storage. On such a page, if storage says `mm` or the
+referrer is same-origin under `/mm/`, rewrite `href` (and set `hreflang="my"`) on `.masthead a`, `.colophon nav a`
+and `.balloon a` whose href is a map key. Labels, `lang` and the struck-out switch stay as rendered. ~50 lines.
+
 ## Cache flush (cache-expires.js → privacy.js)
-`<button data-cache-flush>Clear cached data</button> <span data-cache-status role="status"></span>` → flush cache.js keys + `bibtex-*` + `theme` untouched;
+`<button data-cache-flush>Clear cached data</button> <span data-cache-status role="status"></span>` → flush cache.js keys + `bibtex-*`; the preferences `theme` and `lang` untouched;
 status `Cleared.` for 3 s.
 
 ## Duck (duck.js)

@@ -305,3 +305,50 @@ Two were built and removed:
 The rule the removals suggest: a figure earns its place by saying something the prose beside it
 cannot. Restating the prose in ink is not a second view of the data, and an encoding with no scale
 is not a chart.
+
+## Pass 17 (2026-09-24, wayfinding after an adversarial UX review)
+
+An adversarial assessor and a judge (two Claude panes in Herdr, briefs in the session scratchpad) reviewed the
+experience rather than the look, twice: once on the site as it stood (grade B−) and once on the fixes (grade B,
+with two regressions of its own that the second round caught and this pass also closes). The reading, the spine,
+focus and the tooling were sound; what failed was finding one's way around them. What changed:
+
+- **About, CV, ORCID and email were footer-only.** A quiet Karla line now sits under the two voices on desktop
+  and inside the intro on the phone (`partials/quick-links.html`). The colophon is unchanged; the ribbon stays
+  three items. The spine breaks under the hero to let the line through, as it does for the pull quote; that is
+  the one cost and it is deliberate. The links open in the same tab.
+- **"source" links landed on a bare PIN wall.** The links now say what the document is and that a PIN stands
+  in front of it (transcript, employment letter, service record; the label is chosen from the document path),
+  sit on their own line with a box the size of their text, and the gate page has one lede that says the document
+  is shown on request, with the email. The form posts; without scripting it is not shown at all, and a
+  `<noscript>` line says why and where to write. The button is sentence case.
+- **Archived Facebook posts sat under 2026.** Lists show them as their own "Archive" group dated c. 2018–2021
+  (`partials/post-row.html`) and the single page carries the era instead of the publish date. Rows and titles are
+  `lang="my"` unless the post's front matter says `lang: en` (one archive post has an English title). The
+  English home leaves them out of "Writes".
+- **Burmese "Works" dropped the reader into English with no way back.** `/mm/works/` now exists as a Burmese
+  frame around the English list: the frame (lede, labels, counts) is Burmese, the list is `lang="en"` and keeps
+  the Latin faces and measure, the lede says the entries open in English, and the entry links carry
+  `hreflang="en"`. The credits link, the one English-only target left in the Burmese navigation, appends
+  "(English)". The work pages themselves stay English; the masthead on them still leads to `/`.
+- **The struck-out language switch explained itself only by tooltip.** It now carries a visible "not
+  translated" beside the struck word.
+- **No heading structure below the hero.** The kickers are `h2` with the same styling (`.voice h2.kicker`
+  reasserts the kicker size against the display-word rule); the authorship figure is labelled by its caption.
+- **Touch targets under 24px.** Both language switches, the footer tool buttons, the "earlier" disclosure and
+  the chart marks on any coarse pointer or viewport under 960px have a 24px box, and the marks no longer overlap.
+  The footer theme toggle has a visible "Dark mode / Light mode" label.
+- **`/blood-records/` was a public empty page.** It is an image bundle only: never rendered or listed. (The dev
+  server keeps a stale render of it until restarted; a clean build is right.)
+- **Inner-page ledes were invisible on desktop** because the home intro rule matched every `.intro`. The rule
+  is scoped to the home page.
+- **Without JavaScript** the works filter and the citation panel each say so in one `<noscript>` line.
+
+- **Works pages are English only and stay so.** A Burmese reader who opens one from `/mm/works/` keeps Burmese
+  navigation: `lang-return.js` remembers the language from the pages read (Burmese pages, or English pages that
+  have a Burmese twin) and also honours a referrer under `/mm/`, then points the masthead, footer and balloon
+  links at the Burmese addresses the template lists in `#lang-return-map`. Without scripting the page is what
+  it was. `scripts/lang_return_test.js` covers the five cases.
+
+Still open from the review, by decision: the JS-off filter and citation panel remain inert (they say so now);
+the two evidence links to the same transcript stay, since both roles are evidenced by it.

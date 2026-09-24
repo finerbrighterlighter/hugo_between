@@ -5,7 +5,7 @@ All files are vanilla ES modules loaded with `type="module"`; each one self-gate
 | File | Root selector | Source / API | Notes |
 | --- | --- | --- | --- |
 | `assets/js/config.js` | — | Hugo `getenv` + `site.Params` | Templated by js.Build; sets `window.CONFIG`. Keys: `unsplashKey`, `lastfmKey`, `simklClientId`, `simklToken`, `cacheTTLMinutes`, `screenLimit`, `mangaLimit`, `photoLimit`, `lastfmUser`, `anilistUser`, `unsplashUser`. |
-| `static/js/cache.js` | — | localStorage | `getCache`, `setCache`, `clearCache`, `clearSiteStorage`, `listCacheEntries`. Entries under `cache:`; `theme` never touched. |
+| `static/js/cache.js` | — | localStorage | `getCache`, `setCache`, `clearCache`, `clearSiteStorage`, `listCacheEntries`. Entries under `cache:`; the preferences `theme` and `lang` never touched. |
 | `static/js/covers.js` | — | — | Shared `<li class="cover">` renderer for the three strips; `renderCovers`, `showEmpty`, `limitFor`. |
 | `static/js/lastFM.js` | `#now-playing` | Last.fm `user.getrecenttracks` | One sentence, `data-state="playing|recent"`, polls every 30 s, not cached. |
 | `static/js/anilist.js` | `#strip-manga` | AniList GraphQL | Recent manga (all statuses except planning), `Chapter n [of total]`. |
@@ -17,6 +17,7 @@ All files are vanilla ES modules loaded with `type="module"`; each one self-gate
 | `static/js/work-citation.js` | `[data-citation-count][data-doi]` | OpenAlex `/works/doi:{doi}` | Fills count, links to citing works, unhides when ≥ 1. |
 | `static/js/work-cite.js` | `details.cite[data-doi]` | doi.org (`Accept: application/x-bibtex`) | BibTeX / NLM / APA / AMA, copy, `.bib` and `.ris` download. Cache key `bibtex-<doi>`. |
 | `static/js/protected-document.js` | `section.gate[data-document-id]` | same-origin PDF fetch | SHA-256(salt + PIN) vs `data-verifier`, unlock remembered via cache.js, blob URL revoked on `pagehide`, link only under 768 px. |
+| `static/js/lang-return.js` | `#lang-return-map` (English-only pages) | localStorage `lang`, `document.referrer` | Burmese pages remember `mm`, English pages with a twin remember `en`; on an English-only page a `mm` memory or a same-origin `/mm/` referrer repoints masthead, footer nav and balloon links to the Burmese addresses in the map. |
 | `static/js/theme.js` | `[data-theme-toggle]` | localStorage `theme` | Light/dark cycle, aria-label, dispatches `theme-changed`. |
 | `static/js/privacy.js` | `[data-cache-flush]` | cache.js | Flushes cache and stray `bibtex-*` keys; `[data-cache-status]` shows `Cleared.` for 3 s. |
 | `static/js/duck.js` | `#portrait` | `#quack` audio | Toggles `.is-duck` for 1.2 s, three-voice quack pool, adds `.no-motion` under reduced motion. |

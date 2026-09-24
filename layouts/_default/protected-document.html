@@ -18,21 +18,25 @@
 {{- end -}}
 <header class="page-head">
   <h1>{{ .Title }}</h1>
-  <p class="intro">{{ i18n "protected_document_privacy" }}</p>
+  {{- $hp := hugo.Data.homepage -}}{{- if eq .Site.Language.Lang "mm" -}}{{- $hp = hugo.Data.homepage_mm -}}{{- end -}}
+  <p class="intro gate-explain">{{ i18n "protected_document_explain" (dict "link" (printf `<a href="mailto:%s">%s</a>` $hp.sidebar.email (i18n "protected_document_ask"))) | safeHTML }}</p>
 </header>
 <div class="page-body">
   <section class="gate" data-document-id="{{ $doc.document_id }}" data-src="{{ $doc.document_path | relURL }}" data-salt="{{ $doc.salt }}" data-verifier="{{ $doc.password_hash }}"
     data-i18n-prompt="{{ i18n "protected_document_prompt" }}" data-i18n-checking="{{ i18n "protected_document_checking" }}" data-i18n-loading="{{ i18n "protected_document_loading" }}"
     data-i18n-incorrect="{{ i18n "protected_document_incorrect" }}" data-i18n-error="{{ i18n "protected_document_load_error" }}" data-i18n-unlocked="{{ i18n "protected_document_unlocked" }}" data-i18n-unsupported="{{ i18n "protected_document_unsupported" }}">
-    <form class="gate-form" novalidate>
+    {{- /* Without scripting the PIN cannot be checked, so the form is not offered:
+           a POST to a static path is not something every host answers. */ -}}
+    <noscript><style>.gate-form{display:none}</style><p class="gate-status">{{ i18n "protected_document_noscript" (dict "link" (printf `<a href="mailto:%s">%s</a>` $hp.sidebar.email (i18n "protected_document_ask"))) | safeHTML }}</p></noscript>
+    <form class="gate-form" method="post" action="" novalidate>
       <div><label for="pin">{{ i18n "protected_document_password_label" }}</label>
       <input id="pin" name="pin" type="password" inputmode="numeric" autocomplete="off" required></div>
-      <button type="submit">{{ i18n "protected_document_unlock" | title }}</button>
+      <button type="submit">{{ i18n "protected_document_unlock" }}</button>
       <p class="gate-status" role="status">{{ i18n "protected_document_prompt" }}</p>
     </form>
     <div class="gate-viewer" hidden>
       <iframe title="{{ i18n "protected_document_viewer_title" }}" hidden></iframe>
-      <a class="gate-open" href="#" target="_blank" rel="noreferrer noopener" hidden>{{ i18n "protected_document_open" | title }}</a>
+      <a class="gate-open" href="#" target="_blank" rel="noreferrer noopener" hidden>{{ i18n "protected_document_open" }}</a>
     </div>
   </section>
   {{ .Content }}

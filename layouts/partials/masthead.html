@@ -5,7 +5,7 @@
     {{- range where .Site.Params.nav "side" "left" }}
     {{- $l := partial "lang-link.html" .url -}}{{- $u := $l.href -}}
     {{- $active := and (ne $u $home) (strings.HasPrefix $cur $u) -}}
-    <a href="{{ $u }}"{{ with $l.hreflang }} hreflang="{{ . }}"{{ end }}{{ if $active }} aria-current="{{ if eq $cur $u }}page{{ else }}true{{ end }}"{{ end }}>{{ i18n .name }}</a>
+    <a href="{{ $u }}"{{ with $l.hreflang }} hreflang="{{ . }}"{{ end }}{{ if $active }} aria-current="{{ if eq $cur $u }}page{{ else }}true{{ end }}"{{ end }}>{{ i18n .name }}{{ with $l.hreflang }} <span class="meta">{{ i18n "in_english" }}</span>{{ end }}</a>
     {{- end }}
   </nav>
   <a class="masthead-name" href="{{ $home }}"{{ if .IsHome }} aria-current="page"{{ end }}>{{ .Site.Title }}</a>
@@ -13,7 +13,7 @@
     {{- range where .Site.Params.nav "side" "right" }}
     {{- $l := partial "lang-link.html" .url -}}{{- $u := $l.href -}}
     {{- $active := and (ne $u $home) (strings.HasPrefix $cur $u) -}}
-    <a href="{{ $u }}"{{ with $l.hreflang }} hreflang="{{ . }}"{{ end }}{{ if $active }} aria-current="{{ if eq $cur $u }}page{{ else }}true{{ end }}"{{ end }}>{{ i18n .name }}</a>
+    <a href="{{ $u }}"{{ with $l.hreflang }} hreflang="{{ . }}"{{ end }}{{ if $active }} aria-current="{{ if eq $cur $u }}page{{ else }}true{{ end }}"{{ end }}>{{ i18n .name }}{{ with $l.hreflang }} <span class="meta">{{ i18n "in_english" }}</span>{{ end }}</a>
     {{- end }}
   </nav>
   <div class="masthead-lang">{{ partial "lang-switch.html" . }}</div>
