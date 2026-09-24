@@ -171,9 +171,11 @@ works_entries_english: ""
 protected_document_ask: "write to me"
 # The quiet line of first-screen links under the hero (desktop) and the intro (phone).
 quick_links_label: "About, CV and contact"
-quick_about: "About me"
-quick_cv: "CV (PDF)"
-quick_write: "Write to me"
+# A sentence, not a menu: the four links are its verbs. {{ .about }} etc. are links.
+quick_sentence: "Read {{ .about }}, take the {{ .cv }}, find me on {{ .orcid }}, or {{ .write }}."
+quick_about: "more about me"
+quick_cv: "CV"
+quick_write: "write to me"
 # Lists of posts: archived Facebook writing carries this instead of its publish date.
 archive_label: "Archive"
 archive_source: "Facebook"

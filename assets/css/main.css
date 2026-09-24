@@ -178,12 +178,28 @@ html:lang(my) .intro-tagline{font-style:normal;font-size:1.05rem}
 /* hero */
 .hero{--row-top:clamp(2.5rem,6vw,5rem);--row-bottom:2rem}
 .hero::before{display:none}
-/* First-screen route to About, CV, ORCID and email. Under both voices on desktop;
-   inside the intro on the phone. */
-.quick{grid-column:1/-1;margin:0;padding:0 0 var(--row-bottom);text-align:center;font-family:var(--sans);font-size:var(--fs-small);color:var(--mute)}
-.quick a{color:var(--ink);text-decoration-color:var(--rule);padding:.2rem 0}
-.quick a:hover{text-decoration-color:var(--accent)}
-.intro-body .quick{text-align:left;padding:0;margin-top:.4rem;line-height:1.9}
+/* First-screen route to About, CV, ORCID and email: one italic sentence in the
+   voice of the spine note. On desktop it sits on the spine, which runs through
+   the row and breaks only behind the words, as it does for the pull quote. In
+   the tablet band the spine is at the left and the sentence hangs from it like
+   a voice; on the phone it closes the intro. */
+/* The spine is drawn as two stubs, above and below the sentence, rather than as
+   one line behind a paper-backed span: a text box painted over a line is
+   something an accessibility checker cannot see through, and two stubs need no
+   paint at all. */
+.quick{grid-column:1/-1;margin:0;padding:.2rem 0 var(--row-bottom);display:flex;flex-direction:column;align-items:center;gap:.45rem;text-align:center}
+.quick-text{display:block;font-family:var(--serif);font-style:italic;font-size:var(--fs-small);line-height:1.55;color:var(--mute);max-width:min(36rem,100%);text-wrap:pretty}
+.quick a{color:var(--ink)}
+.quick a:hover{text-decoration-thickness:2px}
+@media (min-width:960px){
+  .quick{padding-top:0;padding-bottom:0}
+  /* Half a pixel left, so the stubs sit on the voice's border-right rather than astride the centre. */
+  .quick::before,.quick::after{content:"";display:block;width:1px;background:var(--ink);transform:translateX(-.5px)}
+  .quick::before{height:calc(.7rem + 1px);margin-top:-1px}
+  .quick::after{height:calc(var(--row-bottom) - .45rem + 1px);margin-bottom:-1px}
+}
+@media (min-width:700px) and (max-width:959px){.quick{align-items:flex-start;text-align:left;border-left:1px solid var(--ink);padding-left:1.5rem}}
+.intro-body .quick{padding:0;margin-top:.6rem;align-items:flex-start;text-align:left}
 .word{font-size:var(--fs-word);font-weight:300;line-height:.92;letter-spacing:-.025em;margin:0 0 1rem;text-wrap:balance}
 .voice-r .word{font-style:italic;font-weight:400}
 .hero p:not(.word){font-size:var(--fs-lead);color:var(--mute);max-width:32ch;margin-bottom:0;line-height:1.4}
@@ -657,9 +673,13 @@ html{scroll-behavior:smooth}
    right-to-left and the list inside it left-to-right: that is the one CSS-only
    way to open a horizontal scroller at its end, which here is the newest year.
    The scroller keeps room above the marks for the drawn hover labels, which
-   would otherwise be clipped by the overflow; the negative margin gives that
-   room back to the layout and pointer events pass through it. */
-.authorship-scroll{overflow-x:auto;overflow-y:hidden;direction:rtl;scrollbar-width:thin;padding-top:3.8rem;margin-top:-3.8rem;pointer-events:none}
+   would otherwise be clipped by the overflow, and pointer events pass through
+   that room. */
+.authorship-scroll{overflow-x:auto;overflow-y:hidden;direction:rtl;scrollbar-width:thin;padding-top:3.8rem;pointer-events:none}
+/* The row above gives up that much of its bottom padding, so the marks sit where
+   they did; a negative margin on the scroller would have laid its box over the
+   last paragraph, which reads as an overlap to an accessibility checker. */
+.home #study>.wide{padding-bottom:max(0px,calc(var(--row-bottom) - 3.8rem))}
 .authorship-years{direction:ltr;pointer-events:auto;display:flex;flex-wrap:nowrap;align-items:flex-start;justify-content:space-between;gap:.8rem;list-style:none;margin:0;padding:0 0 .2rem;width:max-content;min-width:100%}
 .authorship-year{display:flex;flex-direction:column;gap:.35rem;min-width:0}
 .authorship-works{display:flex;flex-wrap:nowrap;align-items:flex-start;gap:clamp(.25rem,.4vw,.5rem);list-style:none;margin:0;padding:0}
@@ -678,7 +698,14 @@ html{scroll-behavior:smooth}
 /* Open for presented output, filled for written — the distinction the timeline
    this replaced carried, kept on my slot rather than the whole column. */
 .authorship-slot.is-me.is-open{background:var(--paper);box-shadow:inset 0 0 0 1.5px var(--accent)}
-.authorship-y{display:block;text-align:center;font-family:var(--sans);font-size:var(--fs-meta);color:var(--mute)}
+/* The axis is the site's one idea again: a hairline that the year labels
+   interrupt, the way the spine breaks for the pull quote. The line is drawn on
+   the list so it travels with the row when it scrolls; each label sits on it
+   with a sliver of paper behind, and a label-less year crosses it with a tick. */
+.authorship-years{position:relative}
+.authorship-years::after{content:"";position:absolute;left:0;right:0;bottom:.76rem;border-top:1px solid var(--rule)}
+html:lang(my) .authorship-years::after{bottom:.83rem}
+.authorship-y{display:inline-block;align-self:center;position:relative;padding:0 .4em;background:var(--paper);text-align:center;font-family:var(--sans);font-size:var(--fs-meta);line-height:1.4;color:var(--mute)}
 /* Drawn hover label, like the marks on the IELTS chart, rather than the
    browser's own tooltip. */
 /* display:none, not opacity:0 — an absolutely positioned label is still laid
@@ -701,6 +728,7 @@ html{scroll-behavior:smooth}
    figure as a row of year labels in both. */
 .authorship-slot{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 @media (forced-colors:active){
+  .authorship-years::after{display:none}
   .authorship-slot{background:CanvasText;forced-color-adjust:none}
   .authorship-slot.is-me{background:Highlight}
   .authorship-slot.is-me.is-open{background:Canvas;box-shadow:inset 0 0 0 1.5px Highlight}
@@ -715,7 +743,7 @@ html{scroll-behavior:smooth}
    two or more works is wide enough to say its own name. */
 @media (max-width:699px){
   .authorship-year:has(>.authorship-works>li:only-child):not(:first-child):not(:last-child) .authorship-y{display:none}
-  .authorship-year:has(>.authorship-works>li:only-child):not(:first-child):not(:last-child)::after{content:"";display:block;width:1px;height:.45rem;margin:0 auto;background:var(--mute)}
+  .authorship-year:has(>.authorship-works>li:only-child):not(:first-child):not(:last-child)::after{content:"";display:block;width:100%;height:calc(1.4*var(--fs-meta));background:linear-gradient(var(--mute),var(--mute)) center/1px .5rem no-repeat}
 }
 /* Touch: each mark gets a 24px-wide box of its own, and the boxes do not overlap. */
 @media (max-width:959px),(pointer:coarse){.authorship-work>a{padding:2px 9px;margin:0}}

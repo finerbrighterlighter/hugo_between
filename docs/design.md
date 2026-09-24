@@ -361,3 +361,15 @@ label set its own column's width. The years are now one row that scrolls sideway
 script. Below 700px a one-work year in the middle of the row keeps a tick instead of its label, so the row reads
 from its first year to its last with a label wherever a year is wide enough to carry one. The alternative,
 truncating to the last few years, was not taken: the point of the figure is the whole run.
+
+The axis is a hairline the year labels interrupt, each label sitting on it with a sliver of paper behind and a
+label-less year crossing it with a tick: the spine's own manner, a line that breaks where words cross it, rather
+than chart furniture. It is drawn on the list so it travels with the scroll.
+
+The quick line from Pass 17 was a row of menu items in Karla, which made it a second ribbon. Three treatments
+were weighed: a two-voice row (the four links do not split into health and data), a margin note beside the spine
+(hidden on the phone, where it matters most), and a sentence. It is now one italic Newsreader sentence in the
+voice of the spine note, "Read more about me, take the CV, find me on ORCID, or write to me", whose links are its
+verbs. On desktop it sits on the spine, which runs through the row and breaks only behind the words, as it does
+for the pull quote; in the tablet band it hangs from the left spine like a voice; on the phone it closes the
+intro.
