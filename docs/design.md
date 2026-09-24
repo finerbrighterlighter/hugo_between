@@ -383,6 +383,6 @@ were weighed: a two-voice row (the four links do not split into health and data)
 verbs. The sentence was built and then replaced: it read as prose but was navigation in disguise, and a reader
 scanning for "CV" had to read a line to find it. What stands is three hairline pills in Karla, no fill, ink text,
 ochre on hover: honest controls, still quiet. No email among them by decision: the colophon carries it, and the
-first screen should not invite mail. On desktop the row sits on the spine, which runs into it and out
-of it as two stubs, so the line breaks behind the pills as it does for the pull quote; in the tablet band it
-hangs from the left spine like a voice; on the phone it closes the intro and wraps.
+first screen should not invite mail. On desktop the row spans both voices and the spine breaks for it, as it does for the pull quote, with no
+drawn stubs; in the tablet band it hangs from the left spine like a voice; on the phone it closes the intro and
+wraps.

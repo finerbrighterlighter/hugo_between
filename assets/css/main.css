@@ -178,26 +178,14 @@ html:lang(my) .intro-tagline{font-style:normal;font-size:1.05rem}
 /* hero */
 .hero{--row-top:clamp(2.5rem,6vw,5rem);--row-bottom:2rem}
 .hero::before{display:none}
-/* First-screen route to About, CV, ORCID and email: four hairline pills. On
-   desktop the row sits on the spine, which runs through it and breaks only
-   behind the pills, as it does for the pull quote. In the tablet band the spine
-   is at the left and the row hangs from it like a voice; on the phone it closes
-   the intro. */
-/* The spine is drawn as two stubs, above and below the sentence, rather than as
-   one line behind a paper-backed span: a text box painted over a line is
-   something an accessibility checker cannot see through, and two stubs need no
-   paint at all. */
-.quick{grid-column:1/-1;margin:0;padding:.2rem 0 var(--row-bottom);display:flex;flex-direction:column;align-items:center;gap:.45rem;text-align:center}
+/* First-screen route to About, CV and ORCID: three hairline pills. On desktop
+   the row spans both voices and the spine breaks for it, as it does for the
+   pull quote. In the tablet band the spine is at the left and the row hangs
+   from it like a voice; on the phone it closes the intro. */
+.quick{grid-column:1/-1;margin:0;padding:.6rem 0 var(--row-bottom);display:flex;flex-direction:column;align-items:center;text-align:center}
 .quick-list{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem .55rem}
 .quick-list a{display:inline-block;font-family:var(--sans);font-size:var(--fs-meta);line-height:1;padding:.55rem .9rem;border:1px solid var(--rule);border-radius:999px;color:var(--ink);text-decoration:none;transition:border-color .15s,color .15s}
 .quick-list a:hover{border-color:var(--accent);color:var(--accent)}
-@media (min-width:960px){
-  .quick{padding-top:0;padding-bottom:0}
-  /* Half a pixel left, so the stubs sit on the voice's border-right rather than astride the centre. */
-  .quick::before,.quick::after{content:"";display:block;width:1px;background:var(--ink);transform:translateX(-.5px)}
-  .quick::before{height:calc(.7rem + 1px);margin-top:-1px}
-  .quick::after{height:calc(var(--row-bottom) - .45rem + 1px);margin-bottom:-1px}
-}
 @media (min-width:700px) and (max-width:959px){.quick{align-items:flex-start;text-align:left;border-left:1px solid var(--ink);padding-left:1.5rem}}
 .intro-body .quick{padding:0;margin-top:.8rem;align-items:flex-start;text-align:left}
 .intro-body .quick-list{justify-content:flex-start}
