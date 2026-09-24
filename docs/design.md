@@ -352,3 +352,12 @@ focus and the tooling were sound; what failed was finding one's way around them.
 
 Still open from the review, by decision: the JS-off filter and citation panel remain inert (they say so now);
 the two evidence links to the same transcript stay, since both roles are evidenced by it.
+
+## Pass 18 (2026-09-25, the authorship figure grows sideways)
+
+On a phone the figure wrapped its years into a second row, which read as a second series, and every year
+label set its own column's width. The years are now one row that scrolls sideways once they no longer fit
+(`.authorship-scroll`) and opens at the newest end, done with the right-to-left scroller trick rather than
+script. Below 700px a one-work year in the middle of the row keeps a tick instead of its label, so the row reads
+from its first year to its last with a label wherever a year is wide enough to carry one. The alternative,
+truncating to the last few years, was not taken: the point of the figure is the whole run.

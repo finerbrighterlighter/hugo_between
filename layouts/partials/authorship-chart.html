@@ -65,6 +65,9 @@
 {{- $years := slice -}}
 {{- range $works -}}{{- if not (in $years .year) -}}{{- $years = $years | append .year -}}{{- end -}}{{- end -}}
 <figure class="authorship" id="outputs" data-section="{{ i18n "nav_sec_output" }}" aria-labelledby="authorship-caption">
+  {{- /* One row, always. When the years outgrow the column the row scrolls
+         sideways and opens at its newest end; nothing wraps into a second row. */ -}}
+  <div class="authorship-scroll">
   <ol class="authorship-years" aria-label="{{ i18n "authorship_aria" (dict
        "n" (len $works) "from" (index $years 0) "to" (index (last 1 $years) 0)) }}">
     {{- range $y := $years }}
@@ -96,6 +99,7 @@
     </li>
     {{- end }}
   </ol>
+  </div>
   <figcaption class="meta" id="authorship-caption">{{ i18n "authorship_caption" }}</figcaption>
 </figure>
 {{- end -}}

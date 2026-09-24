@@ -652,11 +652,17 @@ html{scroll-behavior:smooth}
    the full width, so the figure uses the column it is given instead of
    huddling at the left of it. Bigger dots alone would just look coarse. */
 .authorship{--dot:clamp(6px,.72vw,10px);grid-column:1/-1;max-width:52rem;width:100%;margin:0 auto;padding:0 0 .4rem}
-/* wrap rather than overflow: at 320px the columns already use most of the
-   width, and the next few publications would have pushed past it */
-.authorship-years{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:.8rem;list-style:none;margin:0;padding:0}
+/* One row that scrolls sideways once the years no longer fit, rather than
+   wrapping into a second row that read as a second series. The scroller is
+   right-to-left and the list inside it left-to-right: that is the one CSS-only
+   way to open a horizontal scroller at its end, which here is the newest year.
+   The scroller keeps room above the marks for the drawn hover labels, which
+   would otherwise be clipped by the overflow; the negative margin gives that
+   room back to the layout and pointer events pass through it. */
+.authorship-scroll{overflow-x:auto;overflow-y:hidden;direction:rtl;scrollbar-width:thin;padding-top:3.8rem;margin-top:-3.8rem;pointer-events:none}
+.authorship-years{direction:ltr;pointer-events:auto;display:flex;flex-wrap:nowrap;align-items:flex-start;justify-content:space-between;gap:.8rem;list-style:none;margin:0;padding:0 0 .2rem;width:max-content;min-width:100%}
 .authorship-year{display:flex;flex-direction:column;gap:.35rem;min-width:0}
-.authorship-works{display:flex;flex-wrap:wrap;align-items:flex-start;gap:clamp(.25rem,.4vw,.5rem);list-style:none;margin:0;padding:0}
+.authorship-works{display:flex;flex-wrap:nowrap;align-items:flex-start;gap:clamp(.25rem,.4vw,.5rem);list-style:none;margin:0;padding:0}
 .authorship-work{position:relative}
 .authorship-work>a{display:flex;flex-direction:column;align-items:center;gap:clamp(9px,1.1vw,15px);padding:2px 5px;margin:0 -4px;border-radius:3px;text-decoration:none;border:0}
 .authorship-work>a:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
@@ -703,6 +709,14 @@ html{scroll-behavior:smooth}
    written/presented distinction stopped being legible, which is the one thing
    the caption promises. */
 @media (max-width:519px){.authorship{--dot:6px}.authorship-years{gap:.5rem}.authorship-works{gap:.2rem}}
+/* On a phone a one-work year is narrower than its own label, so the labels
+   would set the spacing. Those years keep a tick and the first and last keep
+   their labels, so the row reads from its first year to its last; a year with
+   two or more works is wide enough to say its own name. */
+@media (max-width:699px){
+  .authorship-year:has(>.authorship-works>li:only-child):not(:first-child):not(:last-child) .authorship-y{display:none}
+  .authorship-year:has(>.authorship-works>li:only-child):not(:first-child):not(:last-child)::after{content:"";display:block;width:1px;height:.45rem;margin:0 auto;background:var(--mute)}
+}
 /* Touch: each mark gets a 24px-wide box of its own, and the boxes do not overlap. */
 @media (max-width:959px),(pointer:coarse){.authorship-work>a{padding:2px 9px;margin:0}}
 
