@@ -178,19 +178,19 @@ html:lang(my) .intro-tagline{font-style:normal;font-size:1.05rem}
 /* hero */
 .hero{--row-top:clamp(2.5rem,6vw,5rem);--row-bottom:2rem}
 .hero::before{display:none}
-/* First-screen route to About, CV, ORCID and email: one italic sentence in the
-   voice of the spine note. On desktop it sits on the spine, which runs through
-   the row and breaks only behind the words, as it does for the pull quote. In
-   the tablet band the spine is at the left and the sentence hangs from it like
-   a voice; on the phone it closes the intro. */
+/* First-screen route to About, CV, ORCID and email: four hairline pills. On
+   desktop the row sits on the spine, which runs through it and breaks only
+   behind the pills, as it does for the pull quote. In the tablet band the spine
+   is at the left and the row hangs from it like a voice; on the phone it closes
+   the intro. */
 /* The spine is drawn as two stubs, above and below the sentence, rather than as
    one line behind a paper-backed span: a text box painted over a line is
    something an accessibility checker cannot see through, and two stubs need no
    paint at all. */
 .quick{grid-column:1/-1;margin:0;padding:.2rem 0 var(--row-bottom);display:flex;flex-direction:column;align-items:center;gap:.45rem;text-align:center}
-.quick-text{display:block;font-family:var(--serif);font-style:italic;font-size:var(--fs-small);line-height:1.55;color:var(--mute);max-width:min(36rem,100%);text-wrap:pretty}
-.quick a{color:var(--ink)}
-.quick a:hover{text-decoration-thickness:2px}
+.quick-list{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem .55rem}
+.quick-list a{display:inline-block;font-family:var(--sans);font-size:var(--fs-meta);line-height:1;padding:.55rem .9rem;border:1px solid var(--rule);border-radius:999px;color:var(--ink);text-decoration:none;transition:border-color .15s,color .15s}
+.quick-list a:hover{border-color:var(--accent);color:var(--accent)}
 @media (min-width:960px){
   .quick{padding-top:0;padding-bottom:0}
   /* Half a pixel left, so the stubs sit on the voice's border-right rather than astride the centre. */
@@ -199,7 +199,8 @@ html:lang(my) .intro-tagline{font-style:normal;font-size:1.05rem}
   .quick::after{height:calc(var(--row-bottom) - .45rem + 1px);margin-bottom:-1px}
 }
 @media (min-width:700px) and (max-width:959px){.quick{align-items:flex-start;text-align:left;border-left:1px solid var(--ink);padding-left:1.5rem}}
-.intro-body .quick{padding:0;margin-top:.6rem;align-items:flex-start;text-align:left}
+.intro-body .quick{padding:0;margin-top:.8rem;align-items:flex-start;text-align:left}
+.intro-body .quick-list{justify-content:flex-start}
 .word{font-size:var(--fs-word);font-weight:300;line-height:.92;letter-spacing:-.025em;margin:0 0 1rem;text-wrap:balance}
 .voice-r .word{font-style:italic;font-weight:400}
 .hero p:not(.word){font-size:var(--fs-lead);color:var(--mute);max-width:32ch;margin-bottom:0;line-height:1.4}
@@ -667,7 +668,7 @@ html{scroll-behavior:smooth}
 /* The dot grows a little with the viewport and the year groups spread across
    the full width, so the figure uses the column it is given instead of
    huddling at the left of it. Bigger dots alone would just look coarse. */
-.authorship{--dot:clamp(6px,.72vw,10px);--ygap:.8rem;--ylabel:2.3rem;--ytick:.5rem;grid-column:1/-1;max-width:52rem;width:100%;margin:0 auto;padding:0 0 .4rem}
+.authorship{--dot:clamp(6px,.72vw,10px);--ygap:.8rem;--ylabel:2.2rem;--ytick:.4rem;--tick-soft:color-mix(in srgb,var(--mute) 55%,var(--paper));grid-column:1/-1;max-width:52rem;width:100%;margin:0 auto;padding:0 0 .4rem}
 /* One row that scrolls sideways once the years no longer fit, rather than
    wrapping into a second row that read as a second series. The scroller is
    right-to-left and the list inside it left-to-right: that is the one CSS-only
@@ -724,8 +725,10 @@ html{scroll-behavior:smooth}
 /* The baseline starts at the first tick and runs half a gap past the last
    column: the year in progress. */
 .authorship-years::after{content:"";position:absolute;left:1.7rem;right:0;bottom:calc(.2rem + var(--ylabel) + var(--ytick));border-top:1px solid var(--rule)}
-.authorship-work::after{content:"";position:absolute;left:50%;top:100%;width:1px;height:.3rem;background:var(--mute)}
-.authorship-year::before{content:"";position:absolute;left:calc(var(--ygap)/-2);width:1px;height:calc(var(--ytick) + .2rem);bottom:calc(var(--ylabel) - .2rem);background:var(--ink)}
+/* Grey on grey: the ruler is read past, not read. Year ticks in the muted ink,
+   work ticks lighter still, and the baseline the hairline the lists use. */
+.authorship-work::after{content:"";position:absolute;left:50%;top:100%;width:1px;height:.25rem;background:var(--tick-soft)}
+.authorship-year::before{content:"";position:absolute;left:calc(var(--ygap)/-2);width:1px;height:calc(var(--ytick) + .15rem);bottom:calc(var(--ylabel) - .15rem);background:var(--mute)}
 .authorship-y{position:absolute;right:calc(100% + var(--ygap)/2 + .15rem);top:calc(100% - var(--ylabel) + .3rem);transform:rotate(-45deg);transform-origin:100% 0;white-space:nowrap;font-family:var(--sans);font-size:var(--fs-meta);line-height:1;color:var(--mute)}
 /* Drawn hover label, like the marks on the IELTS chart, rather than the
    browser's own tooltip. */

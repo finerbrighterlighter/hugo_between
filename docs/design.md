@@ -362,8 +362,10 @@ script. Below 700px a one-work year in the middle of the row keeps a tick instea
 from its first year to its last with a label wherever a year is wide enough to carry one. The alternative,
 truncating to the last few years, was not taken: the point of the figure is the whole run.
 
-The axis is a ruler: a baseline under the marks, a tall ink tick where a year begins, its number rising to the
-tick at forty-five degrees the way rotated axis labels do, and a short grey tick under every work. A tick means
+The axis is a ruler: a baseline under the marks, a tick in the muted ink where a year begins, its number rising
+to the tick at forty-five degrees the way rotated axis labels do, and a shorter, paler tick under every work.
+Grey on grey on purpose: the ruler is read past, not read, and the first cut in full ink sat too loud under the
+marks. A tick means
 "this year began here", so the year in progress has no closing tick and the baseline runs on past it; once it
 has ended the template draws the next year's start as an empty column. Slanted labels take no width of their
 own, so no year has to give up its label on a phone. The ruler is drawn on the list so it travels with the
@@ -377,8 +379,9 @@ considered and rejected: it promises a drag the page does not implement.
 
 The quick line from Pass 17 was a row of menu items in Karla, which made it a second ribbon. Three treatments
 were weighed: a two-voice row (the four links do not split into health and data), a margin note beside the spine
-(hidden on the phone, where it matters most), and a sentence. It is now one italic Newsreader sentence in the
-voice of the spine note, "Read more about me, take the CV, find me on ORCID, or write to me", whose links are its
-verbs. On desktop it sits on the spine, which runs through the row and breaks only behind the words, as it does
-for the pull quote; in the tablet band it hangs from the left spine like a voice; on the phone it closes the
-intro.
+(hidden on the phone, where it matters most), and a sentence in the spine note's voice whose links were its
+verbs. The sentence was built and then replaced: it read as prose but was navigation in disguise, and a reader
+scanning for "CV" had to read a line to find it. What stands is four hairline pills in Karla, no fill, ink text,
+ochre on hover: honest controls, still quiet. On desktop the row sits on the spine, which runs into it and out
+of it as two stubs, so the line breaks behind the pills as it does for the pull quote; in the tablet band it
+hangs from the left spine like a voice; on the phone it closes the intro and wraps.

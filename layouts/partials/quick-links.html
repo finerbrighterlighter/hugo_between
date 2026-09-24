@@ -1,14 +1,16 @@
-{{- /* The first-screen route to About, the CV, ORCID and the email, written as
-       one sentence in the author's voice rather than a row of menu items: the
-       site has one ribbon and does not want a second. On desktop the sentence
-       sits on the spine and breaks it the way the pull quote does; on the phone
-       it closes the intro. Rendered twice on the home page, one copy visible at
-       each width. */ -}}
+{{- /* The first-screen route to About, the CV, ORCID and the email: four quiet
+       pills. Karla, hairline border, no fill, so they read as controls without
+       becoming a second ribbon. On desktop the row sits on the spine, which
+       runs into it and out of it as two stubs; in the tablet band it hangs
+       from the left spine; on the phone it closes the intro. Rendered twice
+       on the home page, one copy visible at each width. */ -}}
 {{- $hp := hugo.Data.homepage -}}{{- if eq .Site.Language.Lang "mm" -}}{{- $hp = hugo.Data.homepage_mm -}}{{- end -}}
 {{- $sb := $hp.sidebar -}}
-{{- $links := dict
-  "about" (printf `<a href="%s">%s</a>` ("/about/" | relLangURL) (i18n "quick_about"))
-  "cv" (printf `<a href="%s">%s</a>` ($sb.cv | relURL) (i18n "quick_cv"))
-  "orcid" (printf `<a href="https://orcid.org/%s" rel="noreferrer noopener">ORCID</a>` $sb.orcid)
-  "write" (printf `<a href="mailto:%s">%s</a>` $sb.email (i18n "quick_write")) -}}
-<nav class="quick" aria-label="{{ i18n "quick_links_label" }}"><span class="quick-text">{{ i18n "quick_sentence" $links | safeHTML }}</span></nav>
+<nav class="quick" aria-label="{{ i18n "quick_links_label" }}">
+  <ul class="quick-list">
+    <li><a href="{{ "/about/" | relLangURL }}">{{ i18n "quick_about" }}</a></li>
+    <li><a href="{{ $sb.cv | relURL }}">{{ i18n "quick_cv" }}</a></li>
+    <li><a href="https://orcid.org/{{ $sb.orcid }}" rel="noreferrer noopener">ORCID</a></li>
+    <li><a href="mailto:{{ $sb.email }}">{{ i18n "quick_write" }}</a></li>
+  </ul>
+</nav>
