@@ -362,9 +362,18 @@ script. Below 700px a one-work year in the middle of the row keeps a tick instea
 from its first year to its last with a label wherever a year is wide enough to carry one. The alternative,
 truncating to the last few years, was not taken: the point of the figure is the whole run.
 
-The axis is a hairline the year labels interrupt, each label sitting on it with a sliver of paper behind and a
-label-less year crossing it with a tick: the spine's own manner, a line that breaks where words cross it, rather
-than chart furniture. It is drawn on the list so it travels with the scroll.
+The axis is a ruler: a baseline under the marks, a tall ink tick where a year begins, its number rising to the
+tick at forty-five degrees the way rotated axis labels do, and a short grey tick under every work. A tick means
+"this year began here", so the year in progress has no closing tick and the baseline runs on past it; once it
+has ended the template draws the next year's start as an empty column. Slanted labels take no width of their
+own, so no year has to give up its label on a phone. The ruler is drawn on the list so it travels with the
+scroll. A hairline the labels interrupted was tried first and read as a strike-through; a dial or curve was not
+tried, since the columns are already a line.
+
+When the row is wider than its column a chevron sits at whichever edge has more row behind it, on the baseline,
+sticky to the scroller's edge. The browser reports that through `scroll-state()`, so it needs no script, is gone
+the moment the row fits, and simply does not appear in a browser without the query. A hand cursor was
+considered and rejected: it promises a drag the page does not implement.
 
 The quick line from Pass 17 was a row of menu items in Karla, which made it a second ribbon. Three treatments
 were weighed: a two-voice row (the four links do not split into health and data), a margin note beside the spine

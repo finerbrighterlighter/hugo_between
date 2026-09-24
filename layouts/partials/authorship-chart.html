@@ -98,6 +98,13 @@
       <span class="authorship-y meta">{{ $y }}</span>
     </li>
     {{- end }}
+    {{- /* A tick marks the start of a year, so the year in progress has no
+           closing tick: it has not ended. Once it has, the next year's start
+           is drawn as an empty column so the ruler says the run is closed. */ -}}
+    {{- $lastY := index (last 1 $years) 0 -}}
+    {{- if lt $lastY now.Year }}
+    <li class="authorship-year authorship-next" aria-hidden="true"><span class="authorship-y meta">{{ add $lastY 1 }}</span></li>
+    {{- end }}
   </ol>
   </div>
   <figcaption class="meta" id="authorship-caption">{{ i18n "authorship_caption" }}</figcaption>

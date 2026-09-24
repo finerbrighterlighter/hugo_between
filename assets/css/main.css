@@ -667,7 +667,7 @@ html{scroll-behavior:smooth}
 /* The dot grows a little with the viewport and the year groups spread across
    the full width, so the figure uses the column it is given instead of
    huddling at the left of it. Bigger dots alone would just look coarse. */
-.authorship{--dot:clamp(6px,.72vw,10px);grid-column:1/-1;max-width:52rem;width:100%;margin:0 auto;padding:0 0 .4rem}
+.authorship{--dot:clamp(6px,.72vw,10px);--ygap:.8rem;--ylabel:2.3rem;--ytick:.5rem;grid-column:1/-1;max-width:52rem;width:100%;margin:0 auto;padding:0 0 .4rem}
 /* One row that scrolls sideways once the years no longer fit, rather than
    wrapping into a second row that read as a second series. The scroller is
    right-to-left and the list inside it left-to-right: that is the one CSS-only
@@ -675,14 +675,16 @@ html{scroll-behavior:smooth}
    The scroller keeps room above the marks for the drawn hover labels, which
    would otherwise be clipped by the overflow, and pointer events pass through
    that room. */
-.authorship-scroll{overflow-x:auto;overflow-y:hidden;direction:rtl;scrollbar-width:thin;padding-top:3.8rem;pointer-events:none}
+.authorship-scroll{overflow-x:auto;overflow-y:hidden;direction:rtl;scrollbar-width:thin;padding-top:3.8rem;pointer-events:none;display:grid;grid-template-columns:100%;container-type:scroll-state}
+.authorship-scroll>*{grid-area:1/1}
 /* The row above gives up that much of its bottom padding, so the marks sit where
    they did; a negative margin on the scroller would have laid its box over the
    last paragraph, which reads as an overlap to an accessibility checker. */
 .home #study>.wide{padding-bottom:max(0px,calc(var(--row-bottom) - 3.8rem))}
-.authorship-years{direction:ltr;pointer-events:auto;display:flex;flex-wrap:nowrap;align-items:flex-start;justify-content:space-between;gap:.8rem;list-style:none;margin:0;padding:0 0 .2rem;width:max-content;min-width:100%}
-.authorship-year{display:flex;flex-direction:column;gap:.35rem;min-width:0}
-.authorship-works{display:flex;flex-wrap:nowrap;align-items:flex-start;gap:clamp(.25rem,.4vw,.5rem);list-style:none;margin:0;padding:0}
+.authorship-years{direction:ltr;pointer-events:auto;display:flex;flex-wrap:nowrap;align-items:flex-start;justify-content:space-between;gap:var(--ygap);list-style:none;margin:0;padding:0 calc(var(--ygap)/2) .2rem calc(var(--ygap)/2 + 1.7rem);width:max-content;min-width:100%}
+.authorship-year{display:flex;flex-direction:column;min-width:0;position:relative;padding-bottom:var(--ylabel)}
+.authorship-next{width:0}
+.authorship-works{display:flex;flex-wrap:nowrap;align-items:flex-start;gap:clamp(.25rem,.4vw,.5rem);list-style:none;margin:0;padding:0 0 var(--ytick)}
 .authorship-work{position:relative}
 .authorship-work>a{display:flex;flex-direction:column;align-items:center;gap:clamp(9px,1.1vw,15px);padding:2px 5px;margin:0 -4px;border-radius:3px;text-decoration:none;border:0}
 .authorship-work>a:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
@@ -698,14 +700,33 @@ html{scroll-behavior:smooth}
 /* Open for presented output, filled for written — the distinction the timeline
    this replaced carried, kept on my slot rather than the whole column. */
 .authorship-slot.is-me.is-open{background:var(--paper);box-shadow:inset 0 0 0 1.5px var(--accent)}
-/* The axis is the site's one idea again: a hairline that the year labels
-   interrupt, the way the spine breaks for the pull quote. The line is drawn on
-   the list so it travels with the row when it scrolls; each label sits on it
-   with a sliver of paper behind, and a label-less year crosses it with a tick. */
+/* The axis is a ruler: a baseline under the marks, a tall ink tick where a
+   year starts with its number hanging from the tick at a slant, and a short
+   grey tick under every work. The tick means "this year began here", so the
+   year in progress has no closing tick; the template adds one, as an empty
+   column, once it has ended. Slanted labels take no width of their own, so
+   no year has to give up its label on a phone. The baseline is drawn on the
+   list so it travels with the row when it scrolls; the list has half a gap of
+   padding at each end so the first tick is inside the scroller, not clipped. */
 .authorship-years{position:relative}
-.authorship-years::after{content:"";position:absolute;left:0;right:0;bottom:.76rem;border-top:1px solid var(--rule)}
-html:lang(my) .authorship-years::after{bottom:.83rem}
-.authorship-y{display:inline-block;align-self:center;position:relative;padding:0 .4em;background:var(--paper);text-align:center;font-family:var(--sans);font-size:var(--fs-meta);line-height:1.4;color:var(--mute)}
+/* When the row is wider than its column, a chevron sits at whichever edge has
+   more row behind it. The browser reports that through scroll-state, so this
+   needs no script and disappears the moment the row fits; browsers without
+   scroll-state simply show no chevron. The chevrons are the scroller's own
+   pseudo-elements, sharing the row's grid cell and sticky to the edges, so
+   they hold still while the row moves under them; they sit on the baseline,
+   where only the ruler is, with a sliver of paper behind. */
+.authorship-scroll::before,.authorship-scroll::after{content:"";display:none;grid-area:1/1;position:sticky;z-index:1;align-self:end;margin-bottom:calc(.2rem + var(--ylabel) + var(--ytick) - .5em);direction:ltr;font-family:var(--sans);font-size:1.1rem;line-height:1;color:var(--mute);background:var(--paper);padding:0 .15em;pointer-events:none}
+.authorship-scroll::before{justify-self:left;left:0}
+.authorship-scroll::after{justify-self:right;right:0}
+@container scroll-state(scrollable: left){.authorship-scroll::before{content:"\2039";display:block}}
+@container scroll-state(scrollable: right){.authorship-scroll::after{content:"\203A";display:block}}
+/* The baseline starts at the first tick and runs half a gap past the last
+   column: the year in progress. */
+.authorship-years::after{content:"";position:absolute;left:1.7rem;right:0;bottom:calc(.2rem + var(--ylabel) + var(--ytick));border-top:1px solid var(--rule)}
+.authorship-work::after{content:"";position:absolute;left:50%;top:100%;width:1px;height:.3rem;background:var(--mute)}
+.authorship-year::before{content:"";position:absolute;left:calc(var(--ygap)/-2);width:1px;height:calc(var(--ytick) + .2rem);bottom:calc(var(--ylabel) - .2rem);background:var(--ink)}
+.authorship-y{position:absolute;right:calc(100% + var(--ygap)/2 + .15rem);top:calc(100% - var(--ylabel) + .3rem);transform:rotate(-45deg);transform-origin:100% 0;white-space:nowrap;font-family:var(--sans);font-size:var(--fs-meta);line-height:1;color:var(--mute)}
 /* Drawn hover label, like the marks on the IELTS chart, rather than the
    browser's own tooltip. */
 /* display:none, not opacity:0 — an absolutely positioned label is still laid
@@ -728,7 +749,8 @@ html:lang(my) .authorship-years::after{bottom:.83rem}
    figure as a row of year labels in both. */
 .authorship-slot{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 @media (forced-colors:active){
-  .authorship-years::after{display:none}
+  .authorship-years::after{border-color:CanvasText}
+  .authorship-work::after,.authorship-year::before{background:CanvasText}
   .authorship-slot{background:CanvasText;forced-color-adjust:none}
   .authorship-slot.is-me{background:Highlight}
   .authorship-slot.is-me.is-open{background:Canvas;box-shadow:inset 0 0 0 1.5px Highlight}
@@ -736,15 +758,7 @@ html:lang(my) .authorship-years::after{bottom:.83rem}
 /* Below 520px the open ring needs a dot big enough to have a hole: at 5px the
    written/presented distinction stopped being legible, which is the one thing
    the caption promises. */
-@media (max-width:519px){.authorship{--dot:6px}.authorship-years{gap:.5rem}.authorship-works{gap:.2rem}}
-/* On a phone a one-work year is narrower than its own label, so the labels
-   would set the spacing. Those years keep a tick and the first and last keep
-   their labels, so the row reads from its first year to its last; a year with
-   two or more works is wide enough to say its own name. */
-@media (max-width:699px){
-  .authorship-year:has(>.authorship-works>li:only-child):not(:first-child):not(:last-child) .authorship-y{display:none}
-  .authorship-year:has(>.authorship-works>li:only-child):not(:first-child):not(:last-child)::after{content:"";display:block;width:100%;height:calc(1.4*var(--fs-meta));background:linear-gradient(var(--mute),var(--mute)) center/1px .5rem no-repeat}
-}
+@media (max-width:519px){.authorship{--dot:6px;--ygap:.5rem}.authorship-works{gap:.2rem}}
 /* Touch: each mark gets a 24px-wide box of its own, and the boxes do not overlap. */
 @media (max-width:959px),(pointer:coarse){.authorship-work>a{padding:2px 9px;margin:0}}
 
