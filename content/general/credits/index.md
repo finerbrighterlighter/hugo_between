@@ -25,9 +25,12 @@ trademark of ZinBo.
 
 **Padauk** sets the archived Burmese posts when they are read on the English pages, where the site's own
 Burmese faces are handwriting and would read as costume beside Newsreader. Copyright 2002-2022 SIL
-International, designed by Debbi Hosken and Becca Hirsbrunner Spalinger, under the SIL Open Font Licence 1.1.
-Shipped unmodified, because the licence reserves the name: only the Myanmar codepoints are asked of it, so a
-Latin word inside a Burmese sentence still falls to Newsreader.
+International, designed by Debbi Hosken and Becca Hirsbrunner Spalinger, under the
+[SIL Open Font Licence 1.1](/theme/font/Padauk-OFL.txt) — the credit is owed whether the whole font is served
+or only part of it, and it stays here either way. It is currently shipped whole and narrowed with
+`unicode-range` instead of being cut down, so a Latin word inside a Burmese sentence still falls to
+Newsreader. Anyone who does subset it later should note that the licence reserves the name: a cut-down copy
+has to be called something other than Padauk.
 
 **Architects Daughter** supplies the Latin letters that sit inside Burmese handwriting, so a Latin word in a
 Burmese sentence does not fall back to something unrelated. Copyright 2012 Kimberly Geswein,
