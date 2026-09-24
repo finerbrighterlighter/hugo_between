@@ -16,6 +16,13 @@
 @font-face{font-family:"Site Handwriting";src:url("/theme/font/Thit_Sar_Shwe_Si.woff2") format("woff2"),url("/theme/font/Thit_Sar_Shwe_Si.ttf") format("truetype");font-style:normal;font-weight:700;font-display:swap;unicode-range:U+1000-109F,U+AA60-AA7F,U+A9E0-A9FF}
 @font-face{font-family:"Site Handwriting";src:url("/theme/font/Thit_Sar_Shwe_Si.woff2") format("woff2"),url("/theme/font/Thit_Sar_Shwe_Si.ttf") format("truetype");font-style:italic;font-weight:400;font-display:swap;unicode-range:U+1000-109F,U+AA60-AA7F,U+A9E0-A9FF}
 @font-face{font-family:"Site Handwriting";src:url("/theme/font/Thit_Sar_Shwe_Si.woff2") format("woff2"),url("/theme/font/Thit_Sar_Shwe_Si.ttf") format("truetype");font-style:italic;font-weight:700;font-display:swap;unicode-range:U+1000-109F,U+AA60-AA7F,U+A9E0-A9FF}
+/* Padauk (SIL, OFL 1.1) carries Burmese prose on the English pages, where the
+   site's own Burmese faces are handwriting and read as a costume next to
+   Newsreader. Shipped unmodified: the licence reserves the name "Padauk", so a
+   subset could not keep it. unicode-range does the same job without touching
+   the file — only Myanmar codepoints come from it, so a Latin word inside a
+   Burmese sentence still sets in Newsreader. */
+@font-face{font-family:"Padauk";src:url("/theme/font/Padauk.woff2") format("woff2");font-style:normal;font-weight:400;font-display:swap;unicode-range:U+1000-109F,U+A9E0-A9FF,U+AA60-AA7F}
 @font-face{font-family:"Site Handwriting Clear";src:url("/theme/font/Z01-Umoe002 Regular.woff2") format("woff2"),url("/theme/font/Z01-Umoe002 Regular.ttf") format("truetype");font-style:normal;font-weight:400;font-display:swap}
 
 /* ---------- tokens ---------- */
@@ -684,3 +691,15 @@ html{scroll-behavior:smooth}
 .langs{display:inline-flex;flex-wrap:wrap;gap:.1rem .8rem}
 .lang{white-space:nowrap}
 .lang-n{margin-left:.3em;color:var(--mute);font-variant-numeric:tabular-nums;font-size:.85em}
+
+/* Archived Facebook posts, Burmese text shown on both language sites.
+   The body is marked lang="my", which brings it under the site's existing
+   [lang="my"] rule — written for short Burmese fragments like the language
+   switch, and it pins the neat face. On /mm/ that is wrong: a whole post body
+   should follow the page, so the reader's handwriting/neat toggle still works.
+   There it defers to --serif instead. */
+.archive-note{font-family:var(--sans);font-size:var(--fs-meta);color:var(--mute);border-left:2px solid var(--rule);padding-left:.8rem;margin:0 0 1.6rem;max-width:var(--measure)}
+.archive-body{line-height:2}
+html:lang(my) .archive-body,html:lang(my) .archive-body *{font-family:var(--serif)}
+/* English pages: Padauk for the Burmese, Newsreader for any Latin inside it. */
+html:not(:lang(my)) .archive-body{font-family:"Padauk",var(--serif)}

@@ -191,3 +191,7 @@ ielts_aria: "Box plots of IELTS band scores by skill, {{ .from }} to {{ .to }}, 
 ielts_mark_hint: "{{ .when }} · band {{ .band }}"
 ielts_mark_hint_retake: "{{ .when }} · band {{ .band }} · retake"
 ielts_box_hint: "median {{ .med }} · middle half {{ .q1 }}–{{ .q3 }} · range {{ .lo }}–{{ .hi }}"
+
+# The standing note above every archived Facebook post. It says what was changed
+# and what was not, because the value of an archive is that it is not edited.
+archive_note: "Written circa 2018–2021 and first posted on Facebook, kept here for the archive. Spelling corrected and the formatting redone; not a word rewritten. My views may or may not have changed since."

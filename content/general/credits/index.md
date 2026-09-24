@@ -23,6 +23,12 @@ the reason the Burmese side of this site reads as handwriting rather than as a s
 would rather have something plainer than handwriting. Copyright ZinBo, designed by Zin Bo. U Moe is a
 trademark of ZinBo.
 
+**Padauk** sets the archived Burmese posts when they are read on the English pages, where the site's own
+Burmese faces are handwriting and would read as costume beside Newsreader. Copyright 2002-2022 SIL
+International, designed by Debbi Hosken and Becca Hirsbrunner Spalinger, under the SIL Open Font Licence 1.1.
+Shipped unmodified, because the licence reserves the name: only the Myanmar codepoints are asked of it, so a
+Latin word inside a Burmese sentence still falls to Newsreader.
+
 **Architects Daughter** supplies the Latin letters that sit inside Burmese handwriting, so a Latin word in a
 Burmese sentence does not fall back to something unrelated. Copyright 2012 Kimberly Geswein,
 [kimberlygeswein.com](http://kimberlygeswein.com).

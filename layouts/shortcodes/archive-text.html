@@ -1,0 +1,48 @@
+{{- /* Renders one archived Facebook post from assets/archive/<name>.md.
+
+       These texts are the author's, written roughly 2018–2021, and the rule for
+       them is that not a word changes. So the file under assets/ holds what he
+       wrote — spelling corrections only — and every presentational decision is
+       made here instead. That keeps the stored text something he can read back
+       and recognise, and keeps this template honest about what it is doing to
+       it.
+
+       The one transformation is line breaks. The prose uses them deliberately:
+       a run of lines each ending in the same word is a litany, and letting
+       Markdown collapse those into a paragraph would rewrite the piece by
+       reflowing it. Single newlines therefore become hard breaks. Paragraph
+       breaks are protected through a placeholder first, because a regex cannot
+       match overlapping runs of newlines in one pass and would otherwise
+       convert only every second line ending.
+
+       The text is Burmese on both language sites, so it is marked lang="my"
+       wherever it appears. On /mm/ it then inherits the site's Burmese
+       treatment, including the reader's handwriting/neat toggle. On the English
+       side no Burmese face is in scope at all, so the body asks for the neat one
+       explicitly — see .archive-body in main.css.
+
+       Argument: the file stem. Defaults to the page's own, so a bundle named
+       after its archive file needs no argument. */ -}}
+{{- $name := .Get 0 | default .Page.File.ContentBaseName -}}
+{{- $res := resources.Get (printf "archive/%s.md" $name) -}}
+{{- if not $res -}}
+  {{- errorf "archive-text: assets/archive/%s.md not found (called from %s)" $name .Page.File.Path -}}
+{{- end -}}
+{{- $s := $res.Content | strings.TrimSpace -}}
+{{- $s = replace $s "\r\n" "\n" -}}
+{{- /* Several of these open with their own title line. The file keeps it, so
+       the archive stays the whole text as written; the page drops it when the
+       heading above would otherwise say the same thing twice. */ -}}
+{{- $lines := split $s "\n" -}}
+{{- if and (gt (len $lines) 1) (eq (strings.TrimSpace (index $lines 0)) (strings.TrimSpace .Page.Title)) -}}
+  {{- $s = strings.TrimSpace (delimit (after 1 $lines) "\n") -}}
+{{- end -}}
+{{- $s = replaceRE `[ \t]+\n` "\n" $s -}}
+{{- $s = replaceRE `\n{3,}` "\n\n" $s -}}
+{{- $s = replace $s "\n\n" "@@ARCHIVE_PARA@@" -}}
+{{- $s = replace $s "\n" "\\\n" -}}
+{{- $s = replace $s "@@ARCHIVE_PARA@@" "\n\n" -}}
+<p class="archive-note">{{ i18n "archive_note" }}</p>
+<div class="archive-body" lang="my">
+{{ $s | markdownify }}
+</div>
