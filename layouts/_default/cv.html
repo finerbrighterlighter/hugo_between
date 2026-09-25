@@ -13,7 +13,7 @@
 {{- $journals := sort (where $works "Params.type" "journal") "Date" "desc" -}}
 {{- $preprints := sort (where $works "Params.type" "preprint") "Date" "desc" -}}
 {{- $confs := sort (where $works "Params.type" "in" (slice "conference-speaking" "conference-poster" "conference-proceeding")) "Date" "desc" -}}
-{{- $hp := hugo.Data.homepage -}}{{- if eq .Site.Language.Lang "mm" -}}{{- $hp = hugo.Data.homepage_mm -}}{{- end -}}
+{{- $hp := partial "homepage-data.html" . -}}
 {{- /* The builder's BibTeX cache, for volume, issue and pages. Absent → empty map. */ -}}
 {{- $cache := dict -}}
 {{- with os.ReadFile "scripts/.bibtex_cache.json" -}}{{- $cache = . | transform.Unmarshal -}}{{- end -}}

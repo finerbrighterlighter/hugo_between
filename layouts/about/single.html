@@ -1,7 +1,6 @@
 {{ define "body-class" }}page about{{ end }}
 {{ define "main" }}
-{{- $lang := .Site.Language.Lang -}}
-{{- $hp := hugo.Data.homepage -}}{{- if eq $lang "mm" -}}{{- $hp = hugo.Data.homepage_mm -}}{{- end -}}
+{{- $hp := partial "homepage-data.html" . -}}
 <header class="page-head">
   <h1>{{ .Title }}</h1>
   <span class="meta">{{ $hp.sidebar.name }}, {{ $hp.sidebar.job_title }}</span>

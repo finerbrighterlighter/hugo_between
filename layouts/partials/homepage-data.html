@@ -1,0 +1,5 @@
+{{/* Returns the localized homepage data dict, English or Burmese.
+     Usage: {{ $hp := partial "homepage-data.html" . }} */}}
+{{ $hp := hugo.Data.homepage }}
+{{ if eq site.Language.Lang "mm" }}{{ $hp = hugo.Data.homepage_mm }}{{ end }}
+{{ return $hp }}

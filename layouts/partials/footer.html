@@ -1,5 +1,4 @@
-{{- $hp := hugo.Data.homepage -}}
-{{- if eq .Site.Language.Lang "mm" -}}{{- $hp = hugo.Data.homepage_mm -}}{{- end -}}
+{{- $hp := partial "homepage-data.html" . -}}
 {{- $sb := $hp.sidebar -}}
 <footer class="colophon">
   <div class="contact">

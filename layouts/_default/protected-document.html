@@ -18,7 +18,7 @@
 {{- end -}}
 <header class="page-head">
   <h1>{{ .Title }}</h1>
-  {{- $hp := hugo.Data.homepage -}}{{- if eq .Site.Language.Lang "mm" -}}{{- $hp = hugo.Data.homepage_mm -}}{{- end -}}
+  {{- $hp := partial "homepage-data.html" . -}}
   <p class="intro gate-explain">{{ i18n "protected_document_explain" (dict "link" (printf `<a href="mailto:%s">%s</a>` $hp.sidebar.email (i18n "protected_document_ask"))) | safeHTML }}</p>
 </header>
 <div class="page-body">
