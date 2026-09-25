@@ -13,6 +13,10 @@
        author is a first author and nothing else; marking the last rung too
        would claim a seniority position that a one-name paper does not have.
 
+       A fourth rung, a diamond, is the corresponding author: a role rather
+       than a position, since it can fall anywhere in the list. Set
+       `corresponding: true` on the author entry that carries `highlight`.
+
        The old figure's one encoding is kept: filled for written output, open for
        presented. It is carried by my slot rather than the whole column.
 
@@ -33,9 +37,9 @@
          whole build with it. An author entry may also be a bare string. */ -}}
   {{- $authors := .Params.authors | default slice -}}
   {{- $n := len $authors -}}
-  {{- $pos := 0 -}}
+  {{- $pos := 0 -}}{{- $corr := false -}}
   {{- range $i, $a := $authors -}}
-    {{- if and (reflect.IsMap $a) $a.highlight -}}{{- $pos = add $i 1 -}}{{- end -}}
+    {{- if and (reflect.IsMap $a) $a.highlight -}}{{- $pos = add $i 1 -}}{{- if $a.corresponding -}}{{- $corr = true -}}{{- end -}}{{- end -}}
   {{- end -}}
   {{- /* A missing author list and a one-name author list are different facts,
          and only the second is sole authorship. Neither is invented here: a work
@@ -58,6 +62,7 @@
       "title" .Title "year" .Date.Year "pos" $pos "n" $n "href" $href
       "first" $first "last" $last
       "middle" (and (gt $pos 0) (not $first) (not $last))
+      "corr" $corr
       "open" (in $presented .Params.type)
       "kind" (i18n (printf "type_%s" .Params.type) | default .Params.type)) -}}
 {{- end -}}
@@ -85,10 +90,15 @@
           {{- if eq $w.n 1 }}{{ $where = i18n "authorship_hint_sole" }}
           {{- else if eq $w.n 0 }}{{ $where = i18n "authorship_hint_none" }}
           {{- else if eq $w.pos 0 }}{{ $where = i18n "authorship_hint_unmarked" (dict "n" $w.n) }}{{ end -}}
+          {{- if $w.corr }}{{ $where = printf "%s, %s" $where (i18n "authorship_hint_corresponding") }}{{ end -}}
           <a href="{{ $w.href }}" aria-label="{{ $w.title }}. {{ $w.kind }}, {{ $w.year }}. {{ $where }}">
             {{- range $rung := slice "first" "middle" "last" }}
             <span class="authorship-slot{{ if index $w $rung }} is-me{{ if $w.open }} is-open{{ end }}{{ end }}"></span>
             {{- end }}
+            {{- /* The fourth rung is a role, not a position: corresponding author
+                   can sit anywhere in the list. Drawn as a diamond so it is not
+                   read as a fourth position. */ -}}
+            <span class="authorship-slot authorship-slot-corr{{ if $w.corr }} is-me{{ if $w.open }} is-open{{ end }}{{ end }}"></span>
             <span class="authorship-tip" aria-hidden="true">{{ $w.year }} · {{ $where }}<span class="authorship-tip-title">{{ $w.title }}</span></span>
           </a>
         </li>

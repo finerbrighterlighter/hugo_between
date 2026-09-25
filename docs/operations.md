@@ -63,7 +63,9 @@ page. Copy `content/works/<type>/example.md`, which carries the full commented f
 | `under-review` | `review/` | listed, excluded from the authorship chart and the feed |
 
 Authors are `id:` references into `data/researchers.yml`, which is where names, ORCIDs and affiliations live.
-Your own entries are at the top of that file. Use `highlight: true` on yourself. If a co-author is not in the
+Your own entries are at the top of that file. Use `highlight: true` on yourself, and `corresponding: true` as well on the entry of whoever
+was corresponding author (the home figure draws a diamond when that is you, and lists mark the name with an
+asterisk). If a co-author is not in the
 file, you can inline `given:` and `family:` instead, but adding them properly means their ORCID links and
 affiliation numbering work everywhere.
 

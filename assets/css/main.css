@@ -689,6 +689,10 @@ html{scroll-behavior:smooth}
 /* Open for presented output, filled for written — the distinction the timeline
    this replaced carried, kept on my slot rather than the whole column. */
 .authorship-slot.is-me.is-open{background:var(--paper);box-shadow:inset 0 0 0 1.5px var(--accent)}
+/* The fourth rung, corresponding author, is a diamond: a role, not a position. */
+.authorship-slot-corr{border-radius:1px;transform:rotate(45deg) scale(.48)}
+.authorship-slot-corr.is-me{transform:rotate(45deg) scale(.8)}
+.bib .corr{color:var(--accent);font-weight:600}
 /* The axis is a ruler: a baseline under the marks, a tall ink tick where a
    year starts with its number hanging from the tick at a slant, and a short
    grey tick under every work. The tick means "this year began here", so the
@@ -735,6 +739,7 @@ html{scroll-behavior:smooth}
 .authorship-work:hover .authorship-slot,.authorship-work:focus-within .authorship-slot{background:var(--mute)}
 .authorship-work:hover .authorship-slot.is-me,.authorship-work:focus-within .authorship-slot.is-me{background:var(--accent);transform:none}
 .authorship-work:hover .authorship-slot.is-me.is-open,.authorship-work:focus-within .authorship-slot.is-me.is-open{background:var(--paper)}
+.authorship-work:hover .authorship-slot-corr.is-me,.authorship-work:focus-within .authorship-slot-corr.is-me{transform:rotate(45deg) scale(.8)}
 .authorship figcaption{margin-top:.9rem;max-width:var(--measure)}
 /* Backgrounds are not printed and are stripped in forced-colors, which left the
    figure as a row of year labels in both. */

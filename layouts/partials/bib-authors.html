@@ -8,6 +8,7 @@
   {{- range split (strings.TrimSpace ($given | default "")) " " -}}{{- with . -}}{{- $init = printf "%s%s" $init (substr . 0 1) -}}{{- end -}}{{- end -}}
   {{- $name := printf "%s %s" $family $init | strings.TrimSpace -}}
   {{- if .highlight -}}{{- $name = printf "<strong>%s</strong>" $name -}}{{- end -}}
+  {{- if .corresponding -}}{{- $name = printf `%s<span class="corr" title="%s">*</span><span class="sr-only"> (%s)</span>` $name (i18n "authorship_hint_corresponding") (i18n "authorship_hint_corresponding") -}}{{- end -}}
   {{- $out = $out | append $name -}}
 {{- end -}}
 {{- delimit $out ", " | safeHTML -}}

@@ -386,3 +386,8 @@ ochre on hover: honest controls, still quiet. No email among them by decision: t
 first screen should not invite mail. On desktop the row spans both voices and the spine breaks for it, as it does for the pull quote, with no
 drawn stubs; in the tablet band it hangs from the left spine like a voice; on the phone it closes the intro and
 wraps.
+
+The figure has a fourth rung: a diamond for corresponding author, a role rather than a position, since it can
+sit anywhere in the list and in practice often second. It is set with `corresponding: true` on the author entry
+in a work's front matter, and the same flag puts an asterisk after the name in every author list. No work
+carries it yet; the rung is there for the first that does.
