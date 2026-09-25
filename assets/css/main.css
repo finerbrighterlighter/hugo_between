@@ -326,6 +326,36 @@ html:lang(my) .voice-r .word{font-style:normal}
 .repos .desc{color:var(--mute)}
 .repos .langs{font-family:var(--sans);font-size:var(--fs-meta);color:var(--mute)}
 
+/* ---------- the CV page: the PDF's manner in the site's faces ---------- */
+.cv,html:lang(my) article.cv[lang=en]{max-width:44rem;margin:0 auto;font-family:var(--sans);font-size:.95rem;line-height:1.5;color:var(--ink)}
+.cv-head{padding-bottom:.9rem;margin-bottom:1.2rem;border-bottom:1px solid var(--ink)}
+.cv-name{font-family:var(--serif);font-size:1.7rem;letter-spacing:.12em;text-transform:uppercase;margin:0 0 .3rem;line-height:1.2}
+.cv-address,.cv-contact{font-size:var(--fs-meta);color:var(--mute);margin:0}
+.cv-contact a{color:inherit}
+.cv-section{margin-bottom:1.4rem}
+.cv-section h2{font-family:var(--sans);font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--mute);font-weight:600;border-top:1px solid var(--rule);padding-top:.5rem;margin:0 0 .7rem;line-height:1.4}
+.cv-sub{font-size:var(--fs-meta);font-style:italic;color:var(--mute);margin:.6rem 0 .4rem 30%}
+.cv-row{display:grid;grid-template-columns:30% 1fr;column-gap:1rem;margin-bottom:.7rem}
+.cv-l{font-size:var(--fs-meta);color:var(--mute);line-height:1.5}
+.cv-date{color:var(--ink)}
+.cv-inst{font-style:italic}
+.cv-meta,.cv-tag{font-size:.72rem}
+.cv-tag{letter-spacing:.1em;text-transform:uppercase}
+.cv-role{font-weight:600}
+.cv-field{font-style:italic}
+.cv-detail{font-size:var(--fs-meta);color:var(--mute)}
+.cv-bullets{list-style:none;margin:.25rem 0 0;padding:0;font-size:var(--fs-small)}
+.cv-bullets li{padding-left:.9rem;text-indent:-.9rem;margin-bottom:.15rem}
+.cv-bullets li::before{content:"· ";color:var(--mute)}
+.cv-links{display:block;text-indent:0;font-size:var(--fs-meta);color:var(--mute);margin-top:.1rem}
+.cv-r a{text-decoration-color:var(--rule)}
+.cv-r a:hover{text-decoration-color:var(--accent)}
+.cv-foot{margin-top:2rem;padding-top:.9rem;border-top:1px solid var(--ink)}
+.cv-downloads{font-size:var(--fs-small);margin:0}
+.cv-lead{color:var(--mute);margin-right:.3rem}
+@media (max-width:599px){.cv-row{grid-template-columns:1fr;row-gap:.15rem;margin-bottom:1rem}.cv-sub{margin-left:0}}
+@media print{.cv-foot{display:none}}
+
 /* ---------- inner pages ---------- */
 .page-head{max-width:var(--page);margin:0 auto;padding:clamp(2rem,5vw,4rem) var(--gutter) 1.5rem;text-align:center;position:relative}
 .page-head::before{content:"";display:block;width:1px;height:clamp(2.5rem,6vw,5rem);background:var(--ink);margin:0 auto 1.6rem}

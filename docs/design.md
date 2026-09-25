@@ -395,3 +395,13 @@ carries it yet; the rung is there for the first that does.
 The caption is one line, "A column per work. Filled for written output, open for presented." The rungs and the
 diamond are explained by the hover label, which names the position and the role for each mark; a caption that
 repeated that read as a legend, and the figure is not a chart with a legend.
+
+## Pass 19 (2026-09-25, the CV as a page)
+
+The CV pill led straight to the PDF, which is what a visitor wants and nothing more. It now leads to `/cv/`, a
+page in the PDF's manner (`layouts/_default/cv.html`): the name over a rule, tracked section heads over
+hairlines, two-column rows with the when-and-where on the left and the what on the right, all in Karla, the
+site's sans, where the PDF uses Lato. It reads the same `data/cv.yml` and works front matter the builder reads,
+so page and PDF say the same thing; the builder is untouched and its outputs unchanged. The page ends with the
+three downloads, PDF, Markdown and vCard. The body is English on the Burmese site too, marked `lang="en"`, with
+a Burmese frame.

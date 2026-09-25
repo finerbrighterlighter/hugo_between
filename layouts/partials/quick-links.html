@@ -1,4 +1,4 @@
-{{- /* The first-screen route to About, the CV and ORCID: three quiet pills.
+{{- /* The first-screen route to About, the CV page and ORCID: three quiet pills.
        No email here by choice; the colophon carries it, and the first screen
        should not invite mail. Karla, hairline border, no fill, so they read as controls without
        becoming a second ribbon. On desktop the row sits on the spine, which
@@ -10,7 +10,7 @@
 <nav class="quick" aria-label="{{ i18n "quick_links_label" }}">
   <ul class="quick-list">
     <li><a href="{{ "/about/" | relLangURL }}">{{ i18n "quick_about" }}</a></li>
-    <li><a href="{{ $sb.cv | relURL }}">{{ i18n "quick_cv" }}</a></li>
+    <li><a href="{{ "/cv/" | relLangURL }}">{{ i18n "quick_cv" }}</a></li>
     <li><a href="https://orcid.org/{{ $sb.orcid }}" rel="noreferrer noopener">ORCID</a></li>
   </ul>
 </nav>

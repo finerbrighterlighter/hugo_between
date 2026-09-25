@@ -11,6 +11,7 @@
 ## Key pages
 
 - [About]({{ printf "%sabout/" $enSite.Home.Permalink }}): Research background, collaborators, and experience.
+- [CV]({{ printf "%scv/" $enSite.Home.Permalink }}): Curriculum vitae as a page.
 - [CV (PDF)]({{ "/general/cv/cv_htunteza.pdf" | absURL }}): Full curriculum vitae.
 - [CV (MD)]({{ "/general/cv/cv_htunteza.md" | absURL }}): Full curriculum vitae.
 - [Works]({{ printf "%sworks/" $enSite.Home.Permalink }}): All publications, filterable by condition, method, and data source.

@@ -1,0 +1,121 @@
+{{- /* The curriculum vitae as a page, in the manner of the PDF the builder
+       makes: a name over a rule, tracked section heads over hairlines, and
+       two-column rows with the when-and-where on the left and the what on the
+       right. Read from the same data/cv.yml and works front matter the builder
+       reads, so the page and the PDF say the same thing; the builder itself is
+       untouched. The body is English on both language sites, marked as such. */ -}}
+{{ define "body-class" }}page cv-page{{ end }}
+{{ define "main" }}
+{{- $cv := hugo.Data.cv -}}
+{{- $enSite := .Site -}}{{- range hugo.Sites -}}{{- if eq .Language.Lang "en" -}}{{- $enSite = . -}}{{- end -}}{{- end -}}
+{{- $works := where $enSite.RegularPages "Section" "works" -}}
+{{- $journals := sort (where $works "Params.type" "journal") "Date" "desc" -}}
+{{- $preprints := sort (where $works "Params.type" "preprint") "Date" "desc" -}}
+{{- $confs := sort (where $works "Params.type" "in" (slice "conference-speaking" "conference-poster" "conference-proceeding")) "Date" "desc" -}}
+{{- $hp := hugo.Data.homepage -}}{{- if eq .Site.Language.Lang "mm" -}}{{- $hp = hugo.Data.homepage_mm -}}{{- end -}}
+<header class="page-head">
+  <h1>{{ .Title }}</h1>
+</header>
+<div class="page-body">
+<article class="cv" lang="en">
+  <header class="cv-head">
+    <p class="cv-name">{{ $cv.header.name }}</p>
+    <p class="cv-address">{{ $cv.header.address }}</p>
+    <p class="cv-contact">{{ if $cv.show_phone_number }}{{ $cv.contact.phone }} · {{ end }}<a href="mailto:{{ $cv.contact.email }}">{{ $cv.contact.email }}</a> · <a href="{{ $cv.contact.website }}">{{ $cv.contact.website }}</a></p>
+  </header>
+
+  <section class="cv-section">
+    <h2>{{ i18n "cv_interests" }}</h2>
+    <div class="cv-row"><div class="cv-l"></div><div class="cv-r">{{ delimit $cv.research_interests "; " }}</div></div>
+  </section>
+
+  <section class="cv-section">
+    <h2>{{ i18n "cv_education" }}</h2>
+    {{- range $cv.education }}
+    <div class="cv-row">
+      <div class="cv-l"><span class="cv-date">{{ .time }}</span><br><span class="cv-inst">{{ .university }}</span>{{ if and $cv.show_qs_rankings .ranking }}<br><span class="cv-meta">{{ .ranking }}</span>{{ end }}</div>
+      <div class="cv-r"><span class="cv-role">{{ .degree }}</span><br><span class="cv-field">{{ .field }}</span>{{ with .thesis }}<br><span class="cv-detail">Thesis: {{ . }}</span>{{ end }}{{ with .note }}<br><span class="cv-detail">{{ . }}</span>{{ end }}</div>
+    </div>
+    {{- end }}
+  </section>
+
+  <section class="cv-section">
+    <h2>{{ i18n "cv_experience" }}</h2>
+    {{- range $cv.work_experience }}
+    <div class="cv-row">
+      <div class="cv-l"><span class="cv-date">{{ .time }}</span><br><span class="cv-inst">{{ .institution }}</span></div>
+      <div class="cv-r"><span class="cv-role">{{ .role }}</span>
+        <ul class="cv-bullets">
+        {{- range .bullets }}
+          {{- if reflect.IsMap . }}
+          <li>{{ .text }}{{ with .links }}<span class="cv-links">{{ range $i, $l := . }}{{ if $i }} · {{ end }}<a href="{{ $l.url }}" target="_blank" rel="noreferrer noopener">{{ $l.label }}</a>{{ end }}</span>{{ end }}</li>
+          {{- else }}
+          <li>{{ . }}</li>
+          {{- end }}
+        {{- end }}
+        </ul>
+      </div>
+    </div>
+    {{- end }}
+  </section>
+
+  <section class="cv-section">
+    <h2>{{ i18n "cv_awards" }}</h2>
+    {{- range $cv.awards }}
+    <div class="cv-row">
+      <div class="cv-l"><span class="cv-date">{{ .year }}</span></div>
+      <div class="cv-r"><span class="cv-role">{{ .title }}</span><br><span class="cv-inst">{{ .institution }}</span></div>
+    </div>
+    {{- end }}
+  </section>
+
+  <section class="cv-section">
+    <h2>{{ i18n "cv_additional" }}</h2>
+    {{- range $cv.additional_experiences }}
+    <div class="cv-row">
+      <div class="cv-l"><span class="cv-inst">{{ .institution }}</span></div>
+      <div class="cv-r"><span class="cv-role">{{ .title }}</span>
+        <ul class="cv-bullets">{{ range .bullets }}<li>{{ . }}</li>{{ end }}</ul>
+      </div>
+    </div>
+    {{- end }}
+  </section>
+
+  <section class="cv-section">
+    <h2>{{ i18n "cv_publications" }}</h2>
+    {{- range $journals }}
+    <div class="cv-row">
+      <div class="cv-l"><span class="cv-date">{{ .Date.Year }}</span></div>
+      <div class="cv-r">{{ partial "bib-authors.html" . }}. <a href="{{ .RelPermalink }}">{{ .Title }}</a>. {{ with .Params.venue }}<em>{{ . }}</em>. {{ end }}{{ .Date.Year }}.</div>
+    </div>
+    {{- end }}
+    {{- with $preprints }}
+    <p class="cv-sub">{{ i18n "cv_preprints" }}</p>
+    {{- range . }}
+    <div class="cv-row">
+      <div class="cv-l"><span class="cv-date">{{ .Date.Year }}</span></div>
+      <div class="cv-r">{{ partial "bib-authors.html" . }}. <a href="{{ .RelPermalink }}">{{ .Title }}</a>. {{ with .Params.venue }}<em>{{ . }}</em>. {{ end }}{{ .Date.Year }}.</div>
+    </div>
+    {{- end }}
+    {{- end }}
+  </section>
+
+  <section class="cv-section">
+    <h2>{{ i18n "cv_conferences" }}</h2>
+    {{- range $confs }}
+    <div class="cv-row">
+      <div class="cv-l"><span class="cv-date">{{ .Date.Year }}</span><br><span class="cv-tag">{{ i18n (printf "cv_%s" (strings.TrimPrefix "conference-" .Params.type)) }}</span></div>
+      <div class="cv-r"><span class="cv-role">{{ .Title }}</span>{{ with .Params.venue }}<br><span class="cv-inst">{{ . }}</span>{{ end }}</div>
+    </div>
+    {{- end }}
+  </section>
+
+  <footer class="cv-foot">
+    <p class="cv-downloads"><span class="cv-lead">{{ i18n "cv_take" }}</span>
+      <a href="{{ $hp.sidebar.cv | relURL }}">{{ i18n "cv_pdf" }}</a> ·
+      <a href="{{ "general/cv/cv_htunteza.md" | relURL }}">{{ i18n "cv_md" }}</a> ·
+      <a href="{{ $hp.sidebar.vcard | relURL }}" download>{{ i18n "vcard" }}</a></p>
+  </footer>
+</article>
+</div>
+{{ end }}
