@@ -1,9 +1,6 @@
 {{- $enSite := site -}}
 {{- range hugo.Sites -}}{{- if eq .Language.Lang "en" -}}{{- $enSite = . -}}{{- end -}}{{- end -}}
-{{- $rm := dict -}}
-{{- range hugo.Data.researchers -}}
-  {{- $rm = merge $rm (dict .id .) -}}
-{{- end -}}
+{{- $rm := partial "researcher-map.html" . -}}
 
 {{- $meOrcid := "" -}}
 {{- with index $rm "me-ceb" -}}{{- $meOrcid = .orcid -}}{{- end -}}
@@ -120,18 +117,8 @@
   {{- end -}}
 {{- end -}}
 
-{{- /* Initialize as strings to ensure replace works */ -}}
-{{- $collabNStr := printf "%d" (int $collabN) -}}
-{{- $instNStr  := printf "%d" (int $instN) -}}
-
-{{- if eq site.Language.Lang "mm" -}}
-    {{- $en := slice "0" "1" "2" "3" "4" "5" "6" "7" "8" "9" -}}
-    {{- $my := slice "၀" "၁" "၂" "၃" "၄" "၅" "၆" "၇" "၈" "၉" -}}
-    {{- range $i, $e := $en -}}
-        {{- $collabNStr = replace $collabNStr $e (index $my $i) -}}
-        {{- $instNStr  = replace $instNStr  $e (index $my $i) -}}
-    {{- end -}}
-{{- end -}}
+{{- $collabNStr := partial "localized-number.html" (int $collabN) -}}
+{{- $instNStr  := partial "localized-number.html" (int $instN) -}}
 
 {{- /* Use 'isset' or check against nil if 0 is a valid value you want to display */ -}}
 {{- if and (ne $collabN nil) (ne $instN nil) $countryStr -}}
