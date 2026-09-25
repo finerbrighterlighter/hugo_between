@@ -3,12 +3,9 @@
 {{- $src := slice -}}
 {{- with .Params.sources }}{{- $src = . -}}{{- end -}}
 {{- $ft  := index (where $src "text" "fulltext") 0 -}}
-{{- $doi := "" -}}
+{{- $doi := partial "work-doi.html" $src -}}
 {{- $pdf := "" -}}
 {{- range $src -}}
-  {{- if and (not $doi) (strings.Contains .url "doi.org/") -}}
-    {{- $doi = .url | strings.TrimPrefix "https://doi.org/" | strings.TrimPrefix "http://doi.org/" -}}
-  {{- end -}}
   {{- if and (not $pdf) (hasSuffix (lower .url) ".pdf") -}}
     {{- if hasPrefix .url "http" -}}
       {{- $pdf = .url -}}

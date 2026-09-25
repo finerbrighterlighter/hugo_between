@@ -1,8 +1,7 @@
 {{ define "body-class" }}page work{{ end }}
 {{ define "main" }}
 {{- $src := slice -}}{{- with .Params.sources -}}{{- $src = . -}}{{- end -}}
-{{- $doi := "" -}}
-{{- range $src -}}{{- if and (not $doi) (strings.Contains .url "doi.org/") -}}{{- $doi = .url | strings.TrimPrefix "https://doi.org/" | strings.TrimPrefix "http://doi.org/" -}}{{- end -}}{{- end -}}
+{{- $doi := partial "work-doi.html" $src -}}
 {{- $rm := partial "researcher-map.html" . -}}
 {{- $affiliations := slice -}}
 {{- range .Params.authors -}}{{- with .id -}}{{- with index $rm . -}}{{- range .affiliations -}}{{- if not (in $affiliations .) -}}{{- $affiliations = $affiliations | append . -}}{{- end -}}{{- end -}}{{- end -}}{{- end -}}{{- end -}}

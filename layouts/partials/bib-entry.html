@@ -5,7 +5,7 @@
 {{- $ext := "" -}}
 {{- range $src -}}{{- if and (not $ext) (in (slice "fulltext" "pubmed" "poster" "mirror" "slides") .text) -}}{{- $ext = .url -}}{{- end -}}{{- end -}}
 {{- $href := "" -}}{{- if $rendered -}}{{- $href = $p.RelPermalink -}}{{- else -}}{{- $href = $ext -}}{{- end -}}
-{{- $doi := "" -}}{{- range $src -}}{{- if and (not $doi) (strings.Contains .url "doi.org/") -}}{{- $doi = .url | strings.TrimPrefix "https://doi.org/" | strings.TrimPrefix "http://doi.org/" -}}{{- end -}}{{- end -}}
+{{- $doi := partial "work-doi.html" $src -}}
 {{- $tags := slice -}}
 {{- with $p.Params.conditions -}}{{- $tags = $tags | append . -}}{{- end -}}
 {{- with $p.Params.datasource -}}{{- $tags = $tags | append . -}}{{- end -}}

@@ -1,0 +1,6 @@
+{{/* Returns the bare DOI of the first source (a work's sources slice, may be
+     nil) whose .url contains "doi.org/", trimmed of scheme+host, or "".
+     Usage: {{ $doi := partial "work-doi.html" $src }} */}}
+{{- $doi := "" -}}
+{{- range . -}}{{- if and (not $doi) (strings.Contains .url "doi.org/") -}}{{- $doi = .url | strings.TrimPrefix "https://doi.org/" | strings.TrimPrefix "http://doi.org/" -}}{{- end -}}{{- end -}}
+{{ return $doi }}

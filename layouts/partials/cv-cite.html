@@ -8,8 +8,7 @@
 
        Args: page, cache (the parsed cache map) */ -}}
 {{- $p := .page -}}{{- $cache := .cache -}}
-{{- $doi := "" -}}
-{{- range $p.Params.sources -}}{{- if and (not $doi) (strings.Contains .url "doi.org/") -}}{{- $doi = .url | strings.TrimPrefix "https://doi.org/" | strings.TrimPrefix "http://doi.org/" -}}{{- end -}}{{- end -}}
+{{- $doi := partial "work-doi.html" $p.Params.sources -}}
 {{- $bib := "" -}}{{- with $doi -}}{{- $bib = index $cache . | default "" -}}{{- end -}}
 {{- $field := "" -}}
 {{- $vol := "" -}}{{- $num := "" -}}{{- $pages := "" -}}
