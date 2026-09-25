@@ -734,6 +734,17 @@ html{scroll-behavior:smooth}
   pointer-events:none}
 .authorship-year:first-child .authorship-tip{left:0;transform:none}
 .authorship-year:last-child .authorship-tip{left:auto;right:0;transform:none}
+/* Inside a scroller an absolutely positioned label is clipped at the
+   scroller's edges. Where the browser has anchor positioning the label is
+   fixed to the viewport and anchored to its link instead, which nothing can
+   clip; it flips below the mark if there is no room above. The rules above
+   remain the fallback. */
+@supports (anchor-name:--a) and (position-area:top){
+  /* Every link shares the name; the scope keeps each label with its own link. */
+  .authorship-work{anchor-scope:--authorship-work}
+  .authorship-work>a{anchor-name:--authorship-work}
+  .authorship-tip,.authorship-year:first-child .authorship-tip,.authorship-year:last-child .authorship-tip{position:fixed;position-anchor:--authorship-work;position-area:top;justify-self:anchor-center;position-try-fallbacks:flip-block;left:auto;right:auto;bottom:auto;transform:none;margin:0 0 6px;max-width:min(22rem,calc(100vw - 2rem))}
+}
 .authorship-tip-title{display:block;color:var(--mute)}
 .authorship-work:hover .authorship-tip,.authorship-work:focus-within .authorship-tip{display:block}
 .authorship-work:hover .authorship-slot,.authorship-work:focus-within .authorship-slot{background:var(--mute)}

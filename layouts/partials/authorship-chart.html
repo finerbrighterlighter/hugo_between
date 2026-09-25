@@ -99,8 +99,10 @@
                    can sit anywhere in the list. Drawn as a diamond so it is not
                    read as a fourth position. */ -}}
             <span class="authorship-slot authorship-slot-corr{{ if $w.corr }} is-me{{ if $w.open }} is-open{{ end }}{{ end }}"></span>
-            <span class="authorship-tip" aria-hidden="true">{{ $w.year }} · {{ $where }}<span class="authorship-tip-title">{{ $w.title }}</span></span>
           </a>
+          {{- /* The drawn label is a sibling of the link, not a child, so it can be
+                 anchored to the link (an anchor may not be an ancestor). */ -}}
+          <span class="authorship-tip" aria-hidden="true">{{ $w.year }} · {{ $where }}<span class="authorship-tip-title">{{ $w.title }}</span></span>
         </li>
         {{- end }}
         {{- end }}
