@@ -13,6 +13,9 @@
 {{- $preprints := sort (where $works "Params.type" "preprint") "Date" "desc" -}}
 {{- $confs := sort (where $works "Params.type" "in" (slice "conference-speaking" "conference-poster" "conference-proceeding")) "Date" "desc" -}}
 {{- $hp := hugo.Data.homepage -}}{{- if eq .Site.Language.Lang "mm" -}}{{- $hp = hugo.Data.homepage_mm -}}{{- end -}}
+{{- /* The builder's BibTeX cache, for volume, issue and pages. Absent → empty map. */ -}}
+{{- $cache := dict -}}
+{{- with os.ReadFile "scripts/.bibtex_cache.json" -}}{{- $cache = . | transform.Unmarshal -}}{{- end -}}
 <header class="page-head">
   <h1>{{ .Title }}</h1>
 </header>
@@ -86,7 +89,7 @@
     {{- range $journals }}
     <div class="cv-row">
       <div class="cv-l"><span class="cv-date">{{ .Date.Year }}</span></div>
-      <div class="cv-r">{{ partial "bib-authors.html" . }}. <a href="{{ .RelPermalink }}">{{ .Title }}</a>. {{ with .Params.venue }}<em>{{ . }}</em>. {{ end }}{{ .Date.Year }}.</div>
+      <div class="cv-r">{{ partial "cv-cite.html" (dict "page" . "cache" $cache) }}</div>
     </div>
     {{- end }}
     {{- with $preprints }}
@@ -94,7 +97,7 @@
     {{- range . }}
     <div class="cv-row">
       <div class="cv-l"><span class="cv-date">{{ .Date.Year }}</span></div>
-      <div class="cv-r">{{ partial "bib-authors.html" . }}. <a href="{{ .RelPermalink }}">{{ .Title }}</a>. {{ with .Params.venue }}<em>{{ . }}</em>. {{ end }}{{ .Date.Year }}.</div>
+      <div class="cv-r">{{ partial "cv-cite.html" (dict "page" . "cache" $cache) }}</div>
     </div>
     {{- end }}
     {{- end }}

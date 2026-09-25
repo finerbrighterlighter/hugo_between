@@ -1,0 +1,21 @@
+{{- /* One publication line on the CV page, in the NLM form the PDF and the
+       Markdown use: authors. Title. Venue. Year;volume(issue):pages. doi: …
+
+       Volume, issue and pages come from the builder's own BibTeX cache
+       (scripts/.bibtex_cache.json), read here so the page says what the PDF
+       says without the builder changing; the DOI comes from the work's
+       sources. A work the cache does not know gets the line without them.
+
+       Args: page, cache (the parsed cache map) */ -}}
+{{- $p := .page -}}{{- $cache := .cache -}}
+{{- $doi := "" -}}
+{{- range $p.Params.sources -}}{{- if and (not $doi) (strings.Contains .url "doi.org/") -}}{{- $doi = .url | strings.TrimPrefix "https://doi.org/" | strings.TrimPrefix "http://doi.org/" -}}{{- end -}}{{- end -}}
+{{- $bib := "" -}}{{- with $doi -}}{{- $bib = index $cache . | default "" -}}{{- end -}}
+{{- $field := "" -}}
+{{- $vol := "" -}}{{- $num := "" -}}{{- $pages := "" -}}
+{{- with $bib -}}
+  {{- with findRESubmatch `(?i)\bvolume\s*=\s*\{([^}]*)\}` . 1 -}}{{- $vol = index (index . 0) 1 | strings.TrimSpace -}}{{- end -}}
+  {{- with findRESubmatch `(?i)\bnumber\s*=\s*\{([^}]*)\}` . 1 -}}{{- $num = index (index . 0) 1 | strings.TrimSpace -}}{{- end -}}
+  {{- with findRESubmatch `(?i)\bpages\s*=\s*\{([^}]*)\}` . 1 -}}{{- $pages = index (index . 0) 1 | strings.TrimSpace | replaceRE `--?` "-" -}}{{- end -}}
+{{- end -}}
+{{ partial "bib-authors.html" $p }}. <a href="{{ $p.RelPermalink }}">{{ $p.Title }}</a>. {{ with $p.Params.venue }}<em>{{ . }}</em>. {{ end }}{{ $p.Date.Year }}{{ with $vol }};{{ . }}{{ end }}{{ with $num }}({{ . }}){{ end }}{{ with $pages }}:{{ . }}{{ end }}.{{ with $doi }} doi: <a href="https://doi.org/{{ . }}" target="_blank" rel="noreferrer noopener">{{ . }}</a>{{ end }}
