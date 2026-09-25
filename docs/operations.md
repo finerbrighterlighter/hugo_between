@@ -86,6 +86,13 @@ does, and it is why the Burmese masthead links to `/works/` rather than `/mm/wor
 Burmese numerals: pass a count through `layouts/partials/localized-number.html` before putting it in a
 sentence, or it will render in Latin digits inside Burmese text.
 
+Home page data: get it with `partial "homepage-data.html" .`, which returns `hugo.Data.homepage` or
+`hugo.Data.homepage_mm` for the page's language. Do not re-write the language check inline in a template.
+
+DOIs: get a work's DOI with `partial "work-doi.html" .`, which returns the bare DOI of the first `doi.org/`
+source, or nil. The work page, the BibTeX entry, the CV citation and the SEO block all use it, so a change
+to how DOIs are read happens in that one file.
+
 ---
 
 ## Change the home page
