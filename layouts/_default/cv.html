@@ -3,7 +3,8 @@
        two-column rows with the when-and-where on the left and the what on the
        right. Read from the same data/cv.yml and works front matter the builder
        reads, so the page and the PDF say the same thing; the builder itself is
-       untouched. The body is English on both language sites, marked as such. */ -}}
+       untouched. English only, like the works pages: the Burmese site links
+       here and says so. */ -}}
 {{ define "body-class" }}page cv-page{{ end }}
 {{ define "main" }}
 {{- $cv := hugo.Data.cv -}}
@@ -20,7 +21,7 @@
   <h1>{{ .Title }}</h1>
 </header>
 <div class="page-body">
-<article class="cv" lang="en">
+<article class="cv">
   <header class="cv-head">
     <p class="cv-name">{{ $cv.header.name }}</p>
     <p class="cv-address">{{ $cv.header.address }}</p>

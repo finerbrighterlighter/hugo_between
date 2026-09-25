@@ -10,7 +10,8 @@
 <nav class="quick" aria-label="{{ i18n "quick_links_label" }}">
   <ul class="quick-list">
     <li><a href="{{ "/about/" | relLangURL }}">{{ i18n "quick_about" }}</a></li>
-    <li><a href="{{ "/cv/" | relLangURL }}">{{ i18n "quick_cv" }}</a></li>
+    {{- $c := partial "lang-link.html" "/cv/" }}
+    <li><a href="{{ $c.href }}"{{ with $c.hreflang }} hreflang="{{ . }}"{{ end }}>{{ i18n "quick_cv" }}{{ with $c.hreflang }} {{ i18n "in_english" }}{{ end }}</a></li>
     <li><a href="https://orcid.org/{{ $sb.orcid }}" rel="noreferrer noopener">ORCID</a></li>
   </ul>
 </nav>

@@ -403,5 +403,5 @@ page in the PDF's manner (`layouts/_default/cv.html`): the name over a rule, tra
 hairlines, two-column rows with the when-and-where on the left and the what on the right, all in Karla, the
 site's sans, where the PDF uses Lato. It reads the same `data/cv.yml` and works front matter the builder reads,
 so page and PDF say the same thing; the builder is untouched and its outputs unchanged. The page ends with the
-three downloads, PDF, Markdown and vCard. The body is English on the Burmese site too, marked `lang="en"`, with
-a Burmese frame.
+three downloads, PDF, Markdown and vCard. English only, like the work pages: the Burmese home's pill says
+"(English)", the switch on the page is struck through, and `lang-return.js` keeps the navigation Burmese.
