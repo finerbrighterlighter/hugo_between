@@ -391,3 +391,7 @@ The figure has a fourth rung: a diamond for corresponding author, a role rather 
 sit anywhere in the list and in practice often second. It is set with `corresponding: true` on the author entry
 in a work's front matter, and the same flag puts an asterisk after the name in every author list. No work
 carries it yet; the rung is there for the first that does.
+
+The caption is one line, "A column per work. Filled for written output, open for presented." The rungs and the
+diamond are explained by the hover label, which names the position and the role for each mark; a caption that
+repeated that read as a legend, and the figure is not a chart with a legend.
