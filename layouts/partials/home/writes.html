@@ -1,0 +1,44 @@
+{{- /* writes: recent posts and now-playing */ -}}
+{{- $lang := .Site.Language.Lang -}}
+{{- $enSite := .Site -}}{{- range hugo.Sites -}}{{- if eq .Language.Lang "en" -}}{{- $enSite = . -}}{{- end -}}{{- end -}}
+{{- $posts := where (where .Site.RegularPages "Section" "posts") "Params.private" "ne" true -}}
+{{- /* The archived Facebook posts are Burmese writing dated by when they were
+       published here. They are left out of the English "Writes" column, where
+       they would sit above the English posts under a 2026 date. */ -}}
+{{- if ne $lang "mm" -}}{{- $posts = where $posts "Params.archive" "ne" true -}}{{- end -}}
+{{- if not $posts -}}{{- $posts = where (where $enSite.RegularPages "Section" "posts") "Params.private" "ne" true -}}{{- end -}}
+{{- /* Writing | Lately */ -}}
+<section class="row asym no-dot" id="writes" data-section="{{ i18n "nav_sec_writing" }}">
+    <div class="voice voice-l">
+      <h2 class="kicker">{{ i18n "k_writes" }}</h2>
+      <ul class="datelist">
+        {{- range first (.Site.Params.recentPostsLimit | default 3) (sort $posts "Date" "desc") }}
+        {{ partial "post-row.html" (dict "page" . "year" true) }}
+        {{- end }}
+      </ul>
+      {{ $l := partial "lang-link.html" "/posts/" }}<a class="more" href="{{ $l.href }}"{{ with $l.hreflang }} hreflang="{{ . }}"{{ end }}>{{ i18n "all_posts" }}</a>
+    </div>
+    <div class="voice voice-r">
+      <h2 class="kicker">{{ i18n "k_lately" }}</h2>
+      <p id="now-playing" data-fallback="{{ i18n "now_playing_fallback" }}">{{ i18n "now_playing_fallback" }}</p>
+      <p class="meta"><a href="{{ hugo.Data.playlists.link }}" target="_blank" rel="noreferrer noopener">{{ i18n "listening_archive" }}</a></p>
+      <div class="lately-row">
+        <div class="lately-item">
+          <p class="meta">{{ i18n "manga_label" }}</p>
+          <ul class="covers" id="strip-manga" aria-label="{{ i18n "manga_label" }}" data-limit="1"></ul>
+          <p class="covers-empty"><a href="https://anilist.co/user/{{ .Site.Params.anilistUser | default "finer" }}" target="_blank" rel="noreferrer noopener">AniList</a></p>
+        </div>
+        <div class="lately-item">
+          <p class="meta">{{ i18n "screen_label" }}</p>
+          <ul class="covers" id="strip-screen" aria-label="{{ i18n "screen_label" }}" data-limit="1"></ul>
+          <p class="covers-empty"><a href="https://simkl.com/" target="_blank" rel="noreferrer noopener">Simkl</a></p>
+        </div>
+        <div class="lately-item">
+          <p class="meta">{{ i18n "photos_label" }}</p>
+          <ul class="covers" id="strip-photos" aria-label="{{ i18n "photos_label" }}" data-limit="1"></ul>
+          <p class="covers-empty"><a href="https://unsplash.com/@finerbrighterlighter" target="_blank" rel="noreferrer noopener">Unsplash</a></p>
+        </div>
+      </div>
+    </div>
+  {{ partial "spine-note.html" . }}
+  </section>

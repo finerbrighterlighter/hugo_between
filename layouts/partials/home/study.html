@@ -1,0 +1,21 @@
+{{- /* study: career profile summary and interests */ -}}
+{{- $hp := partial "homepage-data.html" . -}}
+{{- /* Neutral, full width: what I study */ -}}
+<section class="row no-dot" id="study" data-section="{{ i18n "nav_sec_research" }}">
+    <div class="wide">
+      <h2 class="kicker">{{ i18n "k_study" }}</h2>
+      {{- with $hp.career_profile.summary }}
+      {{ . | markdownify }}
+      {{- else }}
+      {{ $hp.career_profile.para1 | markdownify }}
+      <div class="wide-more">
+      {{ $hp.career_profile.para2 | markdownify }}
+      {{ $hp.career_profile.para3 | markdownify }}
+      </div>
+      {{- end }}
+      {{- with hugo.Data.cv.research_interests }}
+      <p class="meta" style="margin-top:1.4rem">{{ i18n "interests_lead" }}</p>
+      <p class="topics">{{ range $i, $t := . }}{{ if $i }}, {{ end }}{{ $t | lower }}{{ end }}.</p>
+      {{- end }}
+    </div>
+  </section>
