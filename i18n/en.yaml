@@ -68,7 +68,7 @@ latest_posts: "Latest posts"
 contact_lead: "Write to me."
 downloads: "Downloads"
 cv_pdf: "Curriculum vitae (PDF)"
-cv_short_pdf: "One-page CV (PDF)"
+cv_short_pdf: "Curriculum vitae (1 page)"
 # The CV page (layouts/_default/cv.html); the body is English on both sites.
 cv_interests: "Research interests"
 cv_education: "Education"
