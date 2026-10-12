@@ -13,6 +13,7 @@
 - [About]({{ printf "%sabout/" $enSite.Home.Permalink }}): Research background, collaborators, and experience.
 - [CV (PDF)]({{ "/general/cv/cv_htunteza.pdf" | absURL }}): Full curriculum vitae.
 - [CV (MD)]({{ "/general/cv/cv_htunteza.md" | absURL }}): Full curriculum vitae.
+- [CV, one page (PDF)]({{ "/general/cv_short/cv_short_htunteza.pdf" | absURL }}): One-page summary CV.
 - [Works]({{ printf "%sworks/" $enSite.Home.Permalink }}): All publications, filterable by condition, method, and data source.
 - [Posts]({{ printf "%sposts/" $enSite.Home.Permalink }}): Blog and notes.
 

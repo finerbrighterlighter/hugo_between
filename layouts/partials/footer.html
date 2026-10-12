@@ -31,6 +31,7 @@
       <h2 class="colophon-h">{{ i18n "downloads" }}</h2>
       <ul class="plain">
         <li><a href="{{ $sb.cv | relURL }}" target="_blank" rel="noreferrer noopener">{{ i18n "cv_pdf" }}</a></li>
+        <li><a href="{{ $sb.cv_short | relURL }}" target="_blank" rel="noreferrer noopener">{{ i18n "cv_short_pdf" }}</a></li>
         <li><a href="{{ "general/cv/cv_htunteza.md" | relURL }}" target="_blank" rel="noreferrer noopener">{{ i18n "cv_md" }}</a></li>
         <li><a href="{{ $sb.vcard | relURL }}" download>{{ i18n "vcard" }}</a></li>
         {{ with .Site.Home.OutputFormats.Get "RSS" }}<li><a href="{{ .RelPermalink }}">{{ i18n "feed_works" }}</a></li>{{ end }}

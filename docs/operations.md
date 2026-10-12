@@ -168,7 +168,8 @@ authorization instead.
 conda run -n hugo python scripts/build_cv.py
 ```
 
-It reads `data/cv.yml` and the works, and writes the PDF and Markdown under `static/general/cv/`.
+It reads `data/cv.yml`, `data/homepage.yml` and the works, and writes the PDF and Markdown under
+`static/general/cv/` and the one-page PDF under `static/general/cv_short/` (the last three dated copies of each are kept).
 
 ---
 

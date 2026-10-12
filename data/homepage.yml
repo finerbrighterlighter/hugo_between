@@ -34,6 +34,7 @@ sidebar:
 
   vcard: general/hteza.vcf #place a vcf file inside /general/ folder and provide the name of the file below
   cv: general/cv/cv_htunteza.pdf
+  cv_short: general/cv_short/cv_short_htunteza.pdf
 
 career_profile:
   title: "Career Profile"

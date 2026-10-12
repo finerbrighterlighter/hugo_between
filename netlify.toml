@@ -101,6 +101,11 @@ HUGO_VERSION = "0.157.0"
     Cache-Control = "public, max-age=86400"
 
 [[headers]]
+  for = "/general/cv_short/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+[[headers]]
   for = "/general/msc_transcript_htunteza.pdf"
   [headers.values]
     Cache-Control = "private, no-store"

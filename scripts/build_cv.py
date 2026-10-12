@@ -16,9 +16,22 @@ OUTPUT
 ------
   static/general/cv/cv_htunteza_YYYYMMDD.pdf   dated archive
   static/general/cv/cv_htunteza.pdf            always-current; sidebar links here
+  static/general/cv_short/cv_short_htunteza_YYYYMMDD.pdf   one-page CV, dated archive
+  static/general/cv_short/cv_short_htunteza.pdf            one-page CV, always-current
 
-The 3 most recent dated files are kept; older ones are deleted automatically.
-Commit both files after running so the website picks up the new PDF.
+The 3 most recent dated files of each are kept; older ones are deleted automatically.
+Commit the files after running so the website picks up the new PDFs.
+
+ONE-PAGE CV
+-----------
+  Built from the same data, by rules rather than hand-written text:
+  - header: name, job title and workplace, city and country from homepage.yml
+  - entries with `time:` get the date gutter; entries without span the full width
+  - additional experiences print title and institution only
+  - publications: the 3 most recent first-author journal articles, authors cut to the first three
+    (or up to the highlighted author) then "et al."
+  - fonts: the site's own Newsreader and Karla from static/fonts/
+  The script warns if it runs past one page.
 
 IF THE CONDA ENVIRONMENT DOES NOT EXIST
 ----------------------------------------
@@ -36,7 +49,8 @@ DATA SOURCES
 ------------
   data/cv.yml          — all stable personal data (read by this script)
   content/works/       — Hugo front matter parsed for publications/conferences
-  data/homepage.yml    — drives the website only; NOT read by this script
+  data/homepage.yml    — drives the website; the one-page CV reads its header
+                         (job title, workplace, city, ORCID) from `sidebar`
 
 BIBTEX CACHE
 ------------
@@ -60,6 +74,7 @@ ROOT         = Path(__file__).parent.parent
 DATA         = ROOT / "data"
 WORKS        = ROOT / "content" / "works"
 CV_DIR       = ROOT / "static" / "general" / "cv"
+CV_SHORT_DIR = ROOT / "static" / "general" / "cv_short"
 BIBTEX_CACHE = Path(__file__).parent / ".bibtex_cache.json"
 
 # How many authors to list before truncating.
@@ -685,6 +700,207 @@ def build_html(cv):
 </html>"""
 
 
+# ── One-page CV ───────────────────────────────────────────────────────────────
+
+# Authors shown before "et al." on the one-page CV; extended to reach the
+# highlighted author when they sit further down the list.
+SHORT_AUTHOR_LIMIT = 3
+
+# Selected publications: the most recent first-author journal articles.
+SHORT_PUB_LIMIT = 3
+
+
+def _short_authors(p, bibtex):
+    """First SHORT_AUTHOR_LIMIT authors (or up to the highlighted one), then et al."""
+    highlight_idx = next(
+        (i for i, a in enumerate(p.get("authors", [])) if a.get("highlight")),
+        None,
+    )
+    if bibtex:
+        names = [_fmt_author_nlm(a) for a in _bib_authors(bibtex)]
+    else:
+        rm = get_researcher_map()
+        names = []
+        for a in p.get("authors", []):
+            person = rm.get(a.get("id"), {}) if a.get("id") else a
+            given  = person.get("given", a.get("given", ""))
+            family = person.get("family", a.get("family", ""))
+            names.append(f"{family} {given[0]}" if given else family)
+
+    n = SHORT_AUTHOR_LIMIT
+    if highlight_idx is not None:
+        n = max(n, highlight_idx + 1)
+    shown = names[:n]
+    if highlight_idx is not None and highlight_idx < len(shown):
+        shown[highlight_idx] = f'<span class="me">{shown[highlight_idx]}</span>'
+    suffix = ", et al." if len(names) > n else "."
+    return ", ".join(shown) + suffix
+
+
+def _short_cite(p):
+    """Short citation: authors, title (linked to the DOI), journal."""
+    doi_val = get_doi(p.get("sources"))
+    bibtex  = get_bibtex(doi_val) if doi_val else None
+    title   = p.get("title", "").rstrip(".")
+    if doi_val:
+        title = f'<a href="https://doi.org/{doi_val}">{title}</a>'
+    return f'{_short_authors(p, bibtex)} {title}. <span class="venue">{p.get("venue", "")}</span>.'
+
+
+def short_row(time, content):
+    """Date gutter + content when there is a time; full width when there is not."""
+    if time:
+        return (f'<div class="row"><div class="when">{time}</div>'
+                f'<div class="what">{content}</div></div>')
+    return f'<div class="row nodate"><div class="what">{content}</div></div>'
+
+
+def _short_bullet(b):
+    """Bullet text; links from a dict bullet follow the text after a colon."""
+    if isinstance(b, str):
+        return f"<li>{b}</li>"
+    links = ", ".join(f'<a href="{l["url"]}">{l["label"]}</a>' for l in b.get("links", []))
+    return f"<li>{b['text']}{': ' + links if links else ''}</li>"
+
+
+def build_html_short(cv, home):
+    """One A4 page from the same data, in the site's type and colours."""
+    side    = home["sidebar"]
+    contact = cv["contact"]
+    site    = contact["website"].rstrip("/")
+    bare    = re.sub(r"^https?://", "", site)
+
+    # Header: job title and workplace from homepage.yml, as on the site
+    work = ", ".join(x for x in (side.get("faculty"), side.get("university")) if x)
+    position = ", ".join(x for x in (side.get("job_title"), work) if x)
+    country = next((u.get("country") for u in home.get("universities", {}).values()
+                    if u.get("name") == side.get("university")), None)
+    place = ", ".join(x for x in (side.get("city"), country) if x)
+    parts = [place] if place else []
+    if cv.get("show_phone_number", True):
+        parts.append(contact["phone"])
+    parts += [contact["email"], f'<a href="{site}/">{bare}</a>']
+    if side.get("orcid"):
+        parts.append(f'ORCID <a href="https://orcid.org/{side["orcid"]}">{side["orcid"]}</a>')
+    header = f"""<header>
+      <h1>{cv['header']['name']}</h1>
+      <p class="pos">{position}</p>
+      <p class="contact">{''.join(f'<span>{x}</span>' for x in parts)}</p>
+    </header>"""
+
+    interests = section("Research interests",
+        f'<p class="interests">{" · ".join(cv["research_interests"])}</p>')
+
+    exp_rows = ""
+    for e in cv["work_experience"]:
+        bullets = "".join(_short_bullet(b) for b in e.get("bullets", []))
+        content = (f'<p><span class="t">{e["role"]}</span>, <span class="org">{e["institution"]}</span></p>'
+                   f'<ul>{bullets}</ul>')
+        exp_rows += short_row(e.get("time"), content)
+    experience = section("Experience", exp_rows)
+
+    extra_rows = ""
+    for e in cv["additional_experiences"]:
+        content = f'<p><span class="t">{e["title"]}</span>, <span class="org">{e["institution"]}</span></p>'
+        extra_rows += short_row(e.get("time"), content)
+    additional = section("Additional experiences", extra_rows)
+
+    edu_rows = ""
+    for e in cv["education"]:
+        content = (f'<p><span class="t">{e["degree"]}</span> ({e["field"]}), '
+                   f'<span class="org">{e["university"]}</span></p>')
+        if e.get("thesis"):
+            content += f'<p>Thesis: {e["thesis"]}</p>'
+        if e.get("note"):
+            content += f'<p>{e["note"]}</p>'
+        edu_rows += short_row(e.get("time"), content)
+    education = section("Education", edu_rows)
+
+    journals = load_works("journal")   # newest first
+    first    = [p for p in journals if (p.get("authors") or [{}])[0].get("highlight")][:SHORT_PUB_LIMIT]
+    pub_rows = "".join(short_row(str(p.get("date", ""))[:4], f"<p>{_short_cite(p)}</p>")
+                       for p in first)
+    pub_rows += short_row(" ", f'<p class="note">All publications: <a href="{site}/works/">{bare}/works</a>'
+                               f' · Full CV: <a href="{site}/cv/">{bare}/cv</a></p>')
+    publications = section(f"Selected publications · {len(first)} of {len(journals)}", pub_rows)
+
+    award_rows = ""
+    for a in cv["awards"]:
+        award_rows += short_row(a["year"], f'<p>{a["title"]}, <span class="org">{a["institution"]}</span></p>')
+    awards = section("Awards", award_rows)
+
+    body = header + interests + experience + additional + education + publications + awards
+    return f"""<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{cv['header']['name']}, CV</title>
+  <meta name="author" content="{cv['header']['name']}">
+  <style>{CSS_SHORT}</style>
+</head>
+<body>{body}</body>
+</html>"""
+
+
+# Colours are the site's editorial light tokens; fonts are the site's own files.
+CSS_SHORT = """
+@font-face { font-family: Newsreader; font-style: normal; font-weight: 200 800;
+  src: url("static/fonts/newsreader-latin-opsz-normal.woff2") format("woff2"); }
+@font-face { font-family: Newsreader; font-style: italic; font-weight: 200 800;
+  src: url("static/fonts/newsreader-latin-opsz-italic.woff2") format("woff2"); }
+@font-face { font-family: Karla; font-style: normal; font-weight: 200 800;
+  src: url("static/fonts/karla-latin-wght-normal.woff2") format("woff2"); }
+@font-face { font-family: Karla; font-style: italic; font-weight: 200 800;
+  src: url("static/fonts/karla-latin-wght-italic.woff2") format("woff2"); }
+
+@page { size: A4; margin: 14mm 16mm 13mm; }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: Newsreader, Georgia, serif;
+  font-size: 10pt;
+  line-height: 1.3;
+  color: #1b1d20;
+}
+a { color: inherit; text-decoration: underline; text-decoration-color: #8a5a0c; }
+
+/* ── Header: full measure ─────────────────────────────────────── */
+h1 { font-weight: 400; font-size: 22pt; line-height: 1.1; }
+.pos { margin-top: 1mm; font-style: italic; font-size: 10.5pt; }
+.contact { margin-top: 2mm; font-family: Karla, sans-serif; font-size: 8.5pt; color: #5b5f66; }
+.contact span + span::before { content: " · "; color: #cfd2cc; }
+
+/* ── Sections ─────────────────────────────────────────────────── */
+section { margin-top: 8pt; }
+h2 {
+  margin-bottom: 2.2mm; padding-bottom: 1mm;
+  border-bottom: 0.4pt solid #8a5a0c;
+  font-family: Karla, sans-serif; font-weight: 600; font-size: 7.5pt;
+  letter-spacing: 0.08em; text-transform: uppercase; color: #8a5a0c;
+}
+.interests { font-family: Karla, sans-serif; font-size: 8.5pt; line-height: 1.4; }
+
+/* ── Rows: 21 mm date gutter, or full width when an entry has no time */
+.row { display: flex; page-break-inside: avoid; }
+.row + .row { margin-top: 4pt; }
+.when {
+  width: 21mm; min-width: 21mm; margin-right: 4mm; padding-top: 0.9pt;
+  font-family: Karla, sans-serif; font-size: 8pt; line-height: 1.35; color: #5b5f66;
+}
+.what { flex: 1; }
+.t   { font-weight: 600; }
+.org, .venue { font-style: italic; }
+.me  { font-weight: 600; }
+.note { margin-top: 1.4mm; font-family: Karla, sans-serif; font-size: 8pt; color: #5b5f66; }
+
+/* inline dash with a hanging indent: positioned markers break PDF text order */
+ul { list-style: none; margin-top: 0.6mm; }
+li { padding-left: 3.5mm; text-indent: -3.5mm; }
+li::before { content: "–"; display: inline-block; width: 3.5mm; text-indent: 0; color: #8a5a0c; }
+"""
+
+
 # ── Stylesheet ────────────────────────────────────────────────────────────────
 CSS = """
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,400&display=swap');
@@ -831,6 +1047,28 @@ if __name__ == "__main__":
     print(f"Written:  {dated.name}")
     print(f"Current:  {current.name}")
     print(f"Versions: {versions}")
+
+    # ── One-page PDF ─────────────────────────────────────────────────────────
+    CV_SHORT_DIR.mkdir(parents=True, exist_ok=True)
+    home          = load_yaml(DATA / "homepage.yml")
+    short_dated   = CV_SHORT_DIR / f"cv_short_htunteza_{today}.pdf"
+    short_current = CV_SHORT_DIR / "cv_short_htunteza.pdf"
+
+    doc = HTML(string=build_html_short(cv, home), base_url=str(ROOT)).render()
+    doc.write_pdf(short_dated)
+    shutil.copy2(short_dated, short_current)
+
+    short_files = sorted(CV_SHORT_DIR.glob("cv_short_htunteza_2*.pdf"), reverse=True)
+    for old in short_files[3:]:
+        old.unlink()
+        print(f"Removed old version: {old.name}")
+
+    short_versions = [f.name for f in sorted(CV_SHORT_DIR.glob("cv_short_htunteza_2*.pdf"), reverse=True)]
+    print(f"Written:  {short_dated.name} ({len(doc.pages)} page{'s' if len(doc.pages) != 1 else ''})")
+    print(f"Current:  {short_current.name}")
+    print(f"Versions: {short_versions}")
+    if len(doc.pages) > 1:
+        print("  Warning: the one-page CV runs past one page; trim data/cv.yml or the rules.")
 
     # ── Markdown ─────────────────────────────────────────────────────────────
     md_text    = build_markdown(cv, generated_date)
