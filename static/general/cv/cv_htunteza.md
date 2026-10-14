@@ -2,9 +2,9 @@
 
 Department of Clinical Epidemiology and Biostatistics, Faculty of Medicine Ramathibodi Hospital, Mahidol University, Sukhothai Road, Dusit, Bangkok 10300
 
-kohtunteza@gmail.com · https://htunteza.com/
+kohtunteza@gmail.com · https://htunteza.com/ · ORCID 0000-0002-1076-9513
 
-Generated: 2026-09-18
+Generated: 2026-10-14
 
 ---
 
@@ -31,14 +31,18 @@ General practitioner licensed in Myanmar
 **2021 - Present** | Mahidol University, Faculty of Medicine Ramathibodi Hospital
 **Graduate Research Assistant**
 - Affiliated under the Data Science and Clinical Informatics division, Department of Clinical Epidemiology and Biostatistics
-- Research database development and quarterly updates  
+- Build and refresh quarterly hospital EHR research cohorts for hypertension and dementia  
   [CEB Data Warehouse](https://www.rama.mahidol.ac.th/ceb/CEBdatawarehouse/Overview) · [Hypertension Cohort](https://github.com/CEB-Data-Science-Clinical-Informatics/Hypertension-Cohort) · [Dementia Cohort](https://github.com/CEB-Data-Science-Clinical-Informatics/Dementia-Cohort)
-- Data extraction and engineering of electronic medical records to research datasets
-- Data pre-processing in real-world datasets including standardization, harmonization and imputation
-- Secondary data analysis for epidemiological and methodological research
-- Risk prediction using statistical and machine learning models
+- Link national NHSO claims with PM2.5 data for a dementia study on HPC
 - Multidisciplinary collaborations with clinicians, surgeons, pharmacists, epidemiologists, biostatisticians, economists and data-scientists
-- Experienced in Python, R, Stata and SPSS
+
+---
+
+## Skills
+
+**Programming and statistical software:** Python, R, Stata, SPSS  
+**Methods:** Clinical risk prediction modelling, Machine learning, Multi-state survival analysis, Multiple imputation, External validation of prediction models  
+**Data:** Electronic medical record extraction, Research data warehousing, Data standardization and harmonization, Real-world data cohorts  
 
 ---
 

@@ -40,17 +40,21 @@ work_experience:
     time: "2021 - Present"
     bullets:
       - "Affiliated under the Data Science and Clinical Informatics division, Department of Clinical Epidemiology and Biostatistics"
-      - text: "Research database development and quarterly updates"
+      - text: "Build and refresh quarterly hospital EHR research cohorts for hypertension and dementia"
         links:
           - {label: "CEB Data Warehouse", url: "https://www.rama.mahidol.ac.th/ceb/CEBdatawarehouse/Overview"}
           - {label: "Hypertension Cohort", url: "https://github.com/CEB-Data-Science-Clinical-Informatics/Hypertension-Cohort"}
           - {label: "Dementia Cohort", url: "https://github.com/CEB-Data-Science-Clinical-Informatics/Dementia-Cohort"}
-      - "Data extraction and engineering of electronic medical records to research datasets"
-      - "Data pre-processing in real-world datasets including standardization, harmonization and imputation"
-      - "Secondary data analysis for epidemiological and methodological research"
-      - "Risk prediction using statistical and machine learning models"
+      - "Link national NHSO claims with PM2.5 data for a dementia study on HPC"
       - "Multidisciplinary collaborations with clinicians, surgeons, pharmacists, epidemiologists, biostatisticians, economists and data-scientists"
-      - "Experienced in Python, R, Stata and SPSS"
+
+skills:
+  - area: "Programming and statistical software"
+    items: ["Python", "R", "Stata", "SPSS"]
+  - area: "Methods"
+    items: ["Clinical risk prediction modelling", "Machine learning", "Multi-state survival analysis", "Multiple imputation", "External validation of prediction models"]
+  - area: "Data"
+    items: ["Electronic medical record extraction", "Research data warehousing", "Data standardization and harmonization", "Real-world data cohorts"]
 
 additional_experiences:
   - title: "Thailand Health AI Conference & Datathon 2023"

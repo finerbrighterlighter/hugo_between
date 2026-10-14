@@ -463,6 +463,9 @@ def build_markdown(cv, generated_date):
     if cv.get("show_phone_number", True):
         contact_parts.append(contact["phone"])
     contact_parts += [contact["email"], contact["website"]]
+    orcid = load_yaml(DATA / "homepage.yml")["sidebar"].get("orcid")
+    if orcid:
+        contact_parts.append(f"ORCID {orcid}")
     lines = []
 
     # Header
@@ -512,6 +515,13 @@ def build_markdown(cv, generated_date):
             lines.append(_render_bullet_md(b))
         lines.append("")
     lines += ["---", ""]
+
+    # Skills
+    if cv.get("skills"):
+        lines += ["## Skills", ""]
+        for s in cv["skills"]:
+            lines.append(f"**{s['area']}:** {', '.join(s['items'])}  ")
+        lines += ["", "---", ""]
 
     # Awards
     lines += ["## Awards", ""]
@@ -570,9 +580,10 @@ def row(left, right, cls=""):
     return f'<div class="row{c}"><div class="col-l">{left}</div><div class="col-r">{right}</div></div>'
 
 
-def section(title, content):
+def section(title, content, cls=""):
     """Wrap content in a <section> with an uppercase tracked heading."""
-    return f'<section><h2>{title}</h2>{content}</section>'
+    c = f' class="{cls}"' if cls else ''
+    return f'<section{c}><h2>{title}</h2>{content}</section>'
 
 
 def build_html(cv):
@@ -585,6 +596,9 @@ def build_html(cv):
         f'<a href="mailto:{contact["email"]}">{contact["email"]}</a>',
         f'<a href="{contact["website"]}">{contact["website"]}</a>',
     ]
+    orcid = load_yaml(DATA / "homepage.yml")["sidebar"].get("orcid")
+    if orcid:
+        contact_parts.append(f'ORCID <a href="https://orcid.org/{orcid}">{orcid}</a>')
     contact_html = " &nbsp;&middot;&nbsp; ".join(contact_parts)
 
     # ── Header ──────────────────────────────────────────────────────────────
@@ -631,6 +645,14 @@ def build_html(cv):
         exp_rows += row(left, right)
     experience = section("Work Experience", exp_rows)
 
+    # ── Skills ────────────────────────────────────────────────────────────────
+    skill_rows = ""
+    for s in cv.get("skills", []):
+        left  = f'<span class="inst">{s["area"]}</span>'
+        right = f'<span class="detail">{", ".join(s["items"])}</span>'
+        skill_rows += row(left, right)
+    skills = section("Skills", skill_rows) if skill_rows else ""
+
     # ── Awards ────────────────────────────────────────────────────────────────
     award_rows = ""
     for a in cv["awards"]:
@@ -666,7 +688,7 @@ def build_html(cv):
             year = str(p.get("date", ""))[:4]
             pub_rows += row(f'<span class="date">{year}</span>', _pub_cite(p))
 
-    publications = section("Publications", pub_rows)
+    publications = section("Publications", pub_rows, "flow")
 
     # ── Conferences ───────────────────────────────────────────────────────────
     conferences = load_works("conference")
@@ -687,7 +709,7 @@ def build_html(cv):
         conf_rows += row(left, right)
     conferences_sec = section("Conferences", conf_rows)
 
-    body = (header + interests + education + experience + awards
+    body = (header + interests + education + experience + skills + awards
             + additional + publications + conferences_sec)
 
     return f"""<!DOCTYPE html>
@@ -799,6 +821,12 @@ def build_html_short(cv, home):
         exp_rows += short_row(e.get("time"), content)
     experience = section("Experience", exp_rows)
 
+    # one paragraph, like interests, to stay on one page; the first two groups
+    # (tools, methods) only, since the experience bullets already cover the rest
+    skill_items = [i for s in cv.get("skills", [])[:2] for i in s["items"]]
+    skills = (section("Skills", f'<p class="interests">{" · ".join(skill_items)}</p>')
+              if skill_items else "")
+
     extra_rows = ""
     for e in cv["additional_experiences"]:
         content = f'<p><span class="t">{e["title"]}</span>, <span class="org">{e["institution"]}</span></p>'
@@ -829,7 +857,7 @@ def build_html_short(cv, home):
         award_rows += short_row(a["year"], f'<p>{a["title"]}, <span class="org">{a["institution"]}</span></p>')
     awards = section("Awards", award_rows)
 
-    body = header + interests + experience + additional + education + publications + awards
+    body = header + interests + experience + skills + additional + education + publications + awards
     return f"""<!DOCTYPE html>
 <html>
 <head>
@@ -925,7 +953,7 @@ header {
 h1 {
   font-size: 21pt;
   font-weight: bold;
-  letter-spacing: 4pt;
+  letter-spacing: 0.08em;  /* wider tracking splits letters in PDF text extraction (ATS) */
   margin-bottom: 5pt;
 }
 .address {
@@ -940,10 +968,12 @@ h1 {
 
 /* ── Section headers ─────────────────────────────────────────── */
 section { margin-bottom: 12pt; }
+/* keep short sections on one page; only publications flows across pages */
+section:not(.flow) { page-break-inside: avoid; }
 
 h2 {
   font-size: 7.5pt;
-  letter-spacing: 2.5pt;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: #666;
   font-weight: bold;
@@ -989,7 +1019,7 @@ h2 {
 .detail { font-size: 8.5pt; color: #444; }
 .tag {
   font-size: 7pt;
-  letter-spacing: 1pt;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: #888;
 }
