@@ -25,7 +25,7 @@
   <header class="cv-head">
     <p class="cv-name">{{ $cv.header.name }}</p>
     <p class="cv-address">{{ $cv.header.address }}</p>
-    <p class="cv-contact">{{ if $cv.show_phone_number }}{{ $cv.contact.phone }} · {{ end }}<a href="mailto:{{ $cv.contact.email }}">{{ $cv.contact.email }}</a> · <a href="{{ $cv.contact.website }}">{{ $cv.contact.website }}</a></p>
+    <p class="cv-contact">{{ if $cv.show_phone_number }}{{ $cv.contact.phone }} · {{ end }}<a href="mailto:{{ $cv.contact.email }}">{{ $cv.contact.email }}</a> · <a href="{{ $cv.contact.website }}">{{ $cv.contact.website }}</a>{{ with $hp.sidebar.orcid }} · ORCID <a href="https://orcid.org/{{ . }}" target="_blank" rel="noreferrer noopener">{{ . }}</a>{{ end }}</p>
   </header>
 
   <section class="cv-section">
@@ -62,6 +62,18 @@
     </div>
     {{- end }}
   </section>
+
+  {{- with $cv.skills }}
+  <section class="cv-section">
+    <h2>{{ i18n "cv_skills" }}</h2>
+    {{- range . }}
+    <div class="cv-row">
+      <div class="cv-l"><span class="cv-inst">{{ .area }}</span></div>
+      <div class="cv-r"><span class="cv-detail">{{ delimit .items ", " }}</span></div>
+    </div>
+    {{- end }}
+  </section>
+  {{- end }}
 
   <section class="cv-section">
     <h2>{{ i18n "cv_awards" }}</h2>

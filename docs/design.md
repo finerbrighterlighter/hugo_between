@@ -401,7 +401,7 @@ repeated that read as a legend, and the figure is not a chart with a legend.
 The CV pill led straight to the PDF, which is what a visitor wants and nothing more. It now leads to `/cv/`, a
 page in the PDF's manner (`layouts/_default/cv.html`): the name over a rule, tracked section heads over
 hairlines, two-column rows with the when-and-where on the left and the what on the right, all in Karla, the
-site's sans, where the PDF uses Lato. It reads the same `data/cv.yml` and works front matter the builder reads,
+site's sans (the PDF used Lato until 2026-10-14, when it moved to the one-page CV's Newsreader and Karla). It reads the same `data/cv.yml` and works front matter the builder reads,
 so page and PDF say the same thing; the builder is untouched and its outputs unchanged. The page ends with the
 three downloads, PDF, Markdown and vCard. English only, like the work pages: the pill reads "CV" on both homes, as
 the ORCID pill does, the switch on the page is struck through, and `lang-return.js` keeps the navigation Burmese.

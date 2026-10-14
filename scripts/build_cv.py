@@ -603,7 +603,7 @@ def build_html(cv):
 
     # ── Header ──────────────────────────────────────────────────────────────
     header = f"""<header>
-      <h1>{cv['header']['name'].upper()}</h1>
+      <h1>{cv['header']['name']}</h1>
       <p class="address">{cv['header']['address']}</p>
       <p class="contact">
         {contact_html}
@@ -612,7 +612,7 @@ def build_html(cv):
 
     # ── Research Interests ───────────────────────────────────────────────────
     interests = section("Research Interests",
-        row("", "; ".join(cv["research_interests"])))
+        f'<p class="interests">{" · ".join(cv["research_interests"])}</p>')
 
     # ── Education ────────────────────────────────────────────────────────────
     edu_rows = ""
@@ -930,125 +930,92 @@ li::before { content: "–"; display: inline-block; width: 3.5mm; text-indent: 0
 
 
 # ── Stylesheet ────────────────────────────────────────────────────────────────
+# Same type and colours as the one-page CV (CSS_SHORT), in the long CV's 30/70 grid.
 CSS = """
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,400&display=swap');
+@font-face { font-family: Newsreader; font-style: normal; font-weight: 200 800;
+  src: url("static/fonts/newsreader-latin-opsz-normal.woff2") format("woff2"); }
+@font-face { font-family: Newsreader; font-style: italic; font-weight: 200 800;
+  src: url("static/fonts/newsreader-latin-opsz-italic.woff2") format("woff2"); }
+@font-face { font-family: Karla; font-style: normal; font-weight: 200 800;
+  src: url("static/fonts/karla-latin-wght-normal.woff2") format("woff2"); }
+@font-face { font-family: Karla; font-style: italic; font-weight: 200 800;
+  src: url("static/fonts/karla-latin-wght-italic.woff2") format("woff2"); }
 
-@page { margin: 2cm 2.2cm; size: A4; }
+@page { size: A4; margin: 18mm 20mm 17mm; }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  font-family: Lato, "Helvetica Neue", Arial, sans-serif;
+  font-family: Newsreader, Georgia, serif;
   font-size: 10pt;
-  color: #1a1a1a;
-  line-height: 1.55;
+  line-height: 1.4;
+  color: #1b1d20;
 }
+a { color: inherit; text-decoration: underline; text-decoration-color: #8a5a0c; }
+b { font-weight: 600; }
 
 /* ── Header ─────────────────────────────────────────────────── */
-header {
-  margin-bottom: 18pt;
-  padding-bottom: 10pt;
-  border-bottom: 1pt solid #1a1a1a;
-}
+header { margin-bottom: 4pt; }
 h1 {
-  font-size: 21pt;
-  font-weight: bold;
-  letter-spacing: 0.08em;  /* wider tracking splits letters in PDF text extraction (ATS) */
-  margin-bottom: 5pt;
+  font-weight: 400; font-size: 24pt; line-height: 1.1;
+  letter-spacing: 0.02em;  /* wider tracking splits letters in PDF text extraction (ATS) */
+  margin-bottom: 2mm;
 }
-.address {
-  font-size: 8.5pt;
-  color: #555;
-  margin-bottom: 1pt;
-}
-.contact {
-  font-size: 8.5pt;
-  color: #555;
-}
+.address { font-style: italic; font-size: 10pt; color: #1b1d20; }
+.contact { margin-top: 2mm; font-family: Karla, sans-serif; font-size: 8.5pt; color: #5b5f66; }
 
-/* ── Section headers ─────────────────────────────────────────── */
-section { margin-bottom: 12pt; }
+/* ── Sections ─────────────────────────────────────────────────── */
+section { margin-top: 11pt; }
 /* keep short sections on one page; only publications flows across pages */
 section:not(.flow) { page-break-inside: avoid; }
 
 h2 {
-  font-size: 7.5pt;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #666;
-  font-weight: bold;
-  border-top: 0.5pt solid #bbb;
-  padding-top: 5pt;
-  margin-bottom: 7pt;
+  margin-bottom: 3mm; padding-bottom: 1mm;
+  border-bottom: 0.4pt solid #8a5a0c;
+  font-family: Karla, sans-serif; font-weight: 600; font-size: 7.5pt;
+  letter-spacing: 0.08em; text-transform: uppercase; color: #8a5a0c;
 }
 
+.interests { font-family: Karla, sans-serif; font-size: 8.5pt; line-height: 1.5; }
+
 .sub-header {
-  font-size: 8.5pt;
-  font-style: italic;
-  color: #666;
-  margin: 8pt 0 4pt;
-  padding-left: 30%;
+  margin: 8pt 0 4pt; padding-left: 30%;
+  font-family: Karla, sans-serif; font-size: 8pt; font-style: italic; color: #5b5f66;
 }
 
 /* ── Two-column rows ─────────────────────────────────────────── */
-.row {
-  display: flex;
-  margin-bottom: 7pt;
-  page-break-inside: avoid;
-}
+.row { display: flex; page-break-inside: avoid; }
+.row + .row { margin-top: 6pt; }
 .col-l {
-  width: 30%;
-  min-width: 30%;
-  padding-right: 14pt;
-  font-size: 8.5pt;
-  color: #555;
-  line-height: 1.5;
+  width: 30%; min-width: 30%; padding-right: 14pt; padding-top: 1pt;
+  font-family: Karla, sans-serif; font-size: 8pt; line-height: 1.4; color: #5b5f66;
 }
-.col-r {
-  flex: 1;
-  font-size: 9.5pt;
-  line-height: 1.55;
-}
+.col-r { flex: 1; font-size: 10pt; line-height: 1.4; }
 
 /* ── Type tokens ─────────────────────────────────────────────── */
-.date   { font-size: 8.5pt; color: #333; }
-.inst   { font-style: italic; color: #555; font-size: 8.5pt; }
-.meta   { font-size: 7.5pt; color: #888; }
-.role   { font-weight: bold; font-size: 9.5pt; }
-.field  { font-style: italic; font-size: 9pt; color: #333; }
-.detail { font-size: 8.5pt; color: #444; }
+.date   { color: #1b1d20; }
+.inst   { font-style: italic; }
+.col-r .inst { font-family: Newsreader, Georgia, serif; font-size: 9.5pt; color: #5b5f66; }
+.meta   { font-size: 7.5pt; }
+.role   { font-weight: 600; }
+.field  { font-style: italic; }
+.detail { font-size: 9.5pt; }
 .tag {
-  font-size: 7pt;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #888;
+  font-size: 7pt; letter-spacing: 0.08em; text-transform: uppercase; color: #8a5a0c;
 }
 
-/* ── Bullet lists ────────────────────────────────────────────── */
-.bullets {
-  margin: 3pt 0 0;
-  padding: 0;
-  list-style: none;
-  font-size: 9pt;
+/* ── Bullet lists: inline dash with a hanging indent;
+      positioned markers break PDF text order ─────────────────── */
+.bullets { list-style: none; margin-top: 1mm; font-size: 9.5pt; }
+.bullets li { padding-left: 3.5mm; text-indent: -3.5mm; }
+.bullets li + li { margin-top: 0.8pt; }
+.bullets li::before {
+  content: "–"; display: inline-block; width: 3.5mm; text-indent: 0; color: #8a5a0c;
 }
-.bullets li {
-  padding-left: 11pt;
-  text-indent: -11pt;
-  margin-bottom: 1.5pt;
-}
-.bullets li::before { content: "· "; color: #888; }
-
 .bullet-links {
-  display: block;
-  text-indent: 0;
-  padding-left: 11pt;
-  font-size: 7.5pt;
-  color: #888;
-  margin-top: 1pt;
+  display: block; text-indent: 0; margin-top: 0.5pt;
+  font-family: Karla, sans-serif; font-size: 7.5pt; color: #5b5f66;
 }
-
-/* ── Links ───────────────────────────────────────────────────── */
-a { color: #1a1a1a; text-decoration: none; }
 """
 
 
