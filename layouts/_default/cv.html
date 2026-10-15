@@ -30,7 +30,7 @@
 
   <section class="cv-section">
     <h2>{{ i18n "cv_interests" }}</h2>
-    <div class="cv-row"><div class="cv-l"></div><div class="cv-r">{{ delimit $cv.research_interests "; " }}</div></div>
+    <p class="cv-interests">{{ delimit $cv.research_interests " · " }}</p>
   </section>
 
   <section class="cv-section">
