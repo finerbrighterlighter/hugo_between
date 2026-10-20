@@ -34,7 +34,7 @@
 
 /* BUILT WITH */
 
-    Hugo, no theme, no framework. Netlify. KaTeX for the mathematics,
+    Hugo, no theme, no framework. Cloudflare. KaTeX for the mathematics,
     Mermaid for the diagrams, GoatCounter for the counting — its dashboard
     is public, at stats.htunteza.com, because numbers about you should be
     numbers you can see.

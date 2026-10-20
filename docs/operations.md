@@ -15,8 +15,8 @@ The gate is always the same command, and it is the answer to "did I break anythi
 npm run qc               # about two and a half minutes, nine checks
 ```
 
-If `hugo:check` fails, your PATH is pointing at the wrong Hugo. The site is pinned to 0.157.0 extended in
-`netlify.toml`, and CI installs exactly that. Prepend the pinned build to PATH, or set it in `.env` as
+If `hugo:check` fails, your PATH is pointing at the wrong Hugo. The site is pinned to 0.168.0 extended in
+`build.sh`, and CI installs exactly that. Prepend the pinned build to PATH, or set it in `.env` as
 `.env.example` describes and run through `dotenv`.
 
 ---
@@ -154,7 +154,7 @@ document without the PIN.
 1. Put the PDF under `static/general/documents/` with an opaque filename.
 2. Add an entry to `data/protected_documents.yml`, including `accepted_public_disclosure: true`.
 3. Add a page with `layout: protected-document`, `private: true` and `protected_document: <key>`.
-4. Add `no-store` and `noindex` headers for the path in `netlify.toml`.
+4. Add `no-store` and `noindex` headers for the path in `static/_headers`.
 
 Step 2 is a statement that disclosure of this specific file would be unwelcome but not harmful. The build fails
 without it. If that sentence is not true of your document, this template is the wrong tool and you need real
@@ -175,7 +175,7 @@ It reads `data/cv.yml`, `data/homepage.yml` and the works, and writes the PDF an
 
 ## Add an external script, font or API
 
-**Update the Content-Security-Policy in `netlify.toml` first.** The policy is enforced, so anything you add
+**Update the Content-Security-Policy in `static/_headers` first.** The policy is enforced, so anything you add
 without listing it will silently fail in production and work fine in `hugo server`, which sends no headers.
 
 - A script host goes in `script-src`, path-scoped where possible.
@@ -216,7 +216,7 @@ What each step is actually asserting:
 
 | Step | Fails when |
 |---|---|
-| `hugo:check` | the Hugo on PATH is not the pinned extended 0.157.0 |
+| `hugo:check` | the Hugo on PATH is not the pinned extended 0.168.0 |
 | `build` | the build errors, including the institution and protected-document guards |
 | `links` | any internal link, image or asset reference does not resolve, in either language |
 | `a11y` | axe finds a WCAG 2.1 AA violation, on desktop or phone, light or dark, either language, balloon open or closed, or the page scrolls sideways at 320px |
@@ -244,11 +244,16 @@ publisher being down is not your bug. A weekly workflow runs it.
 
 ## Deploy
 
-Netlify builds `hugo --gc --minify` with Hugo 0.157.0 from `netlify.toml`. Push to the deploy branch and it
-goes out. There is nothing to run by hand.
+Cloudflare Workers Builds deploys `main`. It runs `npx wrangler deploy`, which runs `build.sh` (from
+`wrangler.jsonc`): that installs the pinned Hugo and builds `hugo --gc --minify` into `public/`. Push to `main`
+and it goes out. There is nothing to run by hand. The `HUGO_*` API keys are Cloudflare build variables.
+
+`static/_headers` and `static/_redirects` hold the headers and redirects. Cloudflare allows one splat per rule
+and joins a header that several rules set, so read the notes at the top of `_headers` before adding a rule.
+`npx wrangler dev` serves the built site with both applied, which `hugo server` does not.
 
 Public URLs are preserved from the previous site and must stay that way. If you change a path, add a redirect
-in `netlify.toml` rather than breaking the old one.
+in `static/_redirects` rather than breaking the old one.
 
 ---
 

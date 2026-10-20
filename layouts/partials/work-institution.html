@@ -11,7 +11,7 @@
        the claim. */ -}}
 {{- $key := .Params.institution -}}
 {{- with $key -}}
-  {{- $inst := index site.Data.institutions . -}}
+  {{- $inst := index hugo.Data.institutions . -}}
   {{- if not $inst -}}
     {{- errorf "work %q sets institution %q, which is not in data/institutions.yml. A mark asserts an affiliation, so a typo must fail rather than quietly drop it." $.File.Path . -}}
   {{- else -}}

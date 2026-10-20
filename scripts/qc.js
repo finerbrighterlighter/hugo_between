@@ -11,7 +11,7 @@
  * this script starts and stops, except the ones that need Hugo's dev server
  * (marked `dev`), which get one too.
  *
- *   1. hugo:check   the Hugo on PATH matches netlify.toml
+ *   1. hugo:check   the Hugo on PATH matches build.sh
  *   2. build        hugo --gc --minify
  *   3. links        no broken internal links in either language
  *   4. a11y         axe-core, desktop and phone, light and dark, both languages

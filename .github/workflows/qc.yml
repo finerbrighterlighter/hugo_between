@@ -21,12 +21,12 @@ jobs:
       - name: Install QC tooling
         run: npm ci
 
-      - name: Install Hugo extended 0.157.0
-        # Must match HUGO_VERSION in netlify.toml. `npm run qc` asserts this too,
+      - name: Install Hugo extended 0.168.0
+        # Must match HUGO_VERSION in build.sh. `npm run qc` asserts this too,
         # so a drift here fails the run rather than silently testing a different Hugo.
         uses: peaceiris/actions-hugo@v3
         with:
-          hugo-version: '0.157.0'
+          hugo-version: '0.168.0'
           extended: true
 
       - name: Full QC suite

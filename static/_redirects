@@ -1,5 +1,5 @@
-# Cloudflare port of the [[redirects]] in netlify.toml. Keep the two in step
-# until Netlify is retired. build.sh copies this file into public/.
+# Cloudflare Workers static-assets redirects. Hugo copies this file into
+# public/; Cloudflare applies it and does not serve it.
 
 # Section feeds that briefly existed; the one real feed is /index.xml.
 /posts/index.xml /index.xml 301
@@ -9,9 +9,9 @@
 /general/msc_transcript_htunteza.pdf /general/msc-transcript/ 301
 /general/bds_transcript_htunteza.pdf /general/bds-transcript/ 301
 
-# Netlify matches paths case-insensitively and 301s these mixed-case post URLs
-# to lowercase, so the lowercase forms are the ones out in the wild. Cloudflare
-# matches case-sensitively, so send the lowercase forms to the real pages.
+# Netlify, the previous host, matched paths case-insensitively and 301ed these
+# mixed-case post URLs to lowercase, so the lowercase forms are the ones out in
+# the wild. Cloudflare matches case-sensitively; send them to the real pages.
 /posts/260515-opencode-librarian-system/* /posts/260515-Opencode-Librarian-System/:splat 301
 /posts/i_was_a_dentist/* /posts/I_was_a_dentist/:splat 301
 /posts/dschc/* /posts/DScHc/:splat 301

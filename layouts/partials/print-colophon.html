@@ -28,7 +28,7 @@
 {{- with .Params.venue -}}{{- $label = . -}}{{- end -}}
 {{- if not $label -}}
   {{- with .Params.institution -}}
-    {{- with index site.Data.institutions . -}}{{- $label = .name -}}{{- end -}}
+    {{- with index hugo.Data.institutions . -}}{{- $label = .name -}}{{- end -}}
   {{- end -}}
 {{- end -}}
 

@@ -48,8 +48,8 @@ used above, before changing anything.
 
 ## What was rejected, and why
 
-**Git LFS.** Would shrink clones but adds a tool every contributor must install, needs Netlify support enabled
-for builds, and exceeds GitHub's free 1 GB storage and bandwidth allowance for a site this size. The problem it
+**Git LFS.** Would shrink clones but adds a tool every contributor must install, needs LFS support in the
+build, and exceeds GitHub's free 1 GB storage and bandwidth allowance for a site this size. The problem it
 solves is not one that hurts here.
 
 **Archival masters outside the repository.** The cleanest repository, but it splits the site's history across

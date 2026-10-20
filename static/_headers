@@ -1,12 +1,20 @@
-# Cloudflare port of the [[headers]] in netlify.toml. Keep the two in step
-# until Netlify is retired; the CSP rationale is in the comments there.
-# build.sh copies this file into public/.
+# Cloudflare Workers static-assets headers. Hugo copies this file into public/;
+# Cloudflare applies it and does not serve it.
 #
-# Two differences from Netlify's matching:
-# - A rule allows one splat, so netlify.toml's `*_hu_*` becomes `*_hu_:hash`
-#   (the placeholder takes the hash and extension, `c9b5…1f3d.webp`).
+# Matching rules worth knowing:
+# - A rule allows one splat, so processed images match `*_hu_:hash` rather than
+#   `*_hu_*` (the placeholder takes the hash and extension, `c9b5…1f3d.webp`).
 # - A header set by several matching rules is joined with a comma, so a more
 #   specific rule detaches the broader Cache-Control (`! Cache-Control`) first.
+#
+# Enforced CSP. No 'unsafe-inline' for scripts: the theme pre-paint is an
+# external blocking script (static/js/theme-init.js); everything else is a module.
+#   script-src  self + GoatCounter + Mermaid ESM from jsDelivr (path-scoped)
+#   style-src   'unsafe-inline' stays: Chroma/KaTeX inline style attrs, Mermaid <style> in SVG
+#   font-src    self (Newsreader, Karla, Noto Myanmar are self-hosted under /fonts/)
+#   connect-src live-data APIs + doi.org content negotiation (redirects to Crossref/DataCite/mEDRA)
+#   frame-src   blob: for the protected-document PDF iframe
+#   img-src     https: because Last.fm/AniList/Simkl/Unsplash covers come from their CDNs
 
 /*
   X-Frame-Options: SAMEORIGIN
@@ -16,8 +24,8 @@
   Strict-Transport-Security: max-age=31536000; includeSubDomains
   Content-Security-Policy: default-src 'self'; script-src 'self' https://gc.zgo.at https://cdn.jsdelivr.net/npm/mermaid@11/; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https:; media-src 'self'; connect-src 'self' https://api.github.com https://api.openalex.org https://api.unsplash.com https://doi.org https://api.crossref.org https://data.crossref.org https://api.datacite.org https://data.datacite.org https://data.medra.org https://graphql.anilist.co https://api.simkl.com https://ws.audioscrobbler.com https://gc.zgo.at https://stats.htunteza.com; frame-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; manifest-src 'self'
 
-# Netlify adds charset=utf-8 to text files; Cloudflare sends bare text/plain,
-# which shows the Burmese in llms.txt as mojibake.
+# Cloudflare sends bare text/plain, which shows the Burmese in llms.txt as
+# mojibake.
 /*.txt
   Content-Type: text/plain; charset=utf-8
 
@@ -53,8 +61,8 @@
 /general/cv_short/*
   Cache-Control: public, max-age=86400
 
-# netlify.toml also sets no-store on the two old transcript PDFs. Here
-# _redirects sends both away before any asset is served, so they need no rule.
+# The two old transcript PDFs need no rule: _redirects sends both away before
+# any asset is served.
 /general/documents/d6e5609a2d5acdbcd5627a56cdb2ea50.pdf
   Cache-Control: private, no-store
   X-Robots-Tag: noindex, noarchive, nosnippet

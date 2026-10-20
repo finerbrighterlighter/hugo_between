@@ -14,7 +14,7 @@ API as this account, including any write scopes the token carries.
 
 **Why it is accepted.** The "Lately" panel shows what has recently been watched. The data it exposes is already
 public on the Simkl profile, and the panel is a personal flourish rather than a feature anyone depends on.
-A server-side proxy would mean introducing a Netlify function, a deploy-time secret and a failure mode for a
+A server-side proxy would mean introducing Worker code, a deploy-time secret and a failure mode for a
 decorative strip. The site is otherwise fully static, and keeping it static is worth more than hiding a token
 that guards nothing sensitive.
 
@@ -40,7 +40,7 @@ Three consequences follow, and all three are known:
 - The PDF URL is in the page source. Anyone who reads the markup can request the file directly without entering
   a PIN.
 - The salt and verifier are in the page source and the PIN is numeric, so the PIN can be recovered offline in
-  seconds. The `no-store` and `noindex` headers in `netlify.toml` keep the documents out of search results and
+  seconds. The `no-store` and `noindex` headers in `static/_headers` keep the documents out of search results and
   caches; they grant no authorization.
 - Both transcripts currently share one salt and one verifier, so a single PIN opens both.
 
@@ -57,7 +57,7 @@ The gate makes the reader pause and signals that the document is personal. That 
   universities.
 - Never route a genuinely confidential document through this template. It is for documents whose disclosure is
   merely unwelcome, not harmful.
-- Real confidentiality needs the PDFs out of the publish directory and behind a Netlify function, signed
+- Real confidentiality needs the PDFs out of the publish directory and behind Worker code, signed
   expiring URLs, or another authenticated backend. Until that exists, the answer to "can I protect X with this?"
   is no.
 - Changing the PIN is cosmetic. It does not re-protect a URL that has already been published.

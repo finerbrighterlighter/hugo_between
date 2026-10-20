@@ -1,7 +1,8 @@
 # htunteza.com — hugo_between
 
 Personal website of Htun Teza, rebuilt in 2026 as an editorial two-voice page (see `docs/design.md`).
-Hugo 0.157 (pinned in `netlify.toml`), no theme, no build step beyond Hugo's own pipes.
+Hugo 0.168 (pinned in `build.sh`), no theme, no build step beyond Hugo's own pipes. Hosted on Cloudflare
+Workers static assets (`wrangler.jsonc`).
 
 **[docs/operations.md](docs/operations.md) is the task-first guide**: how to add a post or a paper, put an
 institution mark on a work, gate a document, add an external script, read a QC failure, and push this
@@ -24,7 +25,7 @@ CHROME_PATH=/usr/bin/chromium npm run qc      # use a system Chrome instead of p
 
 | step | what it asserts |
 |---|---|
-| `hugo:check` | the Hugo on PATH is the extended 0.157.0 that `netlify.toml` pins |
+| `hugo:check` | the Hugo on PATH is the extended 0.168.0 that `build.sh` pins |
 | `build` | `hugo --gc --minify` |
 | `links` | no broken internal link in either language |
 | `a11y` | axe-core WCAG 2.1 AA, desktop and phone, light and dark, both languages, balloon open, no reflow at 320px. Third-party requests are blocked, so the gate does not depend on the live APIs being up |

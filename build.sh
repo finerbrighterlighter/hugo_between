@@ -5,12 +5,13 @@
 # Adapted from https://gohugo.io/host-and-deploy/deploy-to-cloudflare/
 #
 # The site needs only Hugo extended: no Dart Sass, Go modules or Node packages.
-# HUGO_VERSION must match netlify.toml; scripts/check-hugo.js asserts that.
+# HUGO_VERSION is the site's one Hugo pin. scripts/check-hugo.js reads it, and
+# the GitHub workflows must install the same version.
 #------------------------------------------------------------------------------
 
 set -euo pipefail
 
-HUGO_VERSION=0.157.0
+HUGO_VERSION=0.168.0
 
 # Same zone as params.timezone in hugo.toml.
 TZ=Asia/Bangkok
@@ -50,12 +51,6 @@ main() {
 
   echo "Building the project..."
   hugo --gc --minify
-
-  # Netlify reads redirects and headers from netlify.toml. Cloudflare reads them
-  # from _redirects and _headers in the asset directory. They live in cloudflare/
-  # rather than static/ so Netlify does not apply them a second time.
-  echo "Copying Cloudflare _redirects and _headers..."
-  cp cloudflare/_redirects cloudflare/_headers public/
 }
 
 main "$@"

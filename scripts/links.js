@@ -5,8 +5,8 @@
 //
 // Walks every .html under dir, pulls href/src/srcset/poster/data-src values
 // (plus <link href>), resolves internal URLs against the page path and checks
-// that the target exists as a file, dir/index.html or path.html. Paths listed
-// as `from = "..."` in netlify.toml [[redirects]] count as valid targets.
+// that the target exists as a file, dir/index.html or path.html. Exact source
+// paths in static/_redirects count as valid targets.
 // Prints `page -> href` per broken link, a summary, exits 1 if any broken.
 
 const fs = require('fs');
@@ -20,14 +20,17 @@ if (!fs.existsSync(ROOT) || !fs.statSync(ROOT).isDirectory()) {
   process.exit(2);
 }
 
-// --- netlify redirects -----------------------------------------------------
+// --- redirects -------------------------------------------------------------
 const redirectFroms = new Set();
 try {
-  const toml = fs.readFileSync(path.join(REPO, 'netlify.toml'), 'utf8');
-  const re = /^\s*from\s*=\s*"([^"]+)"/gm;
-  let m;
-  while ((m = re.exec(toml))) redirectFroms.add(m[1].replace(/\/+$/, '') || '/');
-} catch (_) { /* no netlify.toml: nothing to honour */ }
+  const lines = fs.readFileSync(path.join(REPO, 'static/_redirects'), 'utf8').split('\n');
+  for (const line of lines) {
+    const from = line.trim().split(/\s+/)[0];
+    // Skip comments, blanks and splat/placeholder rules: only exact paths are link targets.
+    if (!from || from.startsWith('#') || /[*:]/.test(from)) continue;
+    redirectFroms.add(from.replace(/\/+$/, '') || '/');
+  }
+} catch (_) { /* no _redirects: nothing to honour */ }
 
 // --- walk ------------------------------------------------------------------
 const htmlFiles = [];

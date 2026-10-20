@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * csp_check.js — serve a built site with the production Content-Security-Policy
- * from netlify.toml and report CSP violations, page errors and failed requests
+ * from static/_headers and report CSP violations, page errors and failed requests
  * for the key pages. `hugo server` sends no headers, so this is the only local
  * way to see what the enforced policy will block.
  *
@@ -29,9 +29,9 @@ function resolvePuppeteer() {
   throw new Error('puppeteer not found: npm i -g puppeteer (or pa11y)');
 }
 
-const toml = fs.readFileSync(path.join(REPO, 'netlify.toml'), 'utf8');
-const CSP = (toml.match(/^\s*Content-Security-Policy\s*=\s*"([^"]+)"/m) || [])[1];
-if (!CSP) { console.error('No Content-Security-Policy in netlify.toml'); process.exit(2); }
+const headers = fs.readFileSync(path.join(REPO, 'static/_headers'), 'utf8');
+const CSP = (headers.match(/^\s*Content-Security-Policy:\s*(.+?)\s*$/m) || [])[1];
+if (!CSP) { console.error('No Content-Security-Policy in static/_headers'); process.exit(2); }
 
 const MIME = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript',
   '.mjs': 'text/javascript', '.json': 'application/json', '.webp': 'image/webp', '.png': 'image/png',

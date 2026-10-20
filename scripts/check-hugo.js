@@ -2,10 +2,10 @@
 /**
  * check-hugo.js — assert the Hugo on PATH is the version this site is pinned to.
  *
- * netlify.toml's HUGO_VERSION is the single source of truth: production builds
- * with it, and CI installs it. A local machine can easily have a newer Hugo first
- * on PATH, which is how a template change can pass locally and behave differently
- * on deploy. This turns that into a loud failure instead of a silent difference.
+ * build.sh's HUGO_VERSION is the single source of truth: the Cloudflare build
+ * installs it, and CI installs the same version. A local machine can easily have
+ * a newer Hugo first on PATH, which is how a template change can pass locally and
+ * behave differently on deploy. This turns that into a loud failure instead of a silent difference.
  *
  * Exit 0 when the versions match, 1 when they do not, 2 when Hugo or the pin
  * cannot be read. Pass --warn to report a mismatch without failing.
@@ -22,26 +22,16 @@ function fail(message, code = 2) {
   process.exit(code);
 }
 
-let netlify;
-try {
-  netlify = fs.readFileSync(path.join(root, 'netlify.toml'), 'utf8');
-} catch {
-  fail('cannot read netlify.toml');
-}
-
-const pinMatch = netlify.match(/^\s*HUGO_VERSION\s*=\s*"([^"]+)"/m);
-if (!pinMatch) fail('no HUGO_VERSION found in netlify.toml');
-const pinned = pinMatch[1];
-
-// build.sh installs Hugo for the Cloudflare build and must carry the same pin.
 let buildSh;
 try {
   buildSh = fs.readFileSync(path.join(root, 'build.sh'), 'utf8');
 } catch {
   fail('cannot read build.sh');
 }
-const cfPin = (buildSh.match(/^HUGO_VERSION=(\S+)/m) || [])[1];
-if (cfPin !== pinned) fail(`build.sh pins Hugo ${cfPin}, netlify.toml pins ${pinned}`, 1);
+
+const pinMatch = buildSh.match(/^HUGO_VERSION=(\S+)/m);
+if (!pinMatch) fail('no HUGO_VERSION found in build.sh');
+const pinned = pinMatch[1];
 
 let reported;
 try {
@@ -56,12 +46,12 @@ if (!found) fail(`could not parse a version from: ${reported.trim()}`);
 const extended = /\+extended/.test(reported);
 
 if (found === pinned && extended) {
-  console.log(`check-hugo: ok — hugo ${found} extended, matching netlify.toml`);
+  console.log(`check-hugo: ok — hugo ${found} extended, matching build.sh`);
   process.exit(0);
 }
 
 const problems = [];
-if (found !== pinned) problems.push(`version is ${found}, netlify.toml pins ${pinned}`);
+if (found !== pinned) problems.push(`version is ${found}, build.sh pins ${pinned}`);
 if (!extended) problems.push('this build is not the extended edition (the site needs it for WebP and SCSS)');
 
 const message =

@@ -108,7 +108,10 @@ buildFuture = true
     dir = ":cacheDir/images"
 
 [imaging]
-  quality = 82
+  [imaging.jpeg]
+    quality = 82
+  [imaging.webp]
+    quality = 82
 
 [sitemap]
   changefreq = "monthly"

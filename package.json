@@ -2,7 +2,7 @@
   "name": "hugo-between",
   "private": true,
   "type": "commonjs",
-  "description": "QC tooling for htunteza.com (Hugo 0.157, no theme)",
+  "description": "QC tooling for htunteza.com (Hugo 0.168, no theme)",
   "scripts": {
     "build": "hugo --gc --minify",
     "smoke": "node scripts/smoke.js",

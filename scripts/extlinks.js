@@ -6,7 +6,7 @@
 //
 // Walks every .html under dir (default: public), collects absolute http(s)
 // URLs from href/src attributes, and adds each API origin listed in the
-// netlify.toml CSP `connect-src` as a health target. Every unique URL gets a
+// static/_headers CSP `connect-src` as a health target. Every unique URL gets a
 // HEAD (retried as GET on 405/403/501) with a 15s timeout, at most 6 requests
 // in flight globally, at most 1 per host with a 1s gap between same-host hits,
 // and one 429 back-off of up to 30s honouring Retry-After.
@@ -73,19 +73,19 @@ function pageUrlPath(file) {
   return rel.endsWith('/index.html') ? rel.slice(0, -'index.html'.length) : rel;
 }
 
-// --- netlify CSP connect-src ----------------------------------------------
+// --- CSP connect-src -----------------------------------------------------
 // The APIs the browser modules talk to live in connect-src. Their origins are
 // health targets in their own right: a dead API is invisible to a link check
 // of the HTML, because nothing in the markup points at it.
 function apiOriginsFromCsp() {
   const origins = new Set();
-  let toml;
+  let headers;
   try {
-    toml = fs.readFileSync(path.join(REPO, 'netlify.toml'), 'utf8');
+    headers = fs.readFileSync(path.join(REPO, 'static/_headers'), 'utf8');
   } catch (_) {
-    return origins; // no netlify.toml: nothing to derive
+    return origins; // no _headers: nothing to derive
   }
-  const csp = toml.match(/Content-Security-Policy\s*=\s*"([^"]*)"/);
+  const csp = headers.match(/Content-Security-Policy:\s*(.*)/);
   if (!csp) return origins;
   const directive = csp[1].split(';').map((d) => d.trim()).find((d) => d.startsWith('connect-src'));
   if (!directive) return origins;
@@ -283,7 +283,7 @@ function printReport(report) {
   const { counts, results, pagesScanned, apiTargets, allowlist } = report;
   const lines = [];
   lines.push(`external links: ${pagesScanned} pages scanned, ${results.length} unique external URLs checked`);
-  lines.push(`  (${apiTargets.length} of them API origins from the netlify.toml connect-src)`);
+  lines.push(`  (${apiTargets.length} of them API origins from the static/_headers connect-src)`);
   lines.push('');
   lines.push('status breakdown');
   for (const s of STATUS_ORDER) {
