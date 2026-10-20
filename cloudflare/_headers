@@ -16,6 +16,11 @@
   Strict-Transport-Security: max-age=31536000; includeSubDomains
   Content-Security-Policy: default-src 'self'; script-src 'self' https://gc.zgo.at https://cdn.jsdelivr.net/npm/mermaid@11/; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https:; media-src 'self'; connect-src 'self' https://api.github.com https://api.openalex.org https://api.unsplash.com https://doi.org https://api.crossref.org https://data.crossref.org https://api.datacite.org https://data.datacite.org https://data.medra.org https://graphql.anilist.co https://api.simkl.com https://ws.audioscrobbler.com https://gc.zgo.at https://stats.htunteza.com; frame-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; manifest-src 'self'
 
+# Netlify adds charset=utf-8 to text files; Cloudflare sends bare text/plain,
+# which shows the Burmese in llms.txt as mojibake.
+/*.txt
+  Content-Type: text/plain; charset=utf-8
+
 /css/*
   Cache-Control: public, max-age=31536000, immutable
 

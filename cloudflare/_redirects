@@ -8,3 +8,10 @@
 # Old transcript PDFs now sit behind the protected-document pages.
 /general/msc_transcript_htunteza.pdf /general/msc-transcript/ 301
 /general/bds_transcript_htunteza.pdf /general/bds-transcript/ 301
+
+# Netlify matches paths case-insensitively and 301s these mixed-case post URLs
+# to lowercase, so the lowercase forms are the ones out in the wild. Cloudflare
+# matches case-sensitively, so send the lowercase forms to the real pages.
+/posts/260515-opencode-librarian-system/* /posts/260515-Opencode-Librarian-System/:splat 301
+/posts/i_was_a_dentist/* /posts/I_was_a_dentist/:splat 301
+/posts/dschc/* /posts/DScHc/:splat 301
