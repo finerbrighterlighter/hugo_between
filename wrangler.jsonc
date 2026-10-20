@@ -1,0 +1,14 @@
+{
+  // Cloudflare Workers static-assets deploy, following
+  // https://gohugo.io/host-and-deploy/deploy-to-cloudflare/
+  // Netlify (netlify.toml) still serves production until the move is finished.
+  "name": "htunteza",
+  "compatibility_date": "2026-10-20",
+  "build": {
+    "command": "chmod a+x build.sh && ./build.sh"
+  },
+  "assets": {
+    "directory": "./public",
+    "not_found_handling": "404-page"
+  }
+}

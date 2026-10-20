@@ -33,6 +33,16 @@ const pinMatch = netlify.match(/^\s*HUGO_VERSION\s*=\s*"([^"]+)"/m);
 if (!pinMatch) fail('no HUGO_VERSION found in netlify.toml');
 const pinned = pinMatch[1];
 
+// build.sh installs Hugo for the Cloudflare build and must carry the same pin.
+let buildSh;
+try {
+  buildSh = fs.readFileSync(path.join(root, 'build.sh'), 'utf8');
+} catch {
+  fail('cannot read build.sh');
+}
+const cfPin = (buildSh.match(/^HUGO_VERSION=(\S+)/m) || [])[1];
+if (cfPin !== pinned) fail(`build.sh pins Hugo ${cfPin}, netlify.toml pins ${pinned}`, 1);
+
 let reported;
 try {
   reported = execFileSync('hugo', ['version'], { encoding: 'utf8' });

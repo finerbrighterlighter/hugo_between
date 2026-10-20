@@ -1,0 +1,10 @@
+# Cloudflare port of the [[redirects]] in netlify.toml. Keep the two in step
+# until Netlify is retired. build.sh copies this file into public/.
+
+# Section feeds that briefly existed; the one real feed is /index.xml.
+/posts/index.xml /index.xml 301
+/works/index.xml /index.xml 301
+
+# Old transcript PDFs now sit behind the protected-document pages.
+/general/msc_transcript_htunteza.pdf /general/msc-transcript/ 301
+/general/bds_transcript_htunteza.pdf /general/bds-transcript/ 301

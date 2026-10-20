@@ -52,6 +52,12 @@ node_modules/
 # Puppeteer's downloaded browser cache, when it lands in the project.
 .cache/puppeteer/
 
+# Hugo cache that build.sh keeps for Cloudflare's build cache.
+.cache/hugo/
+
+# Wrangler's local state from `wrangler dev`.
+.wrangler/
+
 # Screenshots written by the browser QC scripts (see QC_SHOT_DIR in scripts/).
 .qc-shots/
 

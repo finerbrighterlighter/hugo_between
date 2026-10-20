@@ -102,6 +102,10 @@ buildFuture = true
 [caches]
   [caches.getresource]
     maxAge = "1h"
+  # Under cacheDir so Cloudflare's build cache keeps processed images between
+  # builds (build.sh points HUGO_CACHEDIR at .cache/hugo).
+  [caches.images]
+    dir = ":cacheDir/images"
 
 [imaging]
   quality = 82
