@@ -45,7 +45,7 @@ Burmese sentence does not fall back to something unrelated. Copyright 2012 Kimbe
 **Mermaid** 11 renders the diagrams, and is the one script loaded from a third party.
 MIT licence.
 
-**[GoatCounter](https://stats.htunteza.com)** counts page views. It sets no cookies, records no personal
+**[GoatCounter](https://analytics.htunteza.com)** counts page views. It sets no cookies, records no personal
 data and builds no profile of anyone. The dashboard is public: that link is the live figures for this
 site, not a product page.
 
