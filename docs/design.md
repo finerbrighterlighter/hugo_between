@@ -414,3 +414,6 @@ the ORCID pill does, the switch on the page is struck through, and `lang-return.
   vocabulary (hairline baseline, muted labels, accent marks, drawn hover labels, sideways scroll with scroll-state
   chevrons, slanted year labels, caption below) and shows on phones. Years start at the year of the earliest citation.
   The year in progress is dashed and open; the caption says "Open dot: <year> so far".
+- **Works list count joins the links row.** The per-work count from Pass 4 had no style of its own and rendered
+  in body serif. It is now the last link in each entry's sources row, "n citations" in the row's own style, pointing
+  at the work page's "Cited by" section (`#cited-by`; the work page scrolls there once the section is filled).

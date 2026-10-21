@@ -33,7 +33,7 @@
 </header>
 
 <div class="page-body">
-  <form id="works-filter" class="filter" role="search" action="{{ .RelPermalink }}" method="get" data-openalex-author="{{ hugo.Data.homepage.sidebar.orcid }}" data-cited-n="{{ i18n "cited_n" (dict "n" "N") }}" data-cited-one="{{ i18n "cited_one" }}" data-cited-zero="{{ i18n "cited_zero" }}">
+  <form id="works-filter" class="filter" role="search" action="{{ .RelPermalink }}" method="get" data-openalex-author="{{ hugo.Data.homepage.sidebar.orcid }}" data-cited-n="{{ i18n "works_cited" (dict "n" "N") }}" data-cited-one="{{ i18n "works_cited_one" }}" data-cited-zero="{{ i18n "cited_zero" }}">
     <label for="works-search" class="sr-only">{{ i18n "works_search_placeholder" }}</label>
     <input id="works-search" type="search" name="search" placeholder="{{ i18n "works_search_placeholder" }}" autocomplete="off" spellcheck="false">
     <div class="filter-groups" lang="en">

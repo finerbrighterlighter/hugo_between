@@ -4,7 +4,8 @@
  * Roots:
  *   #metrics                  author sentence with [data-metric] spans (home)
  *   #works-filter[data-openalex-author]  works list: fills each `.bib-entry[data-doi] [data-cites]`
- *                             with "Cited n times" from one /works request for the author.
+ *                             link in the sources row ("n citations", to the work page's
+ *                             #cited-by) from one /works request for the author.
  *   #cite-years               home: citations per year as lollipops, binned by the year
  *                             the CITING work appeared (OpenAlex's counts_by_year bins by
  *                             the cited work's year). Same counting as Glance's
@@ -75,8 +76,8 @@ if (sentence) {
 if (worksList) {
   const author = authorPath(worksList.dataset.openalexAuthor);
   const entries = Array.from(document.querySelectorAll(".bib-entry[data-doi]"));
-  const tN = worksList.dataset.citedN || "Cited N times";
-  const tOne = worksList.dataset.citedOne || "Cited once";
+  const tN = worksList.dataset.citedN || "N citations";
+  const tOne = worksList.dataset.citedOne || "1 citation";
   const tZero = worksList.dataset.citedZero || "Not yet cited";
 
   function label(n) {

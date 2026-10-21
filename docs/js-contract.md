@@ -115,7 +115,7 @@ read `?search=` on load and set the input; mirror the current query into the URL
 look the work up by DOI, fetch its 5 newest citing works (`cites:` filter, `publication_date:desc`), write the count into
 the `h2`, render each as a `.bib` line (month + year | title linked to its DOI, venue, Vancouver-style authors, 6 max then
 "et al."). Past 5, unhide `.cited-more` linking to `openalex.org/works?filter=referenced_works:w…`. Unhide the section only
-when the count is ≥ 1. Cache `openalex-citedby-<doi>` via cache.js.
+when the count is ≥ 1; if the URL hash is `#cited-by` (the "n citations" link on `/works/`), scroll to it then. Cache `openalex-citedby-<doi>` via cache.js.
 
 ### work-cite.js (replaces work-bibtex.js)
 Server HTML:

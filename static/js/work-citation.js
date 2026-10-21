@@ -81,6 +81,9 @@ if (root && root.dataset.doi) {
       more.hidden = false;
     }
     root.hidden = false;
+    /* Arriving from an "n citations" link on /works/: the browser looked for the
+       anchor while the section was still hidden, so jump now. */
+    if (location.hash === `#${root.id}`) root.scrollIntoView();
   }
 
   async function getJSON(url) {

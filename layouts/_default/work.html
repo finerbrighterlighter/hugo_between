@@ -89,7 +89,7 @@
   </section>
 
   {{- if $doi }}
-  <section class="cited-by" data-citation-count data-doi="{{ $doi }}" data-cited-n="{{ i18n "cited_n" (dict "n" "N") }}" data-cited-one="{{ i18n "cited_one" }}" aria-labelledby="cited-by-h" hidden>
+  <section class="cited-by" id="cited-by" data-citation-count data-doi="{{ $doi }}" data-cited-n="{{ i18n "cited_n" (dict "n" "N") }}" data-cited-one="{{ i18n "cited_one" }}" aria-labelledby="cited-by-h" hidden>
     <h2 id="cited-by-h">{{ i18n "cited_n" (dict "n" "—") }}</h2>
     <p class="cited-sub">{{ i18n "cited_by_recent" }}</p>
     <ol class="bib" lang="en"></ol>
