@@ -36,7 +36,8 @@ if (root && root.dataset.doi) {
       date: work.publication_date || "",
       title: (work.title || "(untitled)").replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim(),
       url: work.doi || work.id,
-      venue: work.primary_location?.source?.display_name || "",
+      // No linked source (common for proceedings): fall back to the name on the DOI record.
+      venue: work.primary_location?.source?.display_name || work.primary_location?.raw_source_name || "",
       authors,
     };
   }
