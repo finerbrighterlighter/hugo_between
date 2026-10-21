@@ -77,7 +77,6 @@ if (root && root.dataset.doi) {
     if (more && count > works.length) {
       const a = more.querySelector("a");
       if (workId) a.href = `https://openalex.org/works?page=1&filter=referenced_works:${workId.toLowerCase()}`;
-      a.textContent = (a.dataset.moreN || "All N citing works on OpenAlex").replace("N", n);
       more.hidden = false;
     }
     root.hidden = false;

@@ -93,7 +93,7 @@
     <h2 id="cited-by-h">{{ i18n "cited_n" (dict "n" "—") }}</h2>
     <p class="cited-sub">{{ i18n "cited_by_recent" }}</p>
     <ol class="bib" lang="en"></ol>
-    <p class="cited-more" hidden><a href="https://openalex.org/works?filter=cites:doi:{{ $doi }}" target="_blank" rel="noreferrer noopener" data-more-n="{{ i18n "cited_by_all" (dict "n" "N") }}"></a></p>
+    <p class="cited-more" hidden><a href="https://openalex.org/works?filter=cites:doi:{{ $doi }}" target="_blank" rel="noreferrer noopener">{{ i18n "cited_by_more" }}</a></p>
   </section>
   {{- end }}
 
