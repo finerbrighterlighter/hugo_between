@@ -444,16 +444,15 @@ html:lang(my) .pullquote{font-style:normal;font-size:1.15rem;line-height:1.9}
 /* work single */
 .paper{max-width:calc(var(--measure) + 12rem);margin:0 auto;padding:1rem var(--gutter) 4rem}
 .paper-title{font-size:var(--fs-h1);font-weight:400;line-height:1.15;max-width:none}
-.paper .authors{font-size:1.05rem;margin:1.2rem 0 .4rem;line-height:1.6}
-.paper .authors a{text-decoration:none;border-bottom:1px solid var(--rule)}
-.paper .authors a:hover{border-color:var(--accent)}
-.paper .authors sup{font-family:var(--sans);font-size:.6em;color:var(--mute);margin-left:.1em}
+.paper>.authors{font-size:1.05rem;margin:1.2rem 0 .4rem;line-height:1.6}
+.paper>.authors a{text-decoration:none;border-bottom:1px solid var(--rule)}
+.paper>.authors a:hover{border-color:var(--accent)}
+.paper>.authors sup{font-family:var(--sans);font-size:.6em;color:var(--mute);margin-left:.1em}
 .paper .affil{list-style:none;padding:0;margin:0 0 1.4rem;font-family:var(--sans);font-size:var(--fs-meta);color:var(--mute);line-height:1.5}
 .paper .affil li{display:flex;gap:.6rem}
 .paper .affil li span:first-child{min-width:1.2em}
 .paper .pubmeta{display:flex;flex-wrap:wrap;gap:.4rem 1.6rem;align-items:baseline;padding:1rem 0;border-top:1px solid var(--ink);border-bottom:1px solid var(--rule-soft);font-family:var(--sans);font-size:var(--fs-small)}
 .paper .pubmeta .venue{font-family:var(--serif);font-style:italic;font-size:1.05rem}
-.paper .pubmeta a[data-citation-count]{text-decoration:none;color:var(--mute);border-bottom:1px solid var(--rule)}
 .paper .abstract{margin-top:2rem}
 .paper .abstract h2{font-size:var(--fs-meta);font-family:var(--sans);font-weight:600;color:var(--mute);margin-bottom:.6rem}
 .paper .abstract p{max-width:var(--measure)}
@@ -462,6 +461,14 @@ html:lang(my) .pullquote{font-style:normal;font-size:1.15rem;line-height:1.9}
 .sources-list{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:.5rem 1.6rem;font-family:var(--sans);font-size:var(--fs-small)}
 .sources-list a{text-decoration:none;border-bottom:1px solid var(--ink)}
 .sources-list a:hover{border-color:var(--accent);color:var(--accent)}
+.paper .cited-by{margin-top:2.2rem;padding-top:1.2rem;border-top:1px solid var(--rule-soft)}
+.paper .cited-by h2{font-size:var(--fs-meta);font-family:var(--sans);font-weight:600;color:var(--mute);margin-bottom:.2rem}
+.paper .cited-sub{font-family:var(--sans);font-size:var(--fs-meta);color:var(--mute);margin:0 0 .8rem}
+.paper .cited-by .bib li{grid-template-columns:4.5rem minmax(0,1fr)}
+.paper .cited-by .bib .title{font-size:1.05rem}
+.paper .cited-more{margin:.8rem 0 0;font-family:var(--sans);font-size:var(--fs-small)}
+.paper .cited-more a{text-decoration:none;border-bottom:1px solid var(--ink)}
+.paper .cited-more a:hover{border-color:var(--accent);color:var(--accent)}
 .paper .tags{margin-top:2rem}
 .paper .tags dl{display:grid;grid-template-columns:auto 1fr;gap:.3rem 1.2rem;margin:0;font-size:var(--fs-small)}
 .paper .tags dt{font-family:var(--sans);font-size:var(--fs-meta);color:var(--mute);padding-top:.15rem}

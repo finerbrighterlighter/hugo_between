@@ -92,8 +92,12 @@ read `?search=` on load and set the input; mirror the current query into the URL
 
 ## Work single page
 ### work-citation.js
-`<a data-citation-count data-doi="10.…" href="https://openalex.org/…" hidden>Cited <span>—</span> times</a>` →
-fill the span, set href to the OpenAlex citing-works list URL as the old module did, remove `hidden`. Cache in localStorage as before.
+`<section class="cited-by" data-citation-count data-doi="10.…" data-cited-n="Cited N times" data-cited-one="Cited once" hidden>`
+(after "Find this paper", holding `h2`, `ol.bib`, `p.cited-more[hidden] > a[data-more-n]`) →
+look the work up by DOI, fetch its 5 newest citing works (`cites:` filter, `publication_date:desc`), write the count into
+the `h2`, render each as a `.bib` line (month + year | title linked to its DOI, venue, Vancouver-style authors, 6 max then
+"et al."). Past 5, unhide `.cited-more` linking to `openalex.org/works?filter=referenced_works:w…`. Unhide the section only
+when the count is ≥ 1. Cache `openalex-citedby-<doi>` via cache.js.
 
 ### work-cite.js (replaces work-bibtex.js)
 Server HTML:

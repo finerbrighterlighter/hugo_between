@@ -14,7 +14,7 @@ All files are vanilla ES modules loaded with `type="module"`; each one self-gate
 | `static/js/openalex.js` | `#metrics` | OpenAlex `/authors/{id}` | Fills `[data-metric]` spans, unhides. Accepts OpenAlex id or ORCID in `data-openalex-author`. |
 | `static/js/currenttime.js` | `[data-clock]` | `Intl.DateTimeFormat` | `14:32 in Thailand` from `data-place`, minute-aligned refresh, sets `datetime`. |
 | `static/js/works_filter.js` | `#works-filter` | DOM only | Word search over `data-search`, AND tags via `aria-pressed`, `?search=&tags=` mirrored with `replaceState`. |
-| `static/js/work-citation.js` | `[data-citation-count][data-doi]` | OpenAlex `/works/doi:{doi}` | Fills count, links to citing works, unhides when ≥ 1. |
+| `static/js/work-citation.js` | `[data-citation-count][data-doi]` | OpenAlex `/works/doi:{doi}`, `/works?filter=cites:` | "Cited by" block: count, 5 newest citing works, link to the full list; unhides when ≥ 1. |
 | `static/js/work-cite.js` | `details.cite[data-doi]` | doi.org (`Accept: application/x-bibtex`) | BibTeX / NLM / APA / AMA, copy, `.bib` and `.ris` download. Cache key `bibtex-<doi>`. |
 | `static/js/protected-document.js` | `section.gate[data-document-id]` | same-origin PDF fetch | SHA-256(salt + PIN) vs `data-verifier`, unlock remembered via cache.js, blob URL revoked on `pagehide`, link only under 768 px. |
 | `static/js/lang-return.js` | `#lang-return-map` (English-only pages) | localStorage `lang`, `document.referrer` | Burmese pages remember `mm`, English pages with a twin remember `en`; on an English-only page a `mm` memory or a same-origin `/mm/` referrer repoints masthead, footer nav and balloon links to the Burmese addresses in the map. |

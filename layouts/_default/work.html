@@ -44,7 +44,6 @@
   <div class="pubmeta">
     {{ with .Params.venue }}<span class="venue" itemprop="isPartOf">{{ . }}</span>{{ end }}
     <time datetime="{{ .Date.Format "2006-01-02" }}" itemprop="datePublished">{{ .Date.Format "2 January 2006" }}</time>
-    {{ if $doi }}<a data-citation-count data-doi="{{ $doi }}" href="https://openalex.org/works?filter=cites:doi:{{ $doi }}" target="_blank" rel="noreferrer noopener" hidden>{{ i18n "cited_times" }} <span>—</span> times</a>{{ end }}
   </div>
 
   {{ with .Content }}
@@ -88,6 +87,15 @@
     </details>
     {{- end }}
   </section>
+
+  {{- if $doi }}
+  <section class="cited-by" data-citation-count data-doi="{{ $doi }}" data-cited-n="{{ i18n "cited_n" (dict "n" "N") }}" data-cited-one="{{ i18n "cited_one" }}" aria-labelledby="cited-by-h" hidden>
+    <h2 id="cited-by-h">{{ i18n "cited_n" (dict "n" "—") }}</h2>
+    <p class="cited-sub">{{ i18n "cited_by_recent" }}</p>
+    <ol class="bib" lang="en"></ol>
+    <p class="cited-more" hidden><a href="https://openalex.org/works?filter=cites:doi:{{ $doi }}" target="_blank" rel="noreferrer noopener" data-more-n="{{ i18n "cited_by_all" (dict "n" "N") }}"></a></p>
+  </section>
+  {{- end }}
 
   {{- if or .Params.conditions .Params.datasource .Params.methods }}
   <section class="tags">
