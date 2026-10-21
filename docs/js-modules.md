@@ -11,7 +11,7 @@ All files are vanilla ES modules loaded with `type="module"`; each one self-gate
 | `static/js/anilist.js` | `#strip-manga` | AniList GraphQL | Recent manga (all statuses except planning), `Chapter n [of total]`. |
 | `static/js/simkl.js` | `#strip-screen` | Simkl `/sync/all-items`, `/anime/{id}` | 14-day window first, full library when under limit; simkl.in `_c` posters. |
 | `static/js/unsplash.js` | `#strip-photos` | Unsplash `/users/{user}/photos` | Latest uploads; meta = location or upload month. |
-| `static/js/openalex.js` | `#metrics` | OpenAlex `/authors/{id}` | Fills `[data-metric]` spans, unhides. Accepts OpenAlex id or ORCID in `data-openalex-author`. |
+| `static/js/openalex.js` | `#metrics` | OpenAlex `/authors/{id}`; `/works?filter=author.orcid:`, `/works?filter=cites:` | Fills `[data-metric]` spans, unhides. Also `#cite-years`: citations per year by the citing work's year, as lollipops. Accepts OpenAlex id or ORCID in `data-openalex-author`. |
 | `static/js/currenttime.js` | `[data-clock]` | `Intl.DateTimeFormat` | `14:32 in Thailand` from `data-place`, minute-aligned refresh, sets `datetime`. |
 | `static/js/works_filter.js` | `#works-filter` | DOM only | Word search over `data-search`, AND tags via `aria-pressed`, `?search=&tags=` mirrored with `replaceState`. |
 | `static/js/work-citation.js` | `[data-citation-count][data-doi]` | OpenAlex `/works/doi:{doi}`, `/works?filter=cites:` | "Cited by" block: count, 5 newest citing works, link to the full list; unhides when ≥ 1. |

@@ -68,6 +68,24 @@ Server HTML:
 Fill the spans (locale-formatted integers) and remove `hidden`. Author id: use the same author lookup the old openalex.js uses
 (ORCID from `data-openalex-author` if present, else the old hard-coded value). No chart. Drop the yearly bar chart entirely.
 
+### `#cite-years` (openalex.js)
+```html
+<figure class="citeyears" id="cite-years" data-openalex-author="ORCID" data-n="N citations" data-one="1 citation"
+        data-zero="No citations" data-so-far="so far" data-top="Most cited: __T__ (__N__)" hidden>
+  <figcaption>Citations by year</figcaption>
+  <div class="citeyears-scroll"><ol class="citeyears-years"></ol></div>
+</figure>
+```
+Fetch the author's works (`author.orcid:` filter), then every work citing them (`cites:` in batches of 50, cursor
+paging). A citing work adds one to its own `publication_year` per work of mine it references, so the total equals
+`cited_by_count` (OpenAlex's `counts_by_year` bins by the cited work's year and is not used). Years run from the year of
+the earliest citation to this year, empty years included. The tallest year is
+drawn at full height and the rest scale to it, so no column leaves the figure. One `li` per year: a link to that year's citing works on OpenAlex
+holding the count and the stem, a slanted year label hanging from a tick, and a drawn hover label (count, most-cited work of mine that year).
+This year is drawn as unfinished (dashed stem, open dot); the caption, below the figure like the authorship
+chart's, gains "Open dot: <year> so far." Scroll the row to its end, cache
+`openalex-citeyears-<author>`, remove `hidden`.
+
 ### `[data-clock]` (currenttime.js)
 `<time data-clock data-tz="Asia/Bangkok" data-place="Thailand"></time>` → `14:32 in Thailand`, updated each minute. Also set `datetime`. `data-place` names whatever should be shown, country or city; `data-tz` decides the time.
 

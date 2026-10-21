@@ -206,6 +206,15 @@ authorship_hint_corresponding: "corresponding author"
 authorship_hint_unmarked: "{{ .n }} authors"
 authorship_hint_none: "authors not recorded"
 authorship_caption: "A column per work. Filled for written output, open for presented."
+# Citations-by-year lollipops on the home page, under the metrics sentence.
+# N and the __T__/__N__ markers are replaced by script; the year is counted by the citing paper's date.
+citeyears_caption: "Citations by year"
+citeyears_n: "N citations"
+citeyears_one: "1 citation"
+citeyears_zero: "No citations"
+citeyears_so_far: "so far"
+citeyears_so_far_note: "Open dot: {{ .year }} so far"
+citeyears_top: "Most cited: {{ .title }} ({{ .n }})"
 
 
 # The IELTS chart on the About page. The lead is the point of the chart: without it

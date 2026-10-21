@@ -153,6 +153,14 @@
              the API returns (`id`). OpenAlex resolves an `orcid:` prefixed identifier, so
              the fallback still lands on the right page if the id is ever missing. */ -}}
       <p id="metrics" data-openalex-author="{{ $hp.sidebar.orcid }}" hidden>Cited <span data-metric="cited_by_count">—</span> times across <span data-metric="works_count">—</span> indexed works, h-index <span data-metric="h_index">—</span> (<a data-openalex-link href="https://openalex.org/orcid:{{ $hp.sidebar.orcid }}" target="_blank" rel="noreferrer noopener">OpenAlex</a>).</p>
+      {{- /* Citations per year, binned by the year the CITING paper appeared. OpenAlex's
+             own counts_by_year bins by the cited paper's year, which is why the old chart
+             read wrong; openalex.js counts the citing works itself. Filled and unhidden
+             by script; the hover strings travel as data attributes. */ -}}
+      <figure class="citeyears" id="cite-years" data-openalex-author="{{ $hp.sidebar.orcid }}" data-n="{{ i18n "citeyears_n" (dict "n" "N") }}" data-one="{{ i18n "citeyears_one" }}" data-zero="{{ i18n "citeyears_zero" }}" data-so-far="{{ i18n "citeyears_so_far" }}" data-so-far-note="{{ i18n "citeyears_so_far_note" (dict "year" "__Y__") }}" data-top="{{ i18n "citeyears_top" (dict "title" "__T__" "n" "__N__") }}" aria-labelledby="citeyears-cap" hidden>
+        <div class="citeyears-scroll"><ol class="citeyears-years"></ol></div>
+        <figcaption class="meta" id="citeyears-cap" data-base="{{ i18n "citeyears_caption" }}">{{ i18n "citeyears_caption" }}</figcaption>
+      </figure>
       <p>{{ partial "collab-summary.html" . }}</p>
       <ol class="bib">
         {{- range first (.Site.Params.recentWorksLimit | default 4) (sort $works "Date" "desc") }}

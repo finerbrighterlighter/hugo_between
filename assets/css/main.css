@@ -807,6 +807,76 @@ html{scroll-behavior:smooth}
 /* Touch: each mark gets a 24px-wide box of its own, and the boxes do not overlap. */
 @media (max-width:959px),(pointer:coarse){.authorship-work>a{padding:2px 9px;margin:0}}
 
+/* Citations by year, under the metrics sentence: one lollipop per year, counted
+   by the year the citing paper appeared. Built to sit beside the authorship
+   chart: the same hairline baseline, muted year labels, accent marks and drawn
+   hover labels. Years only accumulate, so it scrolls sideways like that chart,
+   with the same scroll-state chevrons. It opens at the newest year by script
+   (the chart is drawn by script anyway) rather than by the right-to-left
+   trick: at fractional column widths that trick left a pixel of scroll on the
+   right, which lit the right chevron at the end of the row. Each column is a
+   fixed width rather than spread across the column, so a year keeps its size
+   as the row grows. */
+/* --head is the room above the tallest stem for its count and dot. The tallest
+   year is always drawn at --h and the rest scale to it, so however high one
+   year gets, every column stays inside the figure. */
+.citeyears{--h:4.5rem;--head:1.7rem;--col:3rem;--ylabel:2.6rem;--ytick:.3rem;margin:0 0 1.4rem}
+.citeyears figcaption{margin:.4rem 0 0}
+.citeyears-scroll{overflow-x:auto;overflow-y:hidden;scrollbar-width:thin;display:grid;grid-template-columns:100%;container-type:scroll-state}
+.citeyears-scroll>*{grid-area:1/1}
+.citeyears-years{position:relative;display:flex;flex-wrap:nowrap;list-style:none;margin:0;padding:0;width:max-content;min-width:100%}
+/* Baseline under every column, travelling with the row when it scrolls. */
+.citeyears-years::after{content:"";position:absolute;left:0;right:0;bottom:var(--ylabel);border-top:1px solid var(--rule)}
+.citeyears-year{position:relative;flex:none;width:var(--col);padding-bottom:var(--ylabel)}
+/* The whole column is the link, so the hit target is the column, not the dot. */
+.citeyears-year>a{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:calc(var(--h) + var(--head));text-decoration:none;border:0;border-radius:3px}
+.citeyears-year>a:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+/* A one-digit label is a box smaller than four times the row's accent dot, and
+   axe then reads the dot as covering it and cannot rate the label's contrast;
+   a full-column-width box keeps the label out of that check. */
+.citeyears-n{align-self:stretch;text-align:center;font-family:var(--sans);font-size:var(--fs-meta);line-height:1;color:var(--mute);font-variant-numeric:tabular-nums;margin-bottom:.5rem}
+.citeyears-stem{position:relative;width:2px;height:calc(var(--v,0) * var(--h));background:var(--accent)}
+.citeyears-stem::before{content:"";position:absolute;left:50%;top:0;width:9px;height:9px;border-radius:50%;background:var(--accent);transform:translate(-50%,-50%)}
+/* A year with none keeps a small grey dot on the baseline: the year is there,
+   it is empty, which a missing column would not say. */
+.citeyears-year.is-zero .citeyears-stem::before{background:var(--mute);transform:translate(-50%,-50%) scale(.62)}
+/* The year in progress is not a full year: dashed stem, open dot, "so far". */
+.citeyears-year.is-now .citeyears-stem{background:repeating-linear-gradient(to bottom,var(--accent) 0 3px,transparent 3px 6px)}
+.citeyears-year.is-now .citeyears-stem::before{background:var(--paper);box-shadow:inset 0 0 0 1.5px var(--accent)}
+/* Year labels slant like the authorship chart's: the label's end hangs from a
+   short tick under its stem, so it takes no width of its own and a column can
+   stay narrow as the years pile up. */
+.citeyears-year::after{content:"";position:absolute;left:50%;bottom:calc(var(--ylabel) - var(--ytick));width:1px;height:var(--ytick);background:var(--mute)}
+.citeyears-y{position:absolute;right:50%;top:calc(100% - var(--ylabel) + var(--ytick) + .3rem);transform:rotate(-45deg);transform-origin:100% 0;white-space:nowrap;font-family:var(--sans);font-size:var(--fs-meta);line-height:1;color:var(--mute)}
+.citeyears-year:hover .citeyears-n,.citeyears-year:focus-within .citeyears-n,.citeyears-year:hover .citeyears-y,.citeyears-year:focus-within .citeyears-y{color:var(--ink)}
+.citeyears-scroll::before,.citeyears-scroll::after{content:"";display:none;grid-area:1/1;position:sticky;z-index:1;align-self:end;margin-bottom:calc(var(--ylabel) - .5em);font-family:var(--sans);font-size:1.1rem;line-height:1;color:var(--mute);background:var(--paper);padding:0 .15em;pointer-events:none}
+.citeyears-scroll::before{justify-self:left;left:0}
+.citeyears-scroll::after{justify-self:right;right:0}
+@container scroll-state(scrollable: left){.citeyears-scroll::before{content:"\2039";display:block}}
+@container scroll-state(scrollable: right){.citeyears-scroll::after{content:"\203A";display:block}}
+/* Drawn hover label, as on the authorship chart. Without anchor positioning it
+   sits at the top of its own column, inside the scroller, so it is never
+   clipped; with it, it is fixed just above the count label and flips below
+   if needed. */
+.citeyears-tip{position:absolute;left:0;top:0;z-index:2;display:none;width:max-content;max-width:min(18rem,70vw);padding:.3rem .5rem;border:1px solid var(--rule);border-radius:3px;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:var(--fs-meta);line-height:1.35;pointer-events:none}
+@supports (anchor-name:--a) and (position-area:top){
+  .citeyears-year{anchor-scope:--citeyears-year}
+  .citeyears-n{anchor-name:--citeyears-year}
+  .citeyears-tip{position:fixed;position-anchor:--citeyears-year;position-area:top;justify-self:anchor-center;position-try-fallbacks:flip-block;left:auto;top:auto;margin:0 0 6px;max-width:min(18rem,calc(100vw - 2rem))}
+}
+/* Titles run long; two lines are enough to recognise one, and the link's
+   accessible name carries it whole. */
+.citeyears-tip-title{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;color:var(--mute)}
+.citeyears-year:hover .citeyears-tip,.citeyears-year:focus-within .citeyears-tip{display:block}
+.citeyears-stem,.citeyears-stem::before{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+@media (forced-colors:active){
+  .citeyears-years::after{border-color:CanvasText}
+  .citeyears-year::after{background:CanvasText}
+  .citeyears-stem,.citeyears-stem::before{background:Highlight;forced-color-adjust:none}
+  .citeyears-year.is-zero .citeyears-stem::before{background:CanvasText}
+  .citeyears-year.is-now .citeyears-stem::before{background:Canvas;box-shadow:inset 0 0 0 1.5px Highlight}
+}
+
 /* Repository languages, ordered by byte share, each carrying its percentage.
    The share was also drawn as a proportional fill of the name's own underline,
    which encoded share multiplied by word length: "Jupyter Notebook 100%" drew

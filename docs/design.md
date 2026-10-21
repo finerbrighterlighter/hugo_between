@@ -405,3 +405,12 @@ site's sans (the PDF used Lato until 2026-10-14, when it moved to the one-page C
 so page and PDF say the same thing; the builder is untouched and its outputs unchanged. The page ends with the
 three downloads, PDF, Markdown and vCard. English only, like the work pages: the pill reads "CV" on both homes, as
 the ORCID pill does, the switch on the page is struck through, and `lang-return.js` keeps the navigation Burmese.
+
+## Pass 5 (2026-10-22, citations by year returns)
+
+- **Citations by year** is back on home, under the metrics sentence in "Recent output", as lollipops. The Pass 4 chart was
+  ambiguous because OpenAlex's `counts_by_year` bins citations by the cited paper's year; `openalex.js` now counts the
+  citing works itself and bins by the year they appeared (the method Glance uses). It shares the authorship chart's
+  vocabulary (hairline baseline, muted labels, accent marks, drawn hover labels, sideways scroll with scroll-state
+  chevrons, slanted year labels, caption below) and shows on phones. Years start at the year of the earliest citation.
+  The year in progress is dashed and open; the caption says "Open dot: <year> so far".
