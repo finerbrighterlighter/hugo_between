@@ -36,7 +36,7 @@ navigation and the footer. No monospace anywhere. "Clinic" is set upright at wei
 19px at ≥1100px, 18px tablet, 17px phone; measure capped at 64ch. Burmese pages swap in Noto Serif Myanmar (body) and
 Noto Sans Myanmar (labels), self-hosted like the Latin faces; the display words drop to weight 400 and line-height 1.25.
 
-**Colour.** Paper `#f3f3ef`, ink `#1b1d20`, muted `#5b5f66`, rules `#cfd2cc`, one accent `#8a5a0c` (a dark ochre, the
+**Colour.** Paper `#f2f3f5`, ink `#1b1d20`, muted `#5b5f66`, rules `#cfd2d6`, one accent `#8a5a0c` (a dark ochre, the
 duck's yellow taken down to text contrast). Blood red `#8f1d21` appears only on the blood page. Dark mode: `#15171a`
 paper, `#e9e7e0` ink, `#dcb85a` accent. No gradients, shadows, glass or tinted near-black.
 

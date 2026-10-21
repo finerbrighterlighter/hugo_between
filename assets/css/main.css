@@ -27,8 +27,8 @@
 
 /* ---------- tokens ---------- */
 :root{
-  --paper:#f3f3ef; --ink:#1b1d20; --mute:#5b5f66; --rule:#cfd2cc; --rule-soft:#e2e4de;
-  --accent:#8a5a0c; --accent-soft:#f1e7cd; --blood:#8f1d21; --code-bg:#e9eae4;
+  --paper:#f2f3f5; --ink:#1b1d20; --mute:#5b5f66; --rule:#cfd2d6; --rule-soft:#e3e5e8;
+  --accent:#8a5a0c; --accent-soft:#e3ded4; --blood:#8f1d21; --code-bg:#e8eaed;
   --serif:"Newsreader",Georgia,"Times New Roman",serif;
   --sans:"Karla",system-ui,-apple-system,"Segoe UI",sans-serif;
   --mono:ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
@@ -524,7 +524,7 @@ details.cite[open] summary::before{content:"– "}
 .balloon-sections,.balloon-site,.balloon-more{display:flex;flex-direction:column}
 .balloon-row{all:unset;cursor:pointer;display:flex;justify-content:space-between;align-items:baseline;gap:.8rem;padding:.55rem .9rem;color:var(--ink);font-family:var(--serif);font-size:1rem;line-height:1.3;text-decoration:none;border-top:1px solid var(--rule-soft);position:relative;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .balloon-sections .balloon-row:first-child{border-top:0}
-.balloon-row:hover{background:var(--accent-soft)}
+.balloon-row:hover{background:var(--rule-soft)}
 .balloon-row:focus-visible{outline:2px solid var(--accent);outline-offset:-3px}
 .balloon-row.is-active{color:var(--accent);font-weight:600}
 .balloon-row.is-active::before{content:"";position:absolute;left:0;top:.5rem;bottom:.5rem;width:2px;background:var(--accent)}
