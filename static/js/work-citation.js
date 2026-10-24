@@ -76,7 +76,7 @@ if (root && root.dataset.doi) {
     const more = root.querySelector(".cited-more");
     if (more && count > works.length) {
       const a = more.querySelector("a");
-      if (workId) a.href = `https://openalex.org/works?page=1&filter=referenced_works:${workId.toLowerCase()}`;
+      if (workId) a.href = `https://openalex.org/works?page=1&filter=referenced_works:${workId.toLowerCase()}&sort=publication_date:desc`;
       more.hidden = false;
     }
     root.hidden = false;

@@ -207,7 +207,7 @@ if (citeYears) {
       li.style.setProperty("--v", (count / peak).toFixed(3));
       /* Each column opens that year's citing works on OpenAlex. */
       const a = el("a");
-      a.href = `https://openalex.org/works?page=1&filter=cites:${cites},publication_year:${year}`;
+      a.href = `https://openalex.org/works?page=1&filter=cites:${cites},publication_year:${year}&sort=publication_date:desc`;
       a.target = "_blank";
       a.rel = "noreferrer noopener";
       const topLine = top ? (t.top || "Most cited: __T__ (__N__)").replace("__N__", top.n).replace("__T__", top.title) : "";
