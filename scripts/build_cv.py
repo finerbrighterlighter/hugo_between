@@ -247,6 +247,22 @@ def doi_link(sources):
     return ""
 
 
+def software_note(sources, md=False):
+    """Return ' Software: <name> (PyPI).' for a "package" source, or ''.
+
+    The name is the last segment of the package URL. The HTML CV page
+    (layouts/partials/cv-cite.html) prints the same note.
+    """
+    for s in sources or []:
+        if s.get("text") == "package" and s.get("url"):
+            url  = s["url"]
+            name = url.rstrip("/").rsplit("/", 1)[-1]
+            link = f"[{name}]({url})" if md else f'<a href="{url}">{name}</a>'
+            host = " (PyPI)" if "pypi.org" in url else ""
+            return f" Software: {link}{host}."
+    return ""
+
+
 def fmt_nlm_citation(p, bibtex):
     """Build a full NLM-style citation using BibTeX data + front matter.
 
@@ -330,7 +346,7 @@ def _pub_cite(p):
     bibtex  = get_bibtex(doi_val) if doi_val else None
 
     if bibtex:
-        return fmt_nlm_citation(p, bibtex)
+        return fmt_nlm_citation(p, bibtex) + software_note(p.get("sources"))
 
     # Fallback: no BibTeX available
     authors  = fmt_authors_fallback(p.get("authors", []))
@@ -338,7 +354,7 @@ def _pub_cite(p):
     cite     = f'{authors} {p["title"]}. <i>{p.get("venue", "")}</i>.'
     if doi_html:
         cite += f" doi: {doi_html}"
-    return cite
+    return cite + software_note(p.get("sources"))
 
 
 def _render_bullet(b):
@@ -446,13 +462,13 @@ def _pub_cite_md(p):
     doi_val = get_doi(p.get("sources"))
     bibtex  = get_bibtex(doi_val) if doi_val else None
     if bibtex:
-        return fmt_nlm_citation_md(p, bibtex)
+        return fmt_nlm_citation_md(p, bibtex) + software_note(p.get("sources"), md=True)
     authors  = fmt_authors_fallback_md(p.get("authors", []))
     d        = doi_md(p.get("sources"))
     cite     = f'{authors} {p["title"]}. _{p.get("venue", "")}_.'
     if d:
         cite += f" doi: {d}"
-    return cite
+    return cite + software_note(p.get("sources"), md=True)
 
 
 # ── Markdown assembler ─────────────────────────────────────────────────────────

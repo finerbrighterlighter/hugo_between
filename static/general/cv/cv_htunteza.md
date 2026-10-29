@@ -4,7 +4,7 @@ Department of Clinical Epidemiology and Biostatistics, Faculty of Medicine Ramat
 
 kohtunteza@gmail.com · https://htunteza.com/ · ORCID 0000-0002-1076-9513
 
-Generated: 2026-10-14
+Generated: 2026-10-29
 
 ---
 
@@ -74,7 +74,7 @@ _Undergraduate Research Assistant_
 
 1. **Teza H**, Anothaisintawee T, Limpijankit T, Tansawet A, Boonmanunt S, Pattanateepapon A, McKay GJ, Attia J, Thakkinstian A. Incidence and Prognosis of Apparent Treatment-Resistant Hypertension: A Multi-State Analysis Using Real-World Evidence. _Clinical Hypertension_. 2026;32(1). doi: [10.5646/ch.2026.32.e5](https://doi.org/10.5646/ch.2026.32.e5)
 2. Limpijankit V, Sasiprapha T, **Teza H**, Pattanateepapon A, Siriyotha S, Boonmanunt S, Attia J, Thakkinstian A. Factors Associated with New-Onset Atrial Fibrillation in Thai Adults with Hypertension. _American Journal of Hypertension_. 2025;38(12):1076–1087. doi: [10.1093/ajh/hpaf149](https://doi.org/10.1093/ajh/hpaf149)
-3. Wabina RS, Looareesuwan P, Sonsilphong S, **Teza H**, Ponthongmak W, McKay G, Attia J, Pattanateepapon A, Panitchote A, Thakkinstian A. Uncertainty Aware Approach for Multiple Imputation Using Conventional and Machine Learning Models: A Real-World Data Study. _Journal of Big Data_. 2025;12(1). doi: [10.1186/s40537-025-01136-3](https://doi.org/10.1186/s40537-025-01136-3)
+3. Wabina RS, Looareesuwan P, Sonsilphong S, **Teza H**, Ponthongmak W, McKay G, Attia J, Pattanateepapon A, Panitchote A, Thakkinstian A. Uncertainty Aware Approach for Multiple Imputation Using Conventional and Machine Learning Models: A Real-World Data Study. _Journal of Big Data_. 2025;12(1). doi: [10.1186/s40537-025-01136-3](https://doi.org/10.1186/s40537-025-01136-3) Software: [uncertainty-imputation](https://pypi.org/project/uncertainty-imputation/) (PyPI).
 4. Tansawet A, Looareesuwan P, **Teza H**, Boongird S, McKay GJ, Attia J, Pattanaprateep O, Thakkinstian A. Effects of sodium-glucose cotransporter-2 inhibitors on chronic kidney disease progression: A multi-state parametric survival model. _Diabetology & Metabolic Syndrome_. 2024;16(1). doi: [10.1186/s13098-024-01522-6](https://doi.org/10.1186/s13098-024-01522-6)
 5. Tansawet A, Numthavaj P, **Teza H**, Pattanateepapon A, Piebpien P, Poprom N, Techapongsatorn S, McKay G, Attia J, Sumritpradit P, et al. External validation and revision of Penn incisional hernia prediction model: A large-scale retrospective cohort of abdominal operations. _Surgeon_. 2024;22(1):e34–e40. doi: [10.1016/j.surge.2023.07.008](https://doi.org/10.1016/j.surge.2023.07.008)
 6. **Teza H**, Pattanateepapon A, Lertpimonchai A, Vathesatogkit P, J McKay G, Attia J, Thakkinstian A. Development of Risk Prediction Models for Severe Periodontitis in a Thai Population: Statistical and Machine-Learning Approaches. _JMIR Formative Research_. 2023;7:e48351. doi: [10.2196/48351](https://doi.org/10.2196/48351)
