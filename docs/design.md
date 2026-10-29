@@ -417,3 +417,22 @@ the ORCID pill does, the switch on the page is struck through, and `lang-return.
 - **Works list count joins the links row.** The per-work count from Pass 4 had no style of its own and rendered
   in body serif. It is now the last link in each entry's sources row, "n citations" in the row's own style, pointing
   at the work page's "Cited by" section (`#cited-by`; the work page scrolls there once the section is filled).
+
+## Pass 20 (2026-10-29, tables and blocks in running text)
+
+The imputation post showed that tables in running text had no margin. The next paragraph sat on the last row's
+rule, and the header rule was the same as the body rules. Tables in `.prose` are now set as book tables
+(`assets/css/main.css`, after `.prose figure`).
+
+| Element | Rule |
+|---|---|
+| Table frame | 1px ink rule above and below; no side rules, no cell boxes |
+| Header row | Karla, muted, bottom-aligned; a `--rule` line under it |
+| Body rows | A `--rule-soft` line between rows; none under the last row, because the ink rule closes the table |
+| Outer cells | No outer padding, so the first and last columns align with the text edges |
+| Numbers | `tabular-nums`, so digits line up in a column |
+| Spacing | Table 1.6rem above and below; code block 1.4rem; Mermaid diagram 1.8rem, the same as a figure |
+
+The ink rules repeat the pull quote's hairlines. The rules apply only to `.prose`, so the CV, Works and data tables
+keep their own styles. Other surfaces in the editorial system (wiki reader, Glance, YNAB dashboard) can take the
+same table rules.
