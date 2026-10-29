@@ -10,6 +10,9 @@
 {{- $p := .page -}}{{- $cache := .cache -}}
 {{- $doi := partial "work-doi.html" $p.Params.sources -}}
 {{- $bib := "" -}}{{- with $doi -}}{{- $bib = index $cache . | default "" -}}{{- end -}}
+{{- /* a work with a "package" source names its released software after the
+       citation; the PDF and Markdown builders do not read it */ -}}
+{{- $pkg := index (where ($p.Params.sources | default slice) "text" "package") 0 -}}
 {{- $field := "" -}}
 {{- $vol := "" -}}{{- $num := "" -}}{{- $pages := "" -}}
 {{- with $bib -}}
@@ -17,4 +20,4 @@
   {{- with findRESubmatch `(?i)\bnumber\s*=\s*\{([^}]*)\}` . 1 -}}{{- $num = index (index . 0) 1 | strings.TrimSpace -}}{{- end -}}
   {{- with findRESubmatch `(?i)\bpages\s*=\s*\{([^}]*)\}` . 1 -}}{{- $pages = index (index . 0) 1 | strings.TrimSpace | replaceRE `--?` "-" -}}{{- end -}}
 {{- end -}}
-{{ partial "bib-authors.html" $p }}. <a href="{{ $p.RelPermalink }}">{{ $p.Title }}</a>. {{ with $p.Params.venue }}<em>{{ . }}</em>. {{ end }}{{ $p.Date.Year }}{{ with $vol }};{{ . }}{{ end }}{{ with $num }}({{ . }}){{ end }}{{ with $pages }}:{{ . }}{{ end }}.{{ with $doi }} doi: <a href="https://doi.org/{{ . }}" target="_blank" rel="noreferrer noopener">{{ . }}</a>{{ end }}
+{{ partial "bib-authors.html" $p }}. <a href="{{ $p.RelPermalink }}">{{ $p.Title }}</a>. {{ with $p.Params.venue }}<em>{{ . }}</em>. {{ end }}{{ $p.Date.Year }}{{ with $vol }};{{ . }}{{ end }}{{ with $num }}({{ . }}){{ end }}{{ with $pages }}:{{ . }}{{ end }}.{{ with $doi }} doi: <a href="https://doi.org/{{ . }}" target="_blank" rel="noreferrer noopener">{{ . }}</a>{{ end }} {{ with $pkg }}Software: <a href="{{ .url }}" target="_blank" rel="noreferrer noopener">{{ path.Base (strings.TrimSuffix "/" .url) }}</a>{{ if strings.Contains .url "pypi.org" }} (PyPI){{ end }}.{{ end }}
