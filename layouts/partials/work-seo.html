@@ -96,6 +96,13 @@
 {{- with $keywords -}}
   {{- $ld = merge $ld (dict "keywords" .) -}}
 {{- end -}}
+{{- /* a "code" source is the software the paper describes; a "package" source is
+       where it is installed from */ -}}
+{{- with index (where $src "text" "code") 0 -}}
+  {{- $sw := dict "@type" "SoftwareSourceCode" "codeRepository" .url -}}
+  {{- with index (where $src "text" "package") 0 -}}{{- $sw = merge $sw (dict "url" .url) -}}{{- end -}}
+  {{- $ld = merge $ld (dict "workExample" $sw) -}}
+{{- end -}}
 {{- with $pdf -}}
   {{- $ld = merge $ld (dict "encoding" (dict "@type" "MediaObject" "contentUrl" . "encodingFormat" "application/pdf")) -}}
 {{- end -}}

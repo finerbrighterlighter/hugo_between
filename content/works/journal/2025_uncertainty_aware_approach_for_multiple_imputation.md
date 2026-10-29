@@ -27,6 +27,12 @@ sources:
 - text: mirror
   url: /docs/2025_Uncertainty-aware approach for multiple imputation using conventional and machine learning models a real-world data study.pdf
 
+- text: code
+  url: https://github.com/rrwabina/uncertainty-imputation
+
+- text: package
+  url: https://pypi.org/project/uncertainty-imputation/
+
 conditions:
 - Hypertension
 - Atrial Fibrillation

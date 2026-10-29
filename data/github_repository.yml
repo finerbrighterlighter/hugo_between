@@ -21,3 +21,8 @@ groups:
         label: Hugo-TUI
       - name: hugo_between
         label: Hugo-Between
+  - owner: rrwabina
+    label: Collaborators
+    repos:
+      - name: uncertainty-imputation
+        label: Uncertainty Imputation
