@@ -248,10 +248,12 @@ def doi_link(sources):
 
 
 def software_note(sources, md=False):
-    """Return ' Software: <name> (PyPI).' for a "package" source, or ''.
+    """Return a line break and 'Software: <name> (PyPI).' for a "package" source, or ''.
 
-    The name is the last segment of the package URL. The HTML CV page
-    (layouts/partials/cv-cite.html) prints the same note.
+    The note starts a new line: the citation ends on a DOI with no full stop,
+    so on the same line it would read as part of the DOI. The name is the last
+    segment of the package URL. The HTML CV page (layouts/partials/cv-cite.html)
+    prints the same note.
     """
     for s in sources or []:
         if s.get("text") == "package" and s.get("url"):
@@ -259,7 +261,8 @@ def software_note(sources, md=False):
             name = url.rstrip("/").rsplit("/", 1)[-1]
             link = f"[{name}]({url})" if md else f'<a href="{url}">{name}</a>'
             host = " (PyPI)" if "pypi.org" in url else ""
-            return f" Software: {link}{host}."
+            brk  = "  \n    " if md else "<br>"   # Markdown hard break inside a list item
+            return f"{brk}Software: {link}{host}."
     return ""
 
 
