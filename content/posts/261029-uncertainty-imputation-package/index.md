@@ -42,7 +42,17 @@ flowchart LR
 | Probability of improvement (PI) | the highest chance to improve the current best value |
 | Expected improvement (EI) | the largest expected improvement |
 
-We tested each function with linear regression, decision tree, random forest and XGBoost. To get known true values, we removed values from 8,156 complete CKD records in the real missing patterns, then imputed them again.
+We tested each function with linear regression, decision tree, random forest and XGBoost. To get known true values, we removed values from complete CKD records in the real missing patterns, then imputed them again:
+
+```mermaid
+flowchart TD
+  O[Original data<br>31,043 patients] -->|listwise deletion| C[Complete data<br>8,156 patients]
+  C -->|23.0%| P1[uric acid]
+  C -->|14.3%| P2[HbA1c + uric acid]
+  C -->|…| Pk[pattern k of 16]
+  P1 & P2 & Pk --> B[Blank the pattern's values<br>with probability p]
+  B --> A[Amputated data]
+```
 
 ## Results
 
