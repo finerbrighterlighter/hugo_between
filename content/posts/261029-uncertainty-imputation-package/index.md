@@ -5,102 +5,82 @@ url: "/posts/261029-uncertainty-imputation-package"
 description: "The method from our 2025 Journal of Big Data paper is now on PyPI as uncertainty-imputation."
 company: "Software release"
 math: false
+mermaid: true
 ---
 
-The method from our paper [Uncertainty Aware Approach for Multiple Imputation Using Conventional and Machine Learning Models]({{< relref "works/journal/2025_uncertainty_aware_approach_for_multiple_imputation.md" >}}) is now a Python package. Romen Samuel Rodis Wabina, the first author of the paper, wrote and maintains it.
+The method from our paper [Uncertainty Aware Approach for Multiple Imputation Using Conventional and Machine Learning Models]({{< relref "works/journal/2025_uncertainty_aware_approach_for_multiple_imputation.md" >}}) is now a Python package. Romen Samuel Rodis Wabina, the first author, wrote and maintains it.
 
 <!--more-->
 
 ## The problem
 
-Hospital records are not collected for research. Tests are not ordered at every visit, patients move to other hospitals, and values go into the wrong field. In our cohorts, nearly half of some key laboratory values were missing.
+Our hospital cohorts had many missing laboratory values:
 
-| Cohort | Patients | Missing data per variable |
+| Cohort | Patients | Missing per variable |
 | --- | --- | --- |
-| Chronic kidney disease, Ramathibodi (CKD) | 31,043 | 4.16% to 49.01% |
-| Hypertension, Ramathibodi (HT-RAMA) | 140,047 | 15.75% to 53.32% |
-| Hypertension, Khon Kaen University (HT-KKU) | 108,942 | 28.20% to 67.88% |
+| Chronic kidney disease (CKD) | 31,043 | 4% to 49% |
+| Hypertension, Ramathibodi (HT-RAMA) | 140,047 | 16% to 53% |
+| Hypertension, Khon Kaen (HT-KKU) | 108,942 | 28% to 68% |
 
-Lipids were the worst. In HT-KKU, LDL was missing in 67.33% of patients and HDL in 67.88%.
+MICE, the usual method, fills one variable at a time from earlier filled values. An early error therefore moves into every later step.
 
-Multiple imputation by chained equations (MICE) is the usual answer. MICE fills one variable at a time, and each model uses the values that earlier models filled. An error in an early step therefore moves into every later step.
+## The method
 
-## What we changed in MICE
+We kept MICE and changed what each model trains on. An uncertainty function scores how much each patient's imputed values vary across imputations. Each model then trains only on the patients the function selects.
 
-We kept the MICE loop and changed the training data of each model. After the first imputed dataset, an uncertainty function scores each patient. The score shows how much that patient's imputed values vary across the imputed datasets. Each model then trains only on the patients that the function selects.
+```mermaid
+flowchart LR
+  A[Impute one<br>variable] --> B[Score each<br>patient]
+  B --> C[Train on selected<br>patients]
+  C -->|next variable| A
+  C -->|stable| D[Pool 5<br>datasets]
+```
 
-We tested three uncertainty functions:
-
-| Function | Which patients it selects |
+| Function | Selects patients with |
 | --- | --- |
-| Uncertainty sampling (US) | Patients with the lowest variance across imputations, so noisy samples stay out of training |
-| Probability of improvement (PI) | Patients with the highest probability to improve on the current best imputed value |
-| Expected improvement (EI) | Patients with the largest expected size of that improvement |
+| Uncertainty sampling (US) | the lowest variance |
+| Probability of improvement (PI) | the highest chance to improve the current best value |
+| Expected improvement (EI) | the largest expected improvement |
 
-We combined each function with four models: linear regression, decision tree, random forest and XGBoost. Each run made five imputed datasets with up to 50 iterations each. An early-stopping rule ended a run when the change between iterations stayed below 1 × 10⁻⁵ for five iterations. We clipped imputed values to clinically plausible ranges, and pooled the five datasets with Rubin's rules.
+We tested each function with linear regression, decision tree, random forest and XGBoost. To get known true values, we removed values from 8,156 complete CKD records in the real missing patterns, then imputed them again.
 
-## How we tested it
+## Results
 
-A real missing value has no known true value, so we made our own missing values. We took the 8,156 CKD patients with complete records. We then removed values from them in the same patterns as the real data, and imputed them again. The CKD data had 296 missing patterns. We kept the 16 patterns that covered at least 1% of patients. We then compared each imputed value with the true value.
+In CKD, every function lowered the error of linear regression:
 
-## What we found
+```mermaid
+%%{init: {"xyChart": {"width": 640, "height": 300}}}%%
+xychart-beta
+  title "CKD, linear regression: RMSE (lower is better)"
+  x-axis ["Plain MICE", "US", "PI", "EI"]
+  y-axis "RMSE" 0 --> 0.2
+  bar [0.168, 0.146, 0.132, 0.115]
+```
 
-In the CKD cohort, the uncertainty functions improved every model over plain MICE, except XGBoost. Linear regression gave the lowest errors in all three cohorts.
+Linear regression was the best model in all three cohorts:
 
-| Cohort | Best model | RMSE | MAE |
+| Cohort | Best | RMSE | MAE |
 | --- | --- | --- | --- |
 | CKD | Linear regression + EI | 0.12 | 0.36 |
 | HT-RAMA | Linear regression + US | 0.24 | 8.15 |
 | HT-KKU | Linear regression + US | 0.98 | 12.00 |
 
-In CKD, plain linear regression MICE had an RMSE of 0.168 and an MAE of 0.469. With EI, these fell to 0.115 and 0.361. For the decision tree, EI cut the RMSE about in half, from 0.443 to 0.213.
+The functions also kept imputed distributions close to the observed data. XGBoost was the exception: it did not improve and needed long tuning.
 
-The imputed distributions also matter. With an uncertainty function, the imputed values had a shape close to the observed data. Plain MICE gave distributions that moved away from the true data.
-
-XGBoost was the exception. The uncertainty functions did not improve it, and it needed long hyperparameter tuning. The paper recommends linear regression with EI as the default choice.
-
-## The package
-
-The package `uncertainty-imputation` makes this method usable on your own data. It records the uncertainty score for each imputed cell as an "acquisition score". Your code can use that score to weight, rank or audit single imputations.
-
-| Paper | Package key |
-| --- | --- |
-| Uncertainty sampling | `us` |
-| Probability of improvement | `pi` |
-| Expected improvement | `ei` |
-
-The package has a scikit-learn style API and accepts pandas DataFrames and NumPy arrays. It also has an amputation module that makes MCAR, MAR or MNAR missingness, so you can repeat the test design above on your own complete data.
-
-### Install
+## Use it
 
 ```bash
 pip install uncertainty-imputation
-pip install 'uncertainty-imputation[xgboost]'   # adds the XGBoost model
 ```
-
-The package needs Python 3.9 or later.
-
-### Quick start
 
 ```python
-import numpy as np
-import pandas as pd
-from uncertainty_imputation import UncertaintyImputer, MCARAmputer
+from uncertainty_imputation import UncertaintyImputer
 
-X_true = pd.DataFrame(np.random.default_rng(0).normal(size=(300, 4)),
-                      columns=["a", "b", "c", "d"])
-X_missing = MCARAmputer(missing_rate=0.25, random_state=0).ampute(X_true)
-
-imputer = UncertaintyImputer(model="random_forest", acquisition="ei",
-                             max_iter=10, random_state=42)
-X_imputed = imputer.fit_transform(X_missing)
-
-for col, scores in imputer.uncertainty_.items():
-    print(col, scores.mean())
+imputer = UncertaintyImputer(model="linear", acquisition="ei")
+X_imputed = imputer.fit_transform(X_missing)  # DataFrame or array
+scores = imputer.uncertainty_  # score per imputed cell
 ```
 
-## Links
+The `acquisition` key is `us`, `pi` or `ei`. The package also makes MCAR, MAR or MNAR test data, so you can repeat our test design on your own data. It needs Python 3.9 or later.
 
-- PyPI: [uncertainty-imputation](https://pypi.org/project/uncertainty-imputation/)
-- Source code and issues: [rrwabina/uncertainty-imputation](https://github.com/rrwabina/uncertainty-imputation)
-- Paper (open access): [Journal of Big Data, 2025](https://doi.org/10.1186/s40537-025-01136-3)
+[PyPI](https://pypi.org/project/uncertainty-imputation/) · [Source code](https://github.com/rrwabina/uncertainty-imputation) · [Paper]({{< relref "works/journal/2025_uncertainty_aware_approach_for_multiple_imputation.md" >}})

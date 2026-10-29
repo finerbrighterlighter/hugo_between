@@ -22,8 +22,11 @@ if (fences.length) {
 
   function palette() {
     const bodyStyle = getComputedStyle(document.body);
+    // the theme's accent token; the first link on the page is the hidden skip
+    // link, whose colour is the body text, so it is only a fallback
     const link = document.querySelector(".post-body a, main a, a");
-    const accent = link ? getComputedStyle(link).color : bodyStyle.color;
+    const accent = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim()
+      || (link ? getComputedStyle(link).color : bodyStyle.color);
     return {
       background: bodyStyle.backgroundColor,
       primaryColor: bodyStyle.backgroundColor,
@@ -33,6 +36,21 @@ if (fences.length) {
       edgeLabelBackground: bodyStyle.backgroundColor,
       fontFamily: bodyStyle.fontFamily,
       fontSize: bodyStyle.fontSize,
+      // xychart derives its bar colours from primaryColor, which is the page
+      // background here, so bars would vanish without an explicit palette
+      xyChart: {
+        backgroundColor: bodyStyle.backgroundColor,
+        titleColor: bodyStyle.color,
+        xAxisLabelColor: bodyStyle.color,
+        xAxisTitleColor: bodyStyle.color,
+        xAxisTickColor: bodyStyle.color,
+        xAxisLineColor: bodyStyle.color,
+        yAxisLabelColor: bodyStyle.color,
+        yAxisTitleColor: bodyStyle.color,
+        yAxisTickColor: bodyStyle.color,
+        yAxisLineColor: bodyStyle.color,
+        plotColorPalette: accent,
+      },
     };
   }
 
