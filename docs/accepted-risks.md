@@ -42,6 +42,9 @@ Three consequences follow, and all three are known:
 - The salt and verifier are in the page source and the PIN is numeric, so the PIN can be recovered offline in
   seconds. The `no-store` and `noindex` headers in `static/_headers` keep the documents out of search results and
   caches; they grant no authorization.
+- A Cloudflare WAF custom rule (2026-11-09) blocks verified bots, AI training crawlers included, from
+  `/general/documents/`. `noindex` binds only search engines. Unverified scrapers with a browser user agent still
+  get the files.
 - Both transcripts currently share one salt and one verifier, so a single PIN opens both.
 
 **Why it is accepted.** The goal is that transcripts are not casually clickable and not indexed, not that they
