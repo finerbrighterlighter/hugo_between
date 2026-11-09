@@ -9,6 +9,14 @@
 /general/msc_transcript_htunteza.pdf /general/msc-transcript/ 301
 /general/bds_transcript_htunteza.pdf /general/bds-transcript/ 301
 
+# Older site layouts that Google still crawls (Search Console 404s, 2026-11-09):
+# PDFs lived under /assets/docs/, the CV sat directly in /general/, and one post
+# had no /posts/ prefix.
+/assets/docs/* /docs/:splat 301
+/general/cv_htunteza.pdf /general/cv/cv_htunteza.pdf 301
+/260515-opencode-librarian-system/* /posts/260515-Opencode-Librarian-System/:splat 301
+/260515-Opencode-Librarian-System/* /posts/260515-Opencode-Librarian-System/:splat 301
+
 # Netlify, the previous host, matched paths case-insensitively and 301ed these
 # mixed-case post URLs to lowercase, so the lowercase forms are the ones out in
 # the wild. Cloudflare matches case-sensitively; send them to the real pages.
