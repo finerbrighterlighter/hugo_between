@@ -436,3 +436,14 @@ rule, and the header rule was the same as the body rules. Tables in `.prose` are
 The ink rules repeat the pull quote's hairlines. The rules apply only to `.prose`, so the CV, Works and data tables
 keep their own styles. Other surfaces in the editorial system (wiki reader, Glance, YNAB dashboard) can take the
 same table rules.
+
+## Pass 21 (2026-11-12, Lately rows line up)
+
+Each Lately column stacks a label, a cover, a title, a meta line and a link. Before this pass, a title or meta
+line that wrapped pushed its link lower than the links in the other columns. The offset changed with the data,
+so it read as a fault, not as a choice.
+
+The row is now a borderless table built with CSS subgrid (`.lately-row` in `assets/css/main.css`). The row has
+five shared tracks, and each column, its list, its item and its link take the tracks through `subgrid`. A wrapped
+title moves that track down in all three columns. The markup and `covers.js` are unchanged. An empty strip
+(`[hidden]`) drops out, and its fallback link stays on the fifth track.

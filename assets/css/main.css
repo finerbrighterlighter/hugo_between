@@ -287,9 +287,15 @@ html:lang(my) .voice-r .word{font-style:normal}
 #now-playing[data-state="playing"] .np-when{color:var(--accent)}
 .np-when{color:var(--mute)}
 
-/* lately: one compact row */
-.lately-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem 1.2rem;margin-top:1.2rem;max-width:26rem}
+/* lately: one compact row. Subgrid rows (label, cover, title, meta, link)
+   line up across the three columns like a borderless table. */
+.lately-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(5,auto);gap:0 1.2rem;margin-top:1.2rem;max-width:26rem}
 .lately-row>*{min-width:0}
+.lately-item{display:grid;grid-row:1/-1;grid-template-rows:subgrid;align-content:start}
+.lately-item .covers,.lately-item .cover,.lately-item .cover a{display:grid;grid-row:span 3;grid-template-rows:subgrid;gap:0}
+.lately-item .covers{grid-row:2/5}
+.lately-item .covers[hidden]{display:none}
+.lately-item .covers-empty{grid-row:5}
 .voice-l .lately-row{margin-left:auto}
 .lately-item .meta{margin:0 0 .4rem;overflow-wrap:anywhere}
 .lately-item .covers-empty,.lately-item .cover-title,.lately-item .cover-meta{overflow-wrap:anywhere}
